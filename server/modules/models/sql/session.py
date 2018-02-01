@@ -1,5 +1,6 @@
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import create_engine,event
+from sqlalchemy import create_engine
+# from sqlalchemy import event
 from sqlalchemy.pool import QueuePool
 from modules.config import sql_db
 
@@ -13,9 +14,8 @@ SQL_DB_ENGINE = create_engine(
     pool_recycle=sql_db.CONNECTION_POOL_RECYCLE_SECONDS
 )
 
-
 # that is sessionmaker class which will create new sessions using 'Session()' syntax
 Session = sessionmaker(bind=SQL_DB_ENGINE)
 #Session should be closed by session.close()
 ScopedSession = scoped_session(Session)
-#ScopedSession should be closed by session.remove()
+#ScopedSession should be closed by ScopedSession.remove()
