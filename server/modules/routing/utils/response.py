@@ -8,7 +8,7 @@ def json(func):
         return jsonify(func(*args,**kwargs))
     return json_response_wrapper
 
-def user_friendly(func):
+def user_friendly_exceptions(func):
 
     @wraps(func)
     def user_friendly_wrapper(*args,**kwars):

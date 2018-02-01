@@ -1,5 +1,5 @@
 from functools import wraps
-from modules.models.sql.session import Session,ScopedSession
+from modules.models.sql.session import Session,ScopedSession,SQL_DB_ENGINE
 
 
 def sql_session(func):
@@ -11,7 +11,6 @@ def sql_session(func):
         try:
             result = func(sql_session=sql_session, *args, **kwars)
         finally:
-            print("CLOSING SESSION")
             ScopedSession.remove()
         return result
 
