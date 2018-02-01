@@ -20,5 +20,5 @@ SQL_DB_ENGINE = create_engine(
 # that is sessionmaker class which will create new sessions using 'Session()' syntax
 Session = sessionmaker(bind=SQL_DB_ENGINE)
 #Session should be closed by session.close()
-ScopedSession = scoped_session(Session())
+ScopedSession = scoped_session(Session)
 #ScopedSession should be closed by session.remove()
