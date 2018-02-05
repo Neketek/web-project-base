@@ -1,0 +1,80 @@
+# -*- mode: yaml -*-
+# vi: set ft=yaml sw=2 :
+#
+# Title:       vagrant.yml
+# Description: Main configuration file for Vagrant-based development
+#              environment. Read comments and finetune configuration
+#              to your taste. Just make sure to keep it localized to
+#              you only (via user-specific configuration).
+# Developer:   ddnomad
+# Version:     1.0.0
+---
+
+# These settings are for all users and should not be
+# changed by any individual without contacting @ddnomad
+global:
+
+  # Base box and Vagrant configuration syntax version
+  base_box: ubuntu/xenial64
+  vc_version: 2
+
+  # Ansible nitty-gritties
+  ansible:
+    playbook: ./TODO: ???
+    config: ./TODO: ???
+    args:
+      - TODO: ???
+      - ?
+
+# Default configuration that is applied where a user has not overriden it.
+# Everything under this key can be overriden under user-specific keys (more
+# on them later in this file).
+defaults:
+
+  # Virtualbox back-end configuration
+  virtualbox:
+
+    # How you want VB to name this VM
+    name: vagrant_arachnid42_ubuntu1604_web-project-base
+
+    # How many CPUs are available for this VM. Do not attempt to specify
+    # more CPUs then your host physically have. He won't like it at all.
+    cpus: 2
+
+    # How many CPU time VM can reserver (per core). It's strongly advised to
+    # keep it as it is (100) otherwise performance may drop significantly.
+    cpu_cap: 100
+
+    # How much RAM to allocate for VM. Guidelines are pretty
+    # the same as for cpus keyword. Don't toast your host.
+    ram: 4096
+
+  # Execute command for each SSH session. These commands will be executed on
+  # guest system (in VM). Though sudo rm -rf / would still delete your project
+  # folder (verified by @ddnomad).
+  ssh:
+
+    # Where file with command will be placed on guest system (VM).
+    # Doest not make much sense to change this one. But you can.
+    path: /etc/profile.d/exec_on_ssh.sh
+
+    # Actual commands to execute. One per line. Unless you're really into cd
+    # a lot you should keep the first one in your overriden configuration
+    # (use append keyword - see later).
+    cmds:
+      - cd /vagrant  # keep this one (trust me)
+
+  # Post Vagrant call commands to execute on your host. They are run at the
+  # end of any vagrant * call. Again, you'd better append to this list as the
+  # first two commands are rather handy.
+  exec:
+    - "mv ubuntu-xenial*.log ./log/$(date +%F%T)_vagrant_boot.log &> /dev/null"
+    - "cd ./log && (ls -t | head -n 3; ls) | sort | uniq -u | xargs rm"
+
+  # Ports to forward from guest to host in a format
+  # <guest_port>: <to_host_port>. Append only please
+  # otherwise your setup won't work (most probably).
+  forward:
+    8080: 8080  # flask
+
+# TODO: user-specific stuff
