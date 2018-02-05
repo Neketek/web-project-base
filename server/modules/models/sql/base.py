@@ -2,7 +2,7 @@ from sqlalchemy.ext.declarative import declarative_base,declared_attr
 from sqlalchemy.types import BigInteger
 from sqlalchemy import Column
 import re
-
+from sqlalchemy.orm.session import object_session
 
 class BaseClass:
 
@@ -13,6 +13,10 @@ class BaseClass:
         name = re.sub(regex, r'\1 \2', class_name)
         name = '_'.join([token.lower() for token in name.split()])
         return name
+
+    def session(self):
+        return object_session(self)
+    
 
 class Entity:
 
