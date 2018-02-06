@@ -21,7 +21,7 @@ virtualbox:
 # Ansible provisioning properties
 ansible:
   compat_mode: '2.0'
-  base_path: /vagrant/ansible
+  base_path: /vagrant/xopos/ansible
   playbook: vagrant.yml
   config: ansible.cfg
 

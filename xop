@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+#
+# Title:       devenv
+# Description: Master script for managing development environment
+# Developer:   ddnomad
+# Version:     0.0.1
+set -eu -o pipefail
+source ./xopos/shell/utils/messenger.sh
+
+readonly ROOT_INFO_NAME="$(basename "$0")"
+readonly ROOT_INFO_USER="$(who | cut -f1 -d ' ')"
+readonly ROOT_INFO_DISTRO="$(grep -x "ID=.*" </etc/os-release | cut -f2 -d '=')"
+
+readonly ROOT_MSG_ERR_UNSUF_ARGS='[-] Error: unsufficient number of arguments: '
+readonly ROOT_MSG_HELP="$(cat <<EOF
+Usage: ${ROOT_INFO_NAME} [-h] [MODULE] [MODULE OPTIONS] args
+
+Manage development environment configuration and workflow.
+Currently supported functions include:
+    * Install host dependencies (Vagrant, Virtualbox)
+    * TODO: append subcommands functionality
+
+Most functions are exposed via respective subcommands. A list
+of all supported subcommands and their respective options are
+available below.
+
+OPTIONS
+    -h     --help           Print this message and exit
+    -i     --install-deps   Install host dependencies
+
+MODULES
+    TODO: append subcommands help messages
+EOF
+)"
+
+
+##### MAIN FLOW #####
+if [[ "$#" -lt 1 ]]; then
+    true
+fi
+print_info "everything works as expected"
