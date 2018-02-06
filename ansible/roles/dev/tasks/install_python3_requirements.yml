@@ -1,0 +1,6 @@
+# vi: set ft=yaml sw=2 :
+---
+- name: Install pip3 requirements
+  pip:
+    requirements: requirements.txt
+    executable: pip3

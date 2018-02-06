@@ -1,0 +1,6 @@
+# vi: set ft=yaml sw=2 :
+---
+- name: Install pip3
+  apt:
+    name: python3-pip
+    state: latest

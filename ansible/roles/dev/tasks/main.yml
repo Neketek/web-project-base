@@ -1,0 +1,11 @@
+# vi: set ft=yaml sw=2 :
+---
+- include_tasks: "{{ item }}"
+  with_items:
+    - install_ansible_deps.yml
+    - system_update.yml
+    - append_aliases.yml
+    - install_cron.yml
+    - install_pip3.yml
+    - install_python3_requirements.yml
+    - install_node.yml
