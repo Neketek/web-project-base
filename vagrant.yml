@@ -5,7 +5,7 @@
 # Description: Main configuration file for Vagrant-based
 #              development environment
 # Developer:   ddnomad
-# Version:     1.0.1
+# Version:     1.0.2
 ---
 # what box and what configuration version?
 base_box: ubuntu/xenial64
@@ -20,9 +20,10 @@ virtualbox:
 
 # Ansible provisioning properties
 ansible:
+  compat_mode: '2.0'
   base_path: /vagrant/ansible
-  playbook: /vagrant/ansible/vagrant.yml
-  config: /vagrant/ansible/vagrant.cfg
+  playbook: vagrant.yml
+  config: ansible.cfg
 
 # execute command for each SSH session
 ssh:

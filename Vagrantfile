@@ -8,7 +8,7 @@
 #              Instead edit ./vagrant.yml and all the changes will be fetched
 #              by Vagrant on a next provision or up.
 # Developer:   ddnomad
-# Version:     1.0.1
+# Version:     1.0.2
 
 require 'yaml'
 
@@ -30,6 +30,7 @@ VB_RAM = VB_PROPS['ram'].freeze
 
 # Ansible properties
 ANS_BP = ANS_PROPS['base_path'].freeze
+ANS_CM = ANS_PROPS['compat_mode'].freeze
 ANS_PB = ANS_PROPS['playbook'].freeze
 ANS_CFG = ANS_PROPS['config'].freeze
 
@@ -58,6 +59,7 @@ Vagrant.configure(VC_VERSION) do |config|
 
   # Provision the guest with Ansible
   config.vm.provision 'ansible_local' do |ansible|
+    ansible.compatibility_mode = ANS_CM
     ansible.provisioning_path = ANS_BP
     ansible.playbook = ANS_PB
     ansible.config_file = ANS_CFG
