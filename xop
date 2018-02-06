@@ -11,7 +11,8 @@ readonly ROOT_INFO_NAME="$(basename "$0")"
 readonly ROOT_INFO_USER="$(who | cut -f1 -d ' ')"
 readonly ROOT_INFO_DISTRO="$(grep -x "ID=.*" </etc/os-release | cut -f2 -d '=')"
 
-readonly ROOT_MSG_ERR_UNSUF_ARGS='[-] Error: unsufficient number of arguments: '
+readonly ROOT_MSG_ERR_UNSUF_ARGS='Error: unsufficient number of arguments: '
+readonly ROOT_MSG_ERR_NOPT='Error: unknown option: '
 readonly ROOT_MSG_HELP="$(cat <<EOF
 Usage: ${ROOT_INFO_NAME} [-h] [MODULE] [MODULE OPTIONS] args
 
@@ -26,6 +27,7 @@ available below.
 
 OPTIONS
     -h     --help           Print this message and exit
+    -c     --no-color       Disable colored output
     -i     --install-deps   Install host dependencies
 
 MODULES
@@ -34,8 +36,38 @@ EOF
 )"
 
 
+###
+# Import subcommands
+####
+function import_subs {
+    true
+}
+
+##########################################################
+# Resolve arguments and pass control flow to subcommands
+#
+# Arguments:
+#   $@ - all arguments of the scripts
+#
+# Return:
+#   None
+#
+# Terminates:
+#   Yes
+##########################################################
+function resolver {
+    case "$1" in
+        -h | --help ) __print 'PLAIN' 1 "${ROOT_MSG_HELP}" ;;
+        -c | --no-color ) MESSENGER_OUTPUT_COLOR=false ;;
+        -* ) print_error "${ROOT_MSG_ERR_NOPT}$1" && resolver -h ;;
+    esac
+}
+
+
 ##### MAIN FLOW #####
 if [[ "$#" -lt 1 ]]; then
-    true
+    print_error "${ROOT_MSG_ERR_UNSUF_ARGS}0"
+    resolver '-h'
 fi
-print_info "everything works as expected"
+import_subs
+resolver "$@"

@@ -8,8 +8,8 @@ set -eu -o pipefail
 
 # Gather information about this module
 readonly NUMBERS_INFO_NAME="$(basename "${BASH_SOURCE[0]}")"
+readonly NUMBERS_INFO_PDIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 readonly NUMBERS_INFO_PWD="$(pwd)"
-readonly NUMBERS_INFO_PDIR="$(readlink -f "${NUMBERS_INFO_NAME}")"
 
 # Internal message templates
 readonly NUMBERS_OUTPUT_MSG_ERR_PREF_INT='[-] Internal error: '

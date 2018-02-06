@@ -11,7 +11,7 @@ readonly MESSENGER_INFO_NAME="$(basename "${BASH_SOURCE[0]}")"
 readonly MESSENGER_INFO_PDIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 readonly MESSENGER_INFO_PWD="$(pwd)"
 
-# TODO: will work?
+# Import numbers module
 cd "${MESSENGER_INFO_PDIR}" && \
     source ./numbers.sh && \
     cd "${MESSENGER_INFO_PWD}"
@@ -153,7 +153,7 @@ function __print {
         print_msg 'ERR' "${msg}" 1 "${MESSENGER_OUTPUT_NOSTDERR}" \
             "${MESSENGER_OUTPUT_COLOR}"
     fi
-    print_msg "$1" "$3" "$2" "${MESSENGER_OUTPUT_NOSTDERR}"
+    print_msg "$1" "$3" "$2" "${MESSENGER_OUTPUT_NOSTDERR}" \
         "${MESSENGER_OUTPUT_COLOR}"
 }
 
@@ -193,7 +193,7 @@ function print_info {
 #   Yes
 ###################################################################
 function print_warning {
-    print_msg 'WARN' false "$@"
+    __print 'WARN' false "$@"
 }
 
 
@@ -213,7 +213,7 @@ function print_warning {
 #   Yes
 ###################################################################
 function print_error {
-    print_msg 'ERR' false "$@"
+    __print 'ERR' false "$@"
 }
 
 
@@ -234,5 +234,5 @@ function print_error {
 #   Yes
 #######################################################################
 function print_error_and_exit {
-    print_msg 'ERR' "$@"
+    __print 'ERR' "$@"
 }
