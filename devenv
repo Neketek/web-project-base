@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#
+# Title:       devenv
+# Description: Master script for managing development environment
+# Developer:   ddnomad
+# Version:     0.0.1
+set -eu -o pipefail
+
+readonly INFO_NAME="$(basename "$0")"
+readonly INFO_USER="$(who | cut -f1 -d ' ')"
+readonly INFO_DISTRO="$(grep -x "ID=.*" </etc/os-release | cut -f2 -d '=')"
+
+readonly COLOR_INFO='\e[36m'
+readonly COLOR_WARN='\e[33m'
+readonly COLOR_ERR='\e[31m'
+readonly COLOR_OK='\e[32m'
+readonly COLOR_RESET='\e[39m'
+
+readonly MSG_ERR_UNSUF_ARGS='[-] Error: unsufficient number of arguments'
+readonly MSG_HELP="$(cat <<EOF
+Usage: ${INFO_NAME} [-h] TODO: full usage
+
+TODO: description
+
+Options:
+
+    -h     help     --help         Print this message and exit
+EOF
+)"
+
+
+#####################
+#     MAIN FLOW     #
+#####################
+if [[ "$#" -lt 1 ]]; then
+    echo "${MSG_ERR_UNSUF_ARGS}"
+fi

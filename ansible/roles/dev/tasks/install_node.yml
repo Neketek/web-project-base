@@ -1,0 +1,9 @@
+# vi: set ft=yaml sw=2 :
+---
+- name: Adding repository for installing Node.js
+  raw: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+
+- name: Install Node.js on Ubuntu 16.04
+  apt:
+      name: nodejs
+      state: latest

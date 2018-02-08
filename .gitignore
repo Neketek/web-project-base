@@ -1,0 +1,22 @@
+# Python cache
+*.pyc
+__pycache__
+
+# Front-end related garbage
+*.css
+*.min.js
+
+# Idea
+.idea
+
+# Devenv
+*.vagrant
+*.retry
+
+# Documents
+*.pdf
+
+# Logs, temp files, dumps etc.
+*.log
+*.tmp
+*.dump
