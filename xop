@@ -5,7 +5,7 @@
 # Developer:   ddnomad
 # Version:     0.0.1
 set -eu -o pipefail
-source ./xopos/shell/utils/messenger.sh
+source ./xopos/bash/utils/messenger.util
 
 readonly ROOT_INFO_NAME="$(basename "$0")"
 readonly ROOT_INFO_USER="$(who | cut -f1 -d ' ')"
