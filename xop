@@ -57,8 +57,10 @@ function import_subs {
 ##########################################################
 function resolver {
     case "$1" in
-        -h | --help ) __print 'PLAIN' 1 "${ROOT_MSG_HELP}" ;;
+        -h | --help ) __print 'PLAIN' false "${ROOT_MSG_HELP}" ;;
         -c | --no-color ) MESSENGER_OUTPUT_COLOR=false ;;
+        # TODO: create print help function that exits with a specified exit
+        # code
         -* ) print_error "${ROOT_MSG_ERR_NOPT}$1" && resolver -h ;;
     esac
 }
