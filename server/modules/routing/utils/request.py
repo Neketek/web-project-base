@@ -19,13 +19,22 @@ def sql_session(func):
 
 class SessionLoginManager:
 
+
     def get_user(self, func):
+        '''wrapper which sets method which returns user entity based on authentification data'''
         self.__get_user = func
 
+
+    def __error(self,exception=None,sql_session=None):
+        ''' default error handler which will reraise exception '''
+        raise exception
+
     def error(self, func):
+        '''wrapper which sets custom error function'''
         self.__error = func
 
     def required(self, func):
+        ''' wrapper which provides the login functionality '''
         @wraps(func)
         @sql_session
         def authorized_request(sql_session=None, *args, **kwars):
@@ -36,15 +45,3 @@ class SessionLoginManager:
                 return self.__error(exception=e, sql_session=sql_session)
 
         return authorized_request
-
-
-class JSONLoginManager:
-
-    def __init__(self):
-        pass
-
-    def required(self, func):
-        pass
-
-    def error(self, func):
-        pass

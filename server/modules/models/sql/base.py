@@ -1,8 +1,10 @@
 from sqlalchemy.ext.declarative import declarative_base,declared_attr
 from sqlalchemy.types import BigInteger
 from sqlalchemy import Column
+from functools import wraps
 import re
 from sqlalchemy.orm.session import object_session
+
 
 class BaseClass:
 
@@ -14,15 +16,22 @@ class BaseClass:
         name = '_'.join([token.lower() for token in name.split()])
         return name
 
+    @property
     def session(self):
         return object_session(self)
-    
+
+    @session.setter
+    def session(self,value):
+        raise Exception("Session binding can't be set via entity.session property!")
+
 
 class Entity:
 
     @declared_attr
     def id(cls):
         return Column(BigInteger(),primary_key=True)
+
+
 
 
 BaseClass = declarative_base(cls=BaseClass)

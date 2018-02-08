@@ -2,6 +2,7 @@ from flask import Flask
 from modules.config import flask_app
 # from flask import render_template
 # from modules.models.sql.session import SQL_DB_ENGINE
+from modules.constants import database
 from modules.models.sql import User
 from modules.routing.utils import request, response
 
@@ -16,18 +17,22 @@ def login_get_user(sql_session=None):
     sql_session.add(user)
     return user
 
-@session_login.error
-def login_error(sql_session=None,exception=None):
-    print (exception)
-    return dict(message="ERROR")
+# @session_login.error
+# def login_error(sql_session=None,exception=None):
+#     raise exception
 
 
 @app.route("/")
 @response.json
-@response.user_friendly_exceptions
+# @response.user_friendly_exceptions
 @session_login.required
 def index(user=None,name=None):
-    return {"first_name":user.first_name,"user_last_name":user.last_name,"session":str(user.session())}
+    # print (database,user)
+    # print (database.ADMIN_USER_ROLE(user.session))
+    # print (database.ADMIN_USER_ROLE(user.session))
+    # print (database.ADMIN_USER_ROLE(user.session))
+
+    return {"first_name":user.first_name,"user_last_name":user.last_name,"session":str(user.session)}
 
 
 if __name__ == '__main__':
