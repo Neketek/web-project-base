@@ -1,3 +1,4 @@
 # vi: set ft=yaml sw=2 :
 - name: Create PostgreSQL DB
-  raw: sudo -u postgres bash -c 'psql postgres -c "CREATE DATABASE server_primary;"'
+  shell: /vagrant/xopos/ansible/roles/dev/files/create_postgresql_db_cond.sh
+

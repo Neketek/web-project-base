@@ -55,6 +55,10 @@ Vagrant.configure(VC_VERSION) do |config|
     vb.customize ['modifyvm', :id, '--cpuexecutioncap', VB_CAP]
   end
 
+  # Prevent Vagrant from doing rsync thing and rely instead
+  # on vagrant-vbguest plugin to install VBGuestAdditions
+  config.vm.synced_folder "./", "/vagrant", type: ""
+
   # Taking care of session environment modification
   exec_cmds = "echo -n > #{EXEC_PATH}\n"
   EXEC_CMDS.each do |cmd|
