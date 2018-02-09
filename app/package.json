@@ -1,0 +1,31 @@
+{
+  "name": "app",
+  "version": "0.0.1",
+  "description": "arachnid42 base app",
+  "main": "js/index.jsx",
+  "scripts": {
+    "webpack": "webpack",
+    "start": "webpack-dev-server --open",
+    "devjs": "echo \"Error: no devjs specified\" && exit 1",
+    "prodjs": "echo \"Error: no prodjs specified\" && exit 1"
+  },
+  "author": "arachnid42 team",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^0.28.9",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.20.1",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  },
+  "dependencies": {
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0",
+    "fetch-polyfill": "^0.8.2",
+    "lodash": "^4.17.5",
+    "react": "^16.2.0",
+    "react-redux": "^5.0.6"
+  }
+}

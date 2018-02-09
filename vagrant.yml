@@ -39,3 +39,4 @@ exec:
 # <guest_port>: <to_host_port>
 forward:
   8080: 8080  # flask
+  9000: 9000  # webpack dev server
