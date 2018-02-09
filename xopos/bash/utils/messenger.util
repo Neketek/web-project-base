@@ -13,7 +13,7 @@ readonly MESSENGER_INFO_PWD="$(pwd)"
 
 # Import numbers module
 cd "${MESSENGER_INFO_PDIR}" && \
-    source ./numbers.sh && \
+    source ./numbers.util && \
     cd "${MESSENGER_INFO_PWD}"
 
 # Output style decorators

@@ -7,13 +7,14 @@
 # Developer:   ddnomad
 # Version:     1.0.2
 ---
-# what box and what configuration version?
-base_box: ubuntu/xenial64
-vc_version: 2
+vagrant:
+  base_box: debian/stretch64
+  vc_version: 2
+  plugins: [ 'vagrant-vbguest' ]
 
 # Virtualbox properties
 virtualbox:
-  name: vagrant_arachnid42_web-project-base_ubuntu1604
+  name: vagrant_arachnid42_web-project-base_debian9
   cpus: 2
   cpu_cap: 100
   ram: 4096
@@ -21,6 +22,7 @@ virtualbox:
 # Ansible provisioning properties
 ansible:
   compat_mode: '2.0'
+  install_mode: 'pip'
   base_path: /vagrant/xopos/ansible
   playbook: vagrant.yml
   config: ansible.cfg
@@ -30,10 +32,6 @@ ssh:
   path: /etc/profile.d/exec_on_ssh.sh
   cmds:
     - cd /vagrant
-
-# post-vagrant call commands (executed on "vagrant up" call)
-exec:
-  - "mv ubuntu-xenial*.log log/$(date +%F%T)_vagrant_boot.log &> /dev/null"
 
 # what ports to forward to host
 # <guest_port>: <to_host_port>
