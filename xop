@@ -6,6 +6,10 @@
 # Version:     0.0.1
 set -eu -o pipefail
 source ./xopos/bash/utils/messenger.util
+# NotImplementedError
+print_error 'Error: work in progress functionality'
+print_error_and_exit 1 'This script is not ready for a prime time (yet)'
+# -----------------------------------------------------------------------
 
 readonly ROOT_INFO_NAME="$(basename "$0")"
 readonly ROOT_INFO_USER="$(who | cut -f1 -d ' ')"
@@ -79,6 +83,7 @@ function resolver {
     case "$1" in
         -h | --help ) print_help 0 ;;
         -c | --no-color ) MESSENGER_OUTPUT_COLOR=false ;;
+        -e | --no-stderr ) MESSENGER_OUTPUT_NOSTDERR=true ;;
         -* ) print_error "${ROOT_MSG_ERR_NOPT}$1" && print_help 1 ;;
     esac
 }

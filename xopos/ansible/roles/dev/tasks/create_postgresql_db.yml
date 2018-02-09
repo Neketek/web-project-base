@@ -1,4 +1,8 @@
 # vi: set ft=yaml sw=2 :
+---
 - name: Create PostgreSQL DB
   shell: /vagrant/xopos/ansible/roles/dev/files/create_postgresql_db_cond.sh
+  register: db_creation_result
+  failed_when: "db_creation_result.rc != 100 and db_creation_result.rc != 200"
+  changed_when: "db_creation_result.rc == 100"
 
