@@ -2,5 +2,5 @@
 ---
 - name: Install pip3 requirements
   pip:
-    requirements: /vagrant/ansible/requirements.txt
+    requirements: /vagrant/xopos/ansible/requirements.txt
     executable: pip3
