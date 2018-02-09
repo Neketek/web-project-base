@@ -7,9 +7,10 @@
 # Developer:   ddnomad
 # Version:     1.0.2
 ---
-# what box and what configuration version?
-base_box: debian/stretch64
-vc_version: 2
+vagrant:
+  base_box: debian/stretch64
+  vc_version: 2
+  plugins: [ 'vagrant-vbguest' ]
 
 # Virtualbox properties
 virtualbox:

@@ -14,13 +14,15 @@ require 'yaml'
 
 # Load configuration file and sub-sections
 VCONF = YAML.load_file('./vagrant.yml').freeze
+V_PROPS = VCONF['vagrant'].freeze
 VB_PROPS = VCONF['virtualbox'].freeze
 ANS_PROPS = VCONF['ansible'].freeze
 EXE_ON_SSH_PROPS = VCONF['ssh'].freeze
 
 # Generic properties
-BASE_BOX = VCONF['base_box'].freeze
-VC_VERSION = VCONF['vc_version'].freeze
+BASE_BOX = V_PROPS['base_box'].freeze
+VC_VERSION = V_PROPS['vc_version'].freeze
+PLUGINS = V_PROPS['plugins'].freeze
 
 # Virtualbox properties
 VB_NAME = VB_PROPS['name'].freeze
@@ -41,6 +43,19 @@ EXEC_CMDS = EXE_ON_SSH_PROPS['cmds'].freeze
 
 # Ports to forward
 FORW_PORTS = VCONF['forward'].freeze
+
+# Install missing Vagrant plugins
+pt_install = PLUGINS.select {
+  |plugin| not Vagrant.has_plugin? plugin
+}.join(' ')
+if not pt_install.empty?
+  if system "vagrant plugin install #{pt_install}"
+    exec "vagrant #{ARGV.join(' ')}"
+  else
+    abort "Installation of one or more plugins has failed. Aborting."
+  end
+end
+
 
 # Actual Vagrant configuration block
 Vagrant.configure(VC_VERSION) do |config|
