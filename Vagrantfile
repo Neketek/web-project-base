@@ -29,17 +29,15 @@ VB_CAP = VB_PROPS['cpu_cap'].freeze
 VB_RAM = VB_PROPS['ram'].freeze
 
 # Ansible properties
-ANS_BP = ANS_PROPS['base_path'].freeze
 ANS_CM = ANS_PROPS['compat_mode'].freeze
+ANS_IM = ANS_PROPS['install_mode'].freeze
+ANS_BP = ANS_PROPS['base_path'].freeze
 ANS_PB = ANS_PROPS['playbook'].freeze
 ANS_CFG = ANS_PROPS['config'].freeze
 
 # On SSH execution parameters
 EXEC_PATH = EXE_ON_SSH_PROPS['path'].freeze
 EXEC_CMDS = EXE_ON_SSH_PROPS['cmds'].freeze
-
-# On call commands to execute
-ON_CALL_CMDS = VCONF['exec'].freeze
 
 # Ports to forward
 FORW_PORTS = VCONF['forward'].freeze
@@ -57,14 +55,6 @@ Vagrant.configure(VC_VERSION) do |config|
     vb.customize ['modifyvm', :id, '--cpuexecutioncap', VB_CAP]
   end
 
-  # Provision the guest with Ansible
-  config.vm.provision 'ansible_local' do |ansible|
-    ansible.compatibility_mode = ANS_CM
-    ansible.provisioning_path = ANS_BP
-    ansible.playbook = ANS_PB
-    ansible.config_file = ANS_CFG
-  end
-
   # Taking care of session environment modification
   exec_cmds = "echo -n > #{EXEC_PATH}\n"
   EXEC_CMDS.each do |cmd|
@@ -77,8 +67,12 @@ Vagrant.configure(VC_VERSION) do |config|
     config.vm.network 'forwarded_port', guest: guest_port, host: host_port
   end
 
-  # On call commands execution
-  ON_CALL_CMDS.each do |cmd|
-    `#{cmd}`
+  # Provision the guest with Ansible
+  config.vm.provision 'ansible_local' do |ansible|
+    ansible.compatibility_mode = ANS_CM
+    ansible.install_mode = ANS_IM
+    ansible.provisioning_path = ANS_BP
+    ansible.playbook = ANS_PB
+    ansible.config_file = ANS_CFG
   end
 end

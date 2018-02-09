@@ -35,6 +35,26 @@ MODULES
 EOF
 )"
 
+###############################################################
+# Print help message of a master script and exit if requested
+#
+# Arguments:
+#   $1 [optional] - exit code if exit is necessary
+#
+# Return:
+#   None
+#
+# Terminates:
+#   Yes
+###############################################################
+function print_help {
+    local exit
+    exit=false
+    if [[ "$#" -eq 1 ]]; then
+        exit="$1"
+    fi
+    __print 'PLAIN' "${exit}" "${ROOT_MSG_HELP}"
+}
 
 ###
 # Import subcommands
@@ -57,11 +77,9 @@ function import_subs {
 ##########################################################
 function resolver {
     case "$1" in
-        -h | --help ) __print 'PLAIN' false "${ROOT_MSG_HELP}" ;;
+        -h | --help ) print_help 0 ;;
         -c | --no-color ) MESSENGER_OUTPUT_COLOR=false ;;
-        # TODO: create print help function that exits with a specified exit
-        # code
-        -* ) print_error "${ROOT_MSG_ERR_NOPT}$1" && resolver -h ;;
+        -* ) print_error "${ROOT_MSG_ERR_NOPT}$1" && print_help 1 ;;
     esac
 }
 
@@ -69,7 +87,7 @@ function resolver {
 ##### MAIN FLOW #####
 if [[ "$#" -lt 1 ]]; then
     print_error "${ROOT_MSG_ERR_UNSUF_ARGS}0"
-    resolver '-h'
+    print_help 1
 fi
 import_subs
 resolver "$@"

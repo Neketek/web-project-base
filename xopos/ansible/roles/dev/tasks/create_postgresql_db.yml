@@ -1,0 +1,3 @@
+# vi: set ft=yaml sw=2 :
+- name: Create PostgreSQL DB
+  raw: sudo -u postgres bash -c 'psql postgres -c "CREATE DATABASE server_primary;"'

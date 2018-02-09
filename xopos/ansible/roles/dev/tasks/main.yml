@@ -9,3 +9,5 @@
     - install_pip3.yml
     - install_python3_requirements.yml
     - install_node.yml
+    - install_postgresql.yml
+    - create_postgresql_db.yml
