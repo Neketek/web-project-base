@@ -81,7 +81,7 @@ var PROD_CONFIG = {};
 
 var DEV_LANDING_CONFIG = {
   entry:{
-    landing:"./js/dev-landing.jsx"
+    landing:"./js/dev/neketek.jsx"
   },
   output:{
     path:SERVER_STATIC_JS_FOLDER,
