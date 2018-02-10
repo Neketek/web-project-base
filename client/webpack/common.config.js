@@ -3,6 +3,9 @@ var path = require("path");
 function CommonConfig(dirname){
 
   var obj = {};
+
+  obj.DEV_SERVER_PUBLIC_PATH = "0.0.0.0:9000/static/js/";
+
   obj.CLIENT_ROOT = path.join(dirname,"..");
   obj.CLIENT_SOURCE_ROOT = path.join(obj.CLIENT_ROOT,"src");
   obj.CLIENT_CSS_ROOT = path.join(obj.CLIENT_SOURCE_ROOT,"css");
@@ -34,6 +37,7 @@ function CommonConfig(dirname){
 
   obj.createResolve=function(){
     return {
+      extensions: ['.js', '.jsx','.scss','.css'],
       alias:{
         css:obj.CLIENT_CSS_ROOT+"/",
         modules:path.join(obj.CLIENT_JS_ROOT,"modules")+"/"
@@ -41,16 +45,27 @@ function CommonConfig(dirname){
     }
   }
 
-  obj.createEntryOutput=function(entryName,entryPath,entryRoot){
+  obj.createEntryOutput=function(entryName,entryPath,entryRoot,hot){
 
     var entryConfig = {};
 
     entryConfig[entryName]=path.join(entryRoot,entryPath);
+    if(hot){
+      entryConfig[entryName]=[
+        // "babel-polyfill",
+        "react-hot-loader/patch",
+        "webpack-dev-server/client?http://localhost:9000",
+        "webpack/hot/only-dev-server",
+        entryConfig[entryName]
+      ]
+    }
+
 
     return {
       // context:entryRoot+"/",
       entry:entryConfig,
       output:{
+        publicPath:"http://localhost:9000/static/js/",
         path:obj.SERVER_STATIC_JS_FOLDER,
         filename:"[name].min.js"
       }
