@@ -37,7 +37,7 @@ def index():
 
 @app.route("/dev/")
 def dev_index():
-    return render_template('dev/app/neketek.html')
+    return render_template('dev/app.html')
 
 if __name__ == '__main__':
 

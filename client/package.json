@@ -4,9 +4,8 @@
   "description": "arachnid42 base app",
   "main": "js/index.jsx",
   "scripts": {
-    "dev": "webpack-dev-server --open --config 'webpack/dev.config.js' --env.entry app --env.path 'neketek.jsx'",
-    "dev-static": "webpack --config webpack/dev.config.js --env.entry app --env.path neketek.jsx",
-    "prodjs": "echo \"Error: no prodjs specified\" && exit 1"
+    "dev": "webpack-dev-server --env.entry app --env.path 'neketek.jsx'",
+    "prod": "webpack --env.production --env.entry app --env.path app.jsx"
   },
   "author": "arachnid42 team",
   "license": "ISC",

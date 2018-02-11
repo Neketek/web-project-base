@@ -1,8 +1,7 @@
-import 'css/index.scss';
 import React from "react";
 import ReactDOM from "react-dom";
 import { AppContainer } from 'react-hot-loader';
-import App from 'modules/main/app';
+import App from 'modules/app/index';
 
 const state = {value:"ZALUPA"};
 const onChange = value=>{
@@ -24,8 +23,8 @@ const renderApp=Component=>{
 renderApp(App);
 
 if(module.hot) {
-  module.hot.accept('modules/main/app', () => {
-    const NextApp = require('modules/main/app').default;
+  module.hot.accept('modules/app/index', () => {
+    const NextApp = require('modules/app/index').default;
     renderApp(NextApp);
   })
 }
