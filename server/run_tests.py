@@ -2,9 +2,9 @@
 # for i in range(0,10):
 #     print(requests.get('http://localhost:8081'))
 
-# from modules.models import sql
-#
-# sql.BaseClass.metadata.create_all(sql.engine)
+from modules.models import sql
+
+sql.BaseClass.metadata.create_all(sql.engine)
 
 
 # import re

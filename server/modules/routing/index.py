@@ -1,4 +1,5 @@
 from flask import Blueprint,render_template,redirect,url_for,current_app
+from modules.routing.utils import request
 import uuid
 
 blueprint = Blueprint("index",__name__)
@@ -13,6 +14,7 @@ def landing():
         return render_template('landing.html',cache_id=CACHE_ID)
 
 ##TODO:I need to add login management
+@request.sql_session
 @blueprint.route("/app",methods=['GET'])
 def app():
     if current_app.config['DEV']:
