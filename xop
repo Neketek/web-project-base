@@ -5,15 +5,15 @@
 # Developer:   ddnomad
 # Version:     0.0.1
 set -eu -o pipefail
-source ./xopos/bash/utils/messenger.util
-# NotImplementedError
-print_error 'Error: work in progress functionality'
-print_error_and_exit 1 'This script is not ready for a prime time (yet)'
-# -----------------------------------------------------------------------
+source ./xopos/bash/utils/message.util
+source ./xopos/bash/utils/array.util
 
 readonly ROOT_INFO_NAME="$(basename "$0")"
 readonly ROOT_INFO_USER="$(who | cut -f1 -d ' ')"
 readonly ROOT_INFO_DISTRO="$(grep -x "ID=.*" </etc/os-release | cut -f2 -d '=')"
+readonly ROOT_INFO_SUBS_BDIR=./xopos/bash/subs/
+
+ROOT_INFO_SUBS=()  # to be filled in import_subs()
 
 readonly ROOT_MSG_ERR_UNSUF_ARGS='Error: unsufficient number of arguments: '
 readonly ROOT_MSG_ERR_NOPT='Error: unknown option: '
@@ -39,6 +39,7 @@ MODULES
 EOF
 )"
 
+
 ###############################################################
 # Print help message of a master script and exit if requested
 #
@@ -60,12 +61,14 @@ function print_help {
     __print 'PLAIN' "${exit}" "${ROOT_MSG_HELP}"
 }
 
+
 ###
 # Import subcommands
 ####
 function import_subs {
     true
 }
+
 
 ##########################################################
 # Resolve arguments and pass control flow to subcommands
@@ -80,19 +83,19 @@ function import_subs {
 #   Yes
 ##########################################################
 function resolver {
+    if [[ "$#" -lt 1 ]]; then
+        print_error "${ROOT_MSG_ERR_UNSUF_ARGS}0"
+        print_help 1
+    fi
     case "$1" in
         -h | --help ) print_help 0 ;;
-        -c | --no-color ) MESSENGER_OUTPUT_COLOR=false ;;
-        -e | --no-stderr ) MESSENGER_OUTPUT_NOSTDERR=true ;;
+        -c | --no-color ) MESSAGE_OUTPUT_COLOR=false ;;
+        -e | --no-stderr ) MESSAGE_OUTPUT_NOSTDERR=true ;;
         -* ) print_error "${ROOT_MSG_ERR_NOPT}$1" && print_help 1 ;;
     esac
 }
 
 
 ##### MAIN FLOW #####
-if [[ "$#" -lt 1 ]]; then
-    print_error "${ROOT_MSG_ERR_UNSUF_ARGS}0"
-    print_help 1
-fi
 import_subs
 resolver "$@"

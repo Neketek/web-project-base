@@ -1,0 +1,54 @@
+# vi: set ft=sh sw=4 :
+####################################################
+# Title:         array.util                        #
+# Description:   Checks connected with bash arrays #
+# Developer:     ddnomad                           #
+# Version:       1.0.0                             #
+####################################################
+set -eu -o pipefail
+
+# Gather information about this module
+readonly ARRAY_INFO_NAME="$(basename "${BASH_SOURCE[0]}")"
+readonly ARRAY_INFO_PDIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+readonly ARRAY_INFO_PWD="$(pwd)"
+
+# Internal message templates
+readonly ARRAY_OUTPUT_MSG_ERR_PREF_INT='[-] Internal error: '
+readonly ARRAY_OUTPUT_MSG_ERR_SUFF_TFA='too few arguments: '
+
+######################################################
+# Check whether a specific value exists in an array
+#
+# Arguments:
+#   $1 - value to search for
+#   $2 - array to search in
+#
+# Return:
+#   0 - array contains the value
+#   1 - otherwise
+#
+# Terminates:
+#   Yes
+######################################################
+function in_array {
+    if [[ "$#" -lt 2 ]]; then
+        local msg
+        msg="${ARRAY_OUTPUT_MSG_ERR_PREF_INT}"
+        msg="${msg}${ARRAY_OUTPUT_MSG_ERR_SUFF_TFA}$#"
+        echo "${msg}"
+        exit 1
+    fi
+
+    local val
+    val="$1"
+    shift
+
+    for item in "$@"; do
+        if [[ "${val}" == "${item}" ]]; then
+            return 0
+        fi
+        continue
+    done
+
+    return 1
+}

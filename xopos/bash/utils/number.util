@@ -1,0 +1,41 @@
+# vi: set ft=sh sw=4 :
+########################################################################
+# Title:       number.util                                             #
+# Description: Util module that exposes some numbers related functions #
+# Developer:   ddnomad                                                 #
+# Version:     0.0.2                                                   #
+########################################################################
+set -eu -o pipefail
+
+# Gather information about this module
+readonly NUMBER_INFO_NAME="$(basename "${BASH_SOURCE[0]}")"
+readonly NUMBER_INFO_PDIR="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+readonly NUMBER_INFO_PWD="$(pwd)"
+
+# Internal message templates
+readonly NUMBER_OUTPUT_MSG_ERR_PREF_INT='[-] Internal error: '
+readonly NUMBER_OUTPUT_MSG_ERR_SUFF_WNA='wrong number of arguments: '
+
+###########################################
+# Check whether input is a natural number
+#
+# Arguments:
+#   $1 - string to check
+#
+# Return:
+#   0 - is a natural number
+#   1 - otherwise
+#
+# Terminates:
+#   No
+###########################################
+function is_natural_number {
+    if [[ "$#" -ne 1 ]]; then
+        local msg
+        msg="${NUMBER_OUTPUT_MSG_ERR_PREF_INT}"
+        msg="${msg}${NUMBER_OUTPUT_MSG_ERR_SUFF_WNA}$#"
+        echo "${msg}"
+        exit 1
+    fi
+    if [[ "$1" =~ ^[0-9]+$ ]]; then return 0; else return 1; fi
+}
