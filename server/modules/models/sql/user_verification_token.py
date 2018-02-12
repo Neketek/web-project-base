@@ -37,4 +37,4 @@ class UserPhoneVerificationToken(UserVerificationTokenMixin,BaseClass):
 
 class UserPasswordResetToken(UserVerificationTokenMixin,BaseClass):
 
-    user = relationship("User",back_populates="phone_verification_token")
+    user = relationship("User",back_populates="password_reset_token")
