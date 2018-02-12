@@ -1,33 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { AppContainer } from 'react-hot-loader';
-import App from 'modules/app/index';
-
-const state = {value:"ZALUPA"};
-const onChange = value=>{
-  state.value=value;
-  console.log(state);
-
-};
-
-const renderApp=Component=>{
-  return ReactDOM.render(
-    <AppContainer>
-      <Component onChange={onChange} value={state.value}/>
-    </AppContainer>,
-    document.querySelector("#root")
-  );
-}
+import {render} from "./hot-reload";
+import App from 'modules/app/index'; // app entry component
 
 
-renderApp(App);
+render(App,"#root"); // initial render
 
-if(module.hot) {
+if(module.hot){
+  // update app using HMR (hot module reloading)
   module.hot.accept('modules/app/index', () => {
     const NextApp = require('modules/app/index').default;
-    renderApp(NextApp);
+    render(NextApp,"#root");
   })
 }
-// if (module.hot){
-//   module.hot.accept();
-// }

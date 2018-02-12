@@ -18,12 +18,17 @@ class App extends React.Component{
   render(){
     return (
       <div>
-        ZAKA
-        <input type="text" onChange={this.onChange} value={this.state.text}></input>
+        LALA:{this.state.text}
+        <input type="text" onChange={this.onChange} value={this.state.text+" "}></input>
       </div>
     );
   }
 }
 
+
+App.defaultProps = {
+  onChange:(value)=>{console.log(value)},
+  value:""
+}
 
 export default App;
