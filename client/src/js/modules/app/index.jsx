@@ -18,8 +18,10 @@ class App extends React.Component{
   render(){
     return (
       <div>
-        LALA:{this.state.text}
-        <input type="text" onChange={this.onChange} value={this.state.text+" "}></input>
+        ZALUPA ETO:{this.state.text}
+        <div>
+          <input type="text" onChange={this.onChange} value={this.state.text}></input>
+        </div>
       </div>
     );
   }

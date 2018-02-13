@@ -36,6 +36,13 @@ class Config {
     }
   }
 
+  getPolyfils(){
+    return [
+      "babel-polyfill",
+      "fetch-polyfill"
+    ]
+  }
+
   getProccessBooleanParameter(name) {
     return process.argv.indexOf(name) != -1;
   }
@@ -64,7 +71,7 @@ class Config {
       const entryConfig = {};
 
       entryConfig[entryName] = [
-        "babel-polyfill",
+        ...this.getPolyfils(),
         "react-hot-loader/patch",
         "webpack-dev-server/client?" + this.DEV_SERVER_PATH,
         "webpack/hot/only-dev-server",
@@ -86,7 +93,7 @@ class Config {
       const entryConfig = {};
 
       entryConfig[entryName] = [
-        "babel-polyfill",
+        ...this.getPolyfils(),
         path.join(this.CLIENT_PROD_ENTRIES_ROOT, entryPath)
       ];
 
