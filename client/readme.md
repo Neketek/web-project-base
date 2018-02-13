@@ -11,9 +11,9 @@ Webpack can form bundle file as a chain of entry files. We are using this to add
 
   1. entries - entry files for client applications:
 
-    1. dev - development entries which developers can use to separate their working environments which is quite useful for making an experiments or working on application modules which developers can import directly to entry files. Developers allowed to create entries for them with following naming convention. ```<developer>-<(optional)application>-<(optional)feature>.jsx```. Ex. **neketek-landing** or **neketek-landing-login**.
+      1. dev - development entries which developers can use to separate their working environments which is quite useful for making an experiments or working on application modules which developers can import directly to entry files. Developers allowed to create entries for them with following naming convention. ```<developer>-<(optional)application>-<(optional)feature>.jsx```. Ex. **neketek-landing** or **neketek-landing-login**.
 
-    2. prod - production entries which are used to build minified bundles. One entry per application.
+      2. prod - production entries which are used to build minified bundles. One entry per application.
 
   2. src - CSS and JS source files.
   3. webpack - webpack configuration.
@@ -28,7 +28,7 @@ Webpack can form bundle file as a chain of entry files. We are using this to add
   5. Create separate terminal and go to ```**project**/server``` then run ```python3 server.py```.
   6. Now you can open access your build from a browser on URL which server defines. Standard index URL list:
 
-    1. ```--env.entry app``` - ```http:\\localhost:8080\app```
-    2. ```--env.entry landing``` - ```http:\\localhost:8080```
+      1. ```--env.entry app``` - ```http:\\localhost:8080\app```
+      2. ```--env.entry landing``` - ```http:\\localhost:8080```
 
   7. Congratulations! Now you can write javascript and scss with hot reloading.  
