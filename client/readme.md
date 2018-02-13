@@ -11,7 +11,7 @@ Webpack can form bundle file as a chain of entry files. We are using this to add
 
   1. entries - entry files for client applications:
 
-      1. dev - development entries which developers can use to separate their working environments which is quite useful for making an experiments or working on application modules which developers can import directly to entry files. Developers allowed to create entries for them with following naming convention. ```<developer>-<(optional)application>-<(optional)feature>.jsx```. Ex. **neketek-landing** or **neketek-landing-login**.
+      1. dev - development entries which developers can use to separate their working environments which is quite useful for making the experiments or working on application modules which developers can import directly to entry files. Developers allowed to create entries for them with following naming convention. ```<developer>-<(optional)application>-<(optional)feature>.jsx```. Ex. **neketek-landing** or **neketek-landing-login**.
 
       2. prod - production entries which are used to build minified bundles. One entry per application.
 
