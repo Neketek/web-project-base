@@ -1,0 +1,23 @@
+{
+  "env":{
+
+    "production":{
+      "presets": [
+        "env",
+        "react"
+      ]
+    },
+
+    "development":{
+      "presets": [
+        ["env", {"modules": false}],
+        "react"
+      ],
+      "plugins": [
+        "react-hot-loader/babel"
+      ]
+    }
+
+  }
+
+}

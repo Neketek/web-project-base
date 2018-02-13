@@ -1,0 +1,38 @@
+{
+  "name": "app",
+  "version": "0.0.1",
+  "description": "arachnid42 base app",
+  "main": "js/index.jsx",
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "dev-neketek-app":"webpack-dev-server --env.entry app --env.path neketek.jsx",
+    "prod-app": "webpack --env.production --env.entry app --env.path app.jsx",
+    "prod-landing":"webpack --env.production --env.entry landing --env.path landing.jsx"
+  },
+  "author": "arachnid42 team",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.9",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "node-sass": "^4.7.2",
+    "react-hot-loader": "^3.1.3",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.20.1",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "fetch-polyfill": "^0.8.2",
+    "lodash": "^4.17.5",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  }
+}

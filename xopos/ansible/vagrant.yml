@@ -1,0 +1,12 @@
+# vi: set ft=yaml sw=2 :
+---
+- name: Configure Vagrant development environment
+  hosts: all
+
+  remote_user: vagrant
+  become: true
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - dev

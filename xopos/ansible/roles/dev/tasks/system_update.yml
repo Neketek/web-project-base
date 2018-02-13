@@ -1,0 +1,10 @@
+# vi: set ft=yaml sw=2 :
+---
+- name: Update apt-cache of Debian guest
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Full update Debian guest
+  apt:
+    upgrade: full

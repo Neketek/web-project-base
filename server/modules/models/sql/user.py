@@ -15,3 +15,7 @@ class User(Entity,BaseClass):
 
     email = relationship("Email",back_populates="users")
     phone=relationship("Phone",back_populates="users")
+
+    email_verification_token = relationship("UserEmailVerificationToken",back_populates="user")
+    phone_verification_token = relationship("UserPhoneVerificationToken",back_populates="user")
+    password_reset_token = relationship("UserPasswordResetToken",back_populates="user")

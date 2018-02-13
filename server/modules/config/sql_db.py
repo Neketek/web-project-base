@@ -1,4 +1,4 @@
-DATABASE_URI = "mysql://root:root@localhost/monarc"
+# DATABASE_URI = "mysql://root:root@localhost/monarc"
 ECHO = True
 CONNECTIONS_POOL_SIZE = 5
 CONNECTIONS_MAX_OVERFLOW_LIMIT = 10
@@ -9,3 +9,10 @@ CONNECTION_TIMEOUT_SECONDS = 30 # time which connections waits for db response
 CONNECTION_POOL_RECYCLE_SECONDS = 3600 # time after which inactive connection will be closed
 
 ENCODING = 'utf-8'
+
+DRIVER = "postgresql"
+USER = "postgres"
+PASSWORD = "postgres"
+HOST = "localhost"
+PORT = "5432"
+DATABASE = "server_primary"

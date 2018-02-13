@@ -1,0 +1,19 @@
+# vi: set ft=yaml sw=2 :
+---
+- name: Add PostgreSQL repository to apt
+  copy:
+    content: 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main'
+    dest: '/etc/apt/sources.list.d/pgdg.list'
+    owner: root
+    mode: 0644
+
+- name: Import PostgreSQL repository signing key
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: Install latest stable PostgreSQL
+  apt:
+    name: postgresql
+    state: latest
+    update_cache: yes

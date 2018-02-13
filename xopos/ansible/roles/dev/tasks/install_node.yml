@@ -1,0 +1,16 @@
+# vi: set ft=yaml sw=2 :
+---
+- name: Check Node.js is installed
+  shell: node --version
+  register: node_version_query
+  failed_when: False
+  changed_when: False
+
+- name: Adding repository for installing Node.js
+  raw: curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+  when: node_version_query.rc != 0
+
+- name: Install Node.js on Ubuntu 16.04
+  apt:
+      name: nodejs
+      state: latest
