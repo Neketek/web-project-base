@@ -44,7 +44,7 @@ class App extends React.Component{
       <MuiThemeProvider theme={muiTheme}>
         <Reboot/>
         <Grid container spacing={24} justify="center">
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={6}>
               <Grid item xs={12}>
                 <TextField fullWidth label="First Name" name="value"></TextField>
               </Grid>
@@ -56,10 +56,13 @@ class App extends React.Component{
                   value={this.state.age}
                   onChange={this.handleChange}
                   inputProps={{
-                    name: 'age',
-                    value:10
+                    name: 'Gender',
+                    value:null,
+                    label:"Gender"
                   }}
                 >
+                  <MenuItem value={null}></MenuItem>
+                  <MenuItem value={10}>Male</MenuItem>
                   <MenuItem value={10}>Male</MenuItem>
                   <MenuItem value={20}>Female</MenuItem>
                   <MenuItem value={30}>Other</MenuItem>
