@@ -1,11 +1,12 @@
-@import './general/colors.scss';
+body{
+  background-color: white;
+}
 
-$theme-font:    verdana, sans-serif;
+.paper{
+  width:auto;
+  height: 100px;
+}
 
-body {
-  font: $theme-font;
-  background-color: $themeColor-Light;
-  h1, h2 {
-      color: $themeColor-Dark
-  }
+#root{
+  margin: 10px;
 }

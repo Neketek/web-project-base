@@ -4,6 +4,7 @@
     "production":{
       "presets": [
         "env",
+        "stage-1",
         "react"
       ]
     },
@@ -11,6 +12,7 @@
     "development":{
       "presets": [
         ["env", {"modules": false}],
+        "stage-1",
         "react"
       ],
       "plugins": [
