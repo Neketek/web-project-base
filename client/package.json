@@ -5,9 +5,10 @@
   "main": "js/index.jsx",
   "scripts": {
     "dev": "webpack-dev-server",
-    "dev-neketek-app":"webpack-dev-server --env.entry app --env.path neketek.jsx",
+    "dev-neketek-app": "webpack-dev-server --env.entry app --env.path neketek.jsx",
+    "dev-jerichofs-app": "webpack-dev-server --env.entry app --env.path jerichofs.jsx",
     "prod-app": "webpack --env.production --env.entry app --env.path app.jsx",
-    "prod-landing":"webpack --env.production --env.entry landing --env.path landing.jsx"
+    "prod-landing": "webpack --env.production --env.entry landing --env.path landing.jsx"
   },
   "author": "arachnid42 team",
   "license": "ISC",
