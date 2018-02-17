@@ -35,7 +35,8 @@ OPTIONS
     -i     --install-deps   Install host dependencies
 
 MODULES
-    TODO: append subcommands help messages
+    TODO: append subcommands list
+    TODO: to see sub help execute ${ROOT_INFO_NAME} <sub> -h
 EOF
 )"
 
@@ -67,6 +68,8 @@ function print_help {
 ####
 function import_subs {
     true
+    # ./xopos/bash/subs/softinstall
+    # ...
 }
 
 
@@ -99,3 +102,7 @@ function resolver {
 ##### MAIN FLOW #####
 import_subs
 resolver "$@"
+# determine what sub to use and call it
+# <path>/softinst -ce
+# print_warning "Nothing to do!"
+# exit 1

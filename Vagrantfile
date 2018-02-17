@@ -13,6 +13,9 @@
 require 'yaml'
 
 # Load configuration file and sub-sections
+######################################################
+# TODO: import config file getting its absolute path
+######################################################
 VCONF = YAML.load_file('./vagrant.yml').freeze
 V_PROPS = VCONF['vagrant'].freeze
 VB_PROPS = VCONF['virtualbox'].freeze

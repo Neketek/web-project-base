@@ -26,6 +26,8 @@ readonly MESSAGE_OUTPUT_DECOR_OK='[+] '
 readonly MESSAGE_OUTPUT_DECOR_INPUT='[>] '
 
 # Output options (can be toggled)
+# TODO: add intendation level support
+# MESSAGE_OUTPUT_INTEND_LEVEL=0
 MESSAGE_OUTPUT_COLOR=true
 MESSAGE_OUTPUT_NOSTDERR=false
 
@@ -56,7 +58,7 @@ readonly MESSAGE_OUTPUT_MSG_ERR_SUFF_TFA='too few arguments: '
 #                    message type.
 #
 # Return:
-#   None 
+#   None
 # Terminates:
 #   Yes
 #######################################################################
@@ -105,6 +107,9 @@ function print_msg {
                 ;;
         esac
         if "${colorful}"; then
+            # local intend
+            # intend='  ' * MESSAGE_OUTPUT_INTEND_LEVEL
+            # msg="${intend}${color}...
             msg="${color}${msg}${MESSAGE_OUTPUT_DECOR_COLOR_RESET}"
         fi
         if ( "${to_stderr}" && ! "${stdout_only}" ); then echo -e "${msg}" >&2
@@ -236,3 +241,11 @@ function print_error {
 function print_error_and_exit {
     __print 'ERR' "$@"
 }
+
+###
+# TODO: implement
+####
+#
+# function set_intend {
+#  NOTE: do something like "set_intend =10 || +2 || -2
+#}
