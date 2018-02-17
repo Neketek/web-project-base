@@ -4,8 +4,10 @@
   "description": "arachnid42 base app",
   "main": "js/index.jsx",
   "scripts": {
-    "dev": "webpack-dev-server --env.entry app --env.path 'neketek.jsx'",
-    "prod": "webpack --env.production --env.entry app --env.path app.jsx"
+    "dev": "webpack-dev-server",
+    "dev-neketek-app":"webpack-dev-server --env.entry app --env.path neketek.jsx",
+    "prod-app": "webpack --env.production --env.entry app --env.path app.jsx",
+    "prod-landing":"webpack --env.production --env.entry landing --env.path landing.jsx"
   },
   "author": "arachnid42 team",
   "license": "ISC",
