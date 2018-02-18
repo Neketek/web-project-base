@@ -2,6 +2,6 @@ import React from 'react';
 import BaseInput from 'modules/common/base/input/base';
 
 
-class TextInput extends BaseInput{}
+class FileInput extends BaseInput{}
 
-export default TextInput;
+export default FileInput;

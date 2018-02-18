@@ -14,6 +14,7 @@ import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormLabel, FormControl, FormControlLabel, FormHelperText } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
+import {Text} from 'modules/common/input';
 
 const muiTheme = createMuiTheme({
     palette: createPalette({
@@ -33,8 +34,8 @@ class App extends React.Component{
     this.state = {text:""};
   }
 
-  onChange(event){
-    console.log(event.target.value);
+  onChange=(event)=>{
+    console.log(event);
     // this.setState({text:event.value});
   }
 
@@ -46,27 +47,13 @@ class App extends React.Component{
         <Grid container spacing={24} justify="center">
           <Grid item xs={12} sm={6}>
               <Grid item xs={12}>
-                <TextField fullWidth label="First Name" name="value"></TextField>
+                <Text required fullWidth label="Login" name="login" onChange={this.onChange}></Text>
               </Grid>
               <Grid item xs={12}>
-                <TextField fullWidth label="Last Name" name="value"></TextField>
+                <Text fullWidth type="password" label="Password" name="password" onChange={this.onChange}></Text>
               </Grid>
               <Grid item xs={12}>
-                <Select
-                  value={this.state.age}
-                  onChange={this.handleChange}
-                  inputProps={{
-                    name: 'Gender',
-                    value:null,
-                    label:"Gender"
-                  }}
-                >
-                  <MenuItem value={null}></MenuItem>
-                  <MenuItem value={10}>Male</MenuItem>
-                  <MenuItem value={10}>Male</MenuItem>
-                  <MenuItem value={20}>Female</MenuItem>
-                  <MenuItem value={30}>Other</MenuItem>
-                </Select>
+                <Text multiline rows="10" fullWidth label="Note" name="note" onChange={this.onChange}></Text>
               </Grid>
           </Grid>
         </Grid>

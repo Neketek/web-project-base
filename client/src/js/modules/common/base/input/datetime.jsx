@@ -3,14 +3,14 @@ import BaseInput from 'modules/common/base/input/base';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-class DateInput extends BaseInput{}
+class DateTimeInput extends BaseInput{}
 
-DateInput.updateDefaultProps({
+DateTimeInput.updateDefaultProps({
   value:moment()
 });
 
-DateInput.updatePropTypes({
+DateTimeInput.updatePropTypes({
   value:PropTypes.oneOfType([Date,PropTypes.string,moment]),
 });
 
-export default DateInput;
+export default DateTimeInput;
