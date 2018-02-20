@@ -12,9 +12,9 @@ import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormLabel, FormControl, FormControlLabel, FormHelperText } from 'material-ui/Form';
-// import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
-import {Text,Date,DateTime,Time,Select} from 'modules/common/input';
+// import {Text,Date,DateTime,Time,Select} from 'modules/common/input';
+import LoginForm from 'modules/common/form/login';
 
 
 const muiTheme = createMuiTheme({
@@ -44,34 +44,7 @@ class App extends React.Component{
 
       <MuiThemeProvider theme={muiTheme}>
         <Reboot/>
-        <Grid container spacing={24} justify="center">
-          <Grid item xs={12} sm={6}>
-              <Grid item xs={12}>
-                <Text required fullWidth label="Login" name="login" onChange={this.onChange}></Text>
-              </Grid>
-              <Grid item xs={12}>
-                <Text fullWidth type="password" label="Password" name="password" onChange={this.onChange}></Text>
-              </Grid>
-              <Grid item xs={12}>
-                <Text multiline rows="10" fullWidth label="Note" name="note" onChange={this.onChange}></Text>
-              </Grid>
-              <Grid item xs={12}>
-                <Date fullWidth label="Date" name="date" onChange={this.onChange}></Date>
-              </Grid>
-              <Grid item xs={12}>
-                <DateTime fullWidth label="DateTime" name="datetime" onChange={this.onChange}></DateTime>
-              </Grid>
-              <Grid item xs={12}>
-                <Time fullWidth label="Time" name="time" onChange={this.onChange}></Time>
-              </Grid>
-              <Grid item xs={12}>
-                <Select fullWidth label="Select" name="select" onChange={this.onChange}></Select>
-              </Grid>
-
-          </Grid>
-        </Grid>
-
-
+        <LoginForm onChange={this.onChange}></LoginForm>
       </MuiThemeProvider>
     );
   }

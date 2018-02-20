@@ -8,9 +8,10 @@ class TextInput extends Text{
     this.propagateValue(event.target.value);
   }
 
+
   render(){
     return (
-      <TextField {...this.props} value={this.state.value} onChange={this.onChange}></TextField>
+      <TextField  {...this.props} value={this.state.value} onChange={this.onChange} onBlur={this.onBlur} onFocus={this.onFocus}></TextField>
     );
   }
 

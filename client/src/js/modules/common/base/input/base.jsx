@@ -13,6 +13,14 @@ class InputBase extends Component{
   }
 
 
+  onBlur=(event)=>{
+    this.props.onBlur({name:this.props.name,focus:false});
+  }
+
+  onFocus=(event)=>{
+    this.props.onFocus({name:this.props.name,focus:true});
+  }
+
   propagateValue=(value)=>{
     this.props.onChange({name:this.props.name,value});
     this.setState({value});
@@ -27,6 +35,12 @@ class InputBase extends Component{
       console.warn(`Warning: Default onChange callback in [${event.name}] input!`);
       console.log(event);
     },
+    onFocus(event){
+      console.log(event);
+    },
+    onBlur(event){
+      console.log(event);
+    },
     value:null,
     name:"noname",
     label:"no label",
@@ -36,6 +50,8 @@ class InputBase extends Component{
 
   static propTypes = {
     onChange:PropTypes.func.isRequired,
+    onFocus:PropTypes.func.isRequired,
+    onBlur:PropTypes.func.isRequired,
     value:PropTypes.any,
     name:PropTypes.string.isRequired,
     disabled:PropTypes.bool.isRequired,
