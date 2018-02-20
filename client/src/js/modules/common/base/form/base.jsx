@@ -113,15 +113,32 @@ class FormBase extends Component{
   onFieldFocusChange=(event)=>{
     const {name,focus} = event;
     this.focus(name,focus);
-    this.propagateEvent(null);
+    this.setState(this.state);
+    // if we'll need to track accurate focus change propagateEvent should be used
+    // instead of setState
+    // this.propagateEvent(null);
   }
 
   renderField=(Class,props)=>{
-    return <Class value={this.value(props.name)} onChange={this.onChange} {...props} onBlur={this.onFieldFocusChange} onFocus={this.onFieldFocusChange}></Class>
+    const defaultProps = {
+      onChange:this.onChange,
+      onBlur:this.onFieldFocusChange,
+      onFocus:this.onFieldFocusChange,
+      value:this.value(props.name)
+    }
+    return <Class {...defaultProps} {...props}></Class>
   }
 
   renderForm=(Class,props)=>{
-    return <Class fireInitEvent={false} {...this.value(props.name)} onChange={this.onChange} {...props}></Class>
+    const {values,status,errors} = this.value(props.name);
+    const defaultProps = {
+      onChange:this.onChange,
+      fireInitEvent:false,
+      values,
+      status,
+      errors
+    }
+    return <Class {...defaultProps} {...props}></Class>
   }
 
   render=()=>{
