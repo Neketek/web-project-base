@@ -12,9 +12,10 @@ import Paper from 'material-ui/Paper';
 import { withStyles } from 'material-ui/styles';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormLabel, FormControl, FormControlLabel, FormHelperText } from 'material-ui/Form';
-import Select from 'material-ui/Select';
+// import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
-import {Text} from 'modules/common/input';
+import {Text,Date,DateTime,Time,Select} from 'modules/common/input';
+
 
 const muiTheme = createMuiTheme({
     palette: createPalette({
@@ -36,7 +37,6 @@ class App extends React.Component{
 
   onChange=(event)=>{
     console.log(event);
-    // this.setState({text:event.value});
   }
 
   render(){
@@ -55,6 +55,19 @@ class App extends React.Component{
               <Grid item xs={12}>
                 <Text multiline rows="10" fullWidth label="Note" name="note" onChange={this.onChange}></Text>
               </Grid>
+              <Grid item xs={12}>
+                <Date fullWidth label="Date" name="date" onChange={this.onChange}></Date>
+              </Grid>
+              <Grid item xs={12}>
+                <DateTime fullWidth label="DateTime" name="datetime" onChange={this.onChange}></DateTime>
+              </Grid>
+              <Grid item xs={12}>
+                <Time fullWidth label="Time" name="time" onChange={this.onChange}></Time>
+              </Grid>
+              <Grid item xs={12}>
+                <Select fullWidth label="Select" name="select" onChange={this.onChange}></Select>
+              </Grid>
+
           </Grid>
         </Grid>
 
@@ -69,11 +82,5 @@ App.defaultProps = {
   onChange:(value)=>{console.log(value)},
   value:""
 }
-
-// {/* <TextField floatingLabelText="Text Input" name="value"></TextField>
-// <Button color="primary" >  Primary </Button>
-// <Button variant="raised" color="primary" >  Primary </Button>
-// <DatePicker openToYearSelection disableFuture></DatePicker>
-// <TimePicker></TimePicker> */}
 
 export default App;

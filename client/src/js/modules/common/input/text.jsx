@@ -2,7 +2,7 @@ import {Text} from 'modules/common/base/input';
 import React from 'react';
 import TextField from 'material-ui/TextField';
 
-class CustomTextField extends Text{
+class TextInput extends Text{
 
   onChange=(event)=>{
     this.propagateValue(event.target.value);
@@ -10,11 +10,11 @@ class CustomTextField extends Text{
 
   render(){
     return (
-      <TextField {...this.props} onChange={this.onChange}></TextField>
+      <TextField {...this.props} value={this.state.value} onChange={this.onChange}></TextField>
     );
   }
 
 }
 
 
-export default CustomTextField;
+export default TextInput;

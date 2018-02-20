@@ -3,11 +3,11 @@ import React from 'react';
 class Component extends React.Component{
 
   static updatePropTypes(propTypes){
-    this.propTypes = Object.assign({},super.propTypes,propTypes);
+    this.propTypes = Object.assign({},this.propTypes,propTypes);
   }
 
   static updateDefaultProps(defaultProps){
-    this.propTypes = Object.assign({},super.propTypes,defaultProps);
+    this.defaultProps = Object.assign({},this.defaultProps,defaultProps);
   }
 
   static propTypes = {};

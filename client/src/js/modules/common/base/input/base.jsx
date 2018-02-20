@@ -36,7 +36,7 @@ class InputBase extends Component{
 
   static propTypes = {
     onChange:PropTypes.func.isRequired,
-    value:PropTypes.any.isRequired,
+    value:PropTypes.any,
     name:PropTypes.string.isRequired,
     disabled:PropTypes.bool.isRequired,
     label:PropTypes.oneOfType([PropTypes.string,PropTypes.node])

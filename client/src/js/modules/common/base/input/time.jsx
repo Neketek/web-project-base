@@ -3,14 +3,13 @@ import BaseInput from 'modules/common/base/input/base';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-class TimeInput extends BaseInput{}
+class TimeInput extends BaseInput{
+  static FORMAT = "HH:mm";
+}
 
-TimeInput.updateDefaultProps({
-  value:moment()
-});
 
 TimeInput.updatePropTypes({
-  value:PropTypes.oneOfType([Date,PropTypes.string,moment]),
+  value:PropTypes.instanceOf(PropTypes.string)
 });
 
 
