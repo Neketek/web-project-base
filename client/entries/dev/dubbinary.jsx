@@ -1,7 +1,6 @@
 import {render} from "./hot-reload";
 import App from 'modules/app/index'; // app entry component
 
-
 render(App,"#root"); // initial render
 
 //important part which enables hot reloading

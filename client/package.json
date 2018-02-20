@@ -17,6 +17,7 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
     "css-loader": "^0.28.9",
     "extract-text-webpack-plugin": "^3.0.2",
     "node-sass": "^4.7.2",
@@ -30,9 +31,14 @@
     "babel-polyfill": "^6.26.0",
     "fetch-polyfill": "^0.8.2",
     "lodash": "^4.17.5",
+    "material-ui": "^1.0.0-beta.33",
+    "material-ui-pickers": "^1.0.0-beta.15.1",
+    "moment": "^2.20.1",
+    "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
+    "react-select": "^2.0.0-alpha.6",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"
   }
