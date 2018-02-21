@@ -1,8 +1,14 @@
 import React from 'react';
-import {Form} from 'modules/common/base/form';
-import {Text,Date,DateTime,Time,Select} from 'modules/common/input';
+import {Form,Rule} from 'modules/common/base/form';
+import {Text,Date,DateTime,Time,Select,Button} from 'modules/common/input';
 import Grid from 'material-ui/Grid';
-import { FormControl, FormHelperText } from 'material-ui/Form';
+import {
+  FormLabel,
+  FormControl,
+  FormGroup,
+  FormControlLabel,
+  FormHelperText,
+} from 'material-ui/Form';
 
 class LoginForm extends Form{
 
@@ -10,17 +16,23 @@ class LoginForm extends Form{
     this.propagateEvent(event);
   }
 
+
+  onSubmit=()=>{
+    this.dirtyFocusOnErrors();
+    this.propagateEvent(null);
+    // this.rerender();
+  }
+
   form=(field,form)=>{
 
     const commonProps = (name)=>{
-      const error = this.hasErrors(name)&&this.dirty(name)
+      const error = this.shouldShowErrors(name)
       return {
         name,
         label:name[0].toUpperCase()+name.slice(1),
         fullWidth:true,
         required:true,
-        error,
-        errorText:error&&this.focus(name)?this.errors(name)[0]:undefined
+        error
       }
     };
 
@@ -35,47 +47,49 @@ class LoginForm extends Form{
     }
 
 
-    const error=(props)=>props.errorText?<FormHelperText>{props.errorText}</FormHelperText>:null;
+    const error=(name)=>this.shouldShowErrorsText(name)?<FormHelperText error>{this.errors(name)[0]}</FormHelperText>:null;
 
     // console.log(loginProps);
 
     const login = field(Text,loginProps);
     const password = field(Text,passwordProps);
 
+
     return (
-      <Grid container spacing={24} justify="center">
-        <Grid item xs={12} sm={6}>
-            <Grid item xs={12}>
-              {login}
-              {error(loginProps)}
-            </Grid>
-            <Grid item xs={12}>
-              {password}
-              {error(passwordProps)}
-            </Grid>
+        <Grid container justify='center' spacing={16} alignItems='center'>
+              <Grid item sm={6} xs={12}>
+                {login}
+                {error("login")}
+              </Grid>
+              <Grid item sm={6} xs={12}>
+                {password}
+                {error("password")}
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container justify='center'>
+                  <Button variant='raised' size='large' name='login' onClick={this.onSubmit}>
+                    Login
+                  </Button>
+                </Grid>
+              </Grid>
         </Grid>
-      </Grid>
     );
   }
 
-  isValid=()=>{
-    if(this.value("login").length==0){
-      this.errors('login',["Login shouldn't be empty"]);
-    }else{
-      this.resetErrors('login');
-    }
-    if(this.value('password').length==0){
-      this.errors('password',["Password shouldn't be empty"])
-    }else{
-      this.resetErrors('password');
-    }
-  }
 }
 
 LoginForm.updateDefaultProps({
   values:{
     password:"",
     login:""
+  },
+  rules:{
+    login:[
+      Rule.String.notEmpty("Login should not be empty!")
+    ],
+    password:[
+      Rule.String.notEmpty("Password should not be empty!")
+    ]
   }
 });
 

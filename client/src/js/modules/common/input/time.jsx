@@ -15,7 +15,14 @@ class TimeInput extends Time{
   }
 
   render(){
-    return <TimePicker ampm={false} {...this.props} value={this.stateValueToString()} onChange={this.onChange} format={Time.FORMAT}></TimePicker>
+
+    const override = {
+      value:this.stateValueToString(),
+      format:Time.FORMAT
+    }
+
+    return this.input(TimePicker,this.props,override);
+
   }
 
 }

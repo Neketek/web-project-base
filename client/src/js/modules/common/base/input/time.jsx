@@ -9,7 +9,7 @@ class TimeInput extends BaseInput{
 
 
 TimeInput.updatePropTypes({
-  value:PropTypes.instanceOf(PropTypes.string)
+  value:PropTypes.string
 });
 
 
