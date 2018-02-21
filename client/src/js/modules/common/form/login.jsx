@@ -29,6 +29,10 @@ class LoginForm extends Form{
       ...commonProps('login')
     };
 
+    const dateProps = {
+      ...commonProps('date')
+    };
+
     const passwordProps = {
       ...commonProps('password'),
       type:"password"
@@ -41,6 +45,7 @@ class LoginForm extends Form{
 
     const login = field(Text,loginProps);
     const password = field(Text,passwordProps);
+    const date = field(Date,dateProps);
 
     return (
       <Grid container spacing={24} justify="center">
@@ -52,6 +57,10 @@ class LoginForm extends Form{
             <Grid item xs={12}>
               {password}
               {error(passwordProps)}
+            </Grid>
+            <Grid item xs={12}>
+              {date}
+              {error(date)}
             </Grid>
         </Grid>
       </Grid>
@@ -75,7 +84,8 @@ class LoginForm extends Form{
 LoginForm.updateDefaultProps({
   values:{
     password:"",
-    login:""
+    login:"",
+    date:null
   }
 });
 

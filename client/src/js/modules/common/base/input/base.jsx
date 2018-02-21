@@ -30,6 +30,22 @@ class InputBase extends Component{
     this.state.value = this.props.value;
   }
 
+  //input render method
+  input=(Class,props,override)=>{
+    const overridingProps=Object.assign(
+      {
+        onChange:this.onChange,
+        onFocus:this.onFocus,
+        onBlur:this.onBlur,
+        value:this.state.value,
+        name:this.props.name
+      },
+      override
+    );
+    return <Class {...props} {...overridingProps}></Class>
+  }
+
+
   static defaultProps = {
     onChange(event){
       console.warn(`Warning: Default onChange callback in [${event.name}] input!`);

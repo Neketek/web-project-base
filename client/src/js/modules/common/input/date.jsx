@@ -10,9 +10,11 @@ class DateInput extends Date{
     this.propagateValue(value);
   }
 
-  render(){
-    console.log(this.state);
-    return <DatePicker {...this.props} value={this.state.value} onChange={this.onChange} format={Date.FORMAT}></DatePicker>
+  render=()=>{
+    const override = {
+      format:Date.FORMAT
+    }
+    return this.input(DatePicker,this.props,override);
   }
 
 }

@@ -37,7 +37,7 @@ const Event=(name,{values,errors,status})=>{
 
 const getterSetter=(source,name=undefined,value=undefined,def=undefined)=>{
   if(name===undefined){
-    throw Exception("Value getter didn't receive name!");
+    throw Error("Value getter didn't receive name!");
   }
   if(value===undefined){
     const targetValue = source[name];

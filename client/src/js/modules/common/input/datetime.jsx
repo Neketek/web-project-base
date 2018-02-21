@@ -10,7 +10,10 @@ class DateTimeInput extends DateTime{
   }
 
   render(){
-    return <DateTimePicker {...this.props} value={this.state.value} onChange={this.onChange} format={DateTime.FORMAT}></DateTimePicker>
+    const override = {
+      format:DateTime.FORMAT
+    }
+    return this.input(DateTimePicker,this.props,override);
   }
 
 }

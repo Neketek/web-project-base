@@ -10,9 +10,8 @@ class TextInput extends Text{
 
 
   render(){
-    return (
-      <TextField  {...this.props} value={this.state.value} onChange={this.onChange} onBlur={this.onBlur} onFocus={this.onFocus}></TextField>
-    );
+    const override = {};
+    return this.input(TextField,this.props,override);
   }
 
 }

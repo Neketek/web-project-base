@@ -8,7 +8,7 @@ class DateTimeInput extends BaseInput{
 }
 
 DateTimeInput.updatePropTypes({
-  value:PropTypes.instanceOf(PropTypes.string)
+  value:PropTypes.string
 });
 
 export default DateTimeInput;
