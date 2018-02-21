@@ -56,6 +56,16 @@ class FormBase extends Component{
     if(this.props.fireInitEvent){
       this.propagateEvent(null,false);//initial on change event which sends form snapshot to the parent component
     }
+    if(this.props.dirtyFocusOnErrors){
+      this.dirtyFocusOnErrors();
+    }
+  }
+
+  componentWillReceiveProps(props){
+    this.state = State(props);
+    if(props.dirtyFocusOnErrors){
+      this.dirtyFocusOnErrors();
+    }
   }
 
 
@@ -86,6 +96,10 @@ class FormBase extends Component{
     return getterSetter(this.state.errors,name,value,[]);
   }
 
+  valid=()=>{
+    return this.status('valid');
+  }
+
   hasErrors=(name)=>{
     return this.errors(name).length>0;
   }
@@ -106,14 +120,31 @@ class FormBase extends Component{
     return getterSetter(this.state.status.focus,name,value,false);
   }
 
+
+  // this method is designed to show erros when user tries to submit form which contains errors
+  dirtyFocusOnErrors=()=>{
+    for(const name in this.state.errors){
+      if(this.errors(name).length>0){
+        this.focus(name,true);
+        this.dirty(name,true);
+      }
+    }
+  }
+
+
+  resetFocus=()=>{
+    this.state.status.focus={};
+  }
+
   rules(){
     return this.props.rules;
   }
 
   onFieldFocusChange=(event)=>{
     const {name,focus} = event;
+    this.resetFocus();
     this.focus(name,focus);
-    this.setState(this.state);
+    this.rerender();
     // if we'll need to track accurate focus change propagateEvent should be used
     // instead of setState
     // this.propagateEvent(null);

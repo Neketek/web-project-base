@@ -10,6 +10,10 @@ class Component extends React.Component{
     this.defaultProps = Object.assign({},this.defaultProps,defaultProps);
   }
 
+  rerender=()=>{
+    this.setState(this.state);
+  }
+
   static propTypes = {};
   static defaultProps = {};
 
