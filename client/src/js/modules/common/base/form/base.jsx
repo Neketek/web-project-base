@@ -3,25 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
-const State=({values,errors,status})=>{
-
-  if(this.state===undefined){
-    this.state = {};
-  }
-
-  const defaltStatus = {
-    dirty:{},
-    focus:{},
-    valid:false
-  };
-
-  return {
-    values:Object.assign({},this.state.values,values),
-    errors:Object.assign({},this.state.errors,errors),
-    status:Object.assign(defaltStatus,this.state.status,status)
-  };
-
-}
 
 const Event=(name,{values,errors,status})=>{
   const form = true;
@@ -52,16 +33,49 @@ class FormBase extends Component{
 
   constructor(props){
     super(props);
-    this.componentWillReceiveProps(props);
+    this.state = this.State(props);
+    this.status('valid',this.isValid());
+    if(this.props.dirtyFocusOnErrors){
+      this.dirtyFocusOnErrors();
+    }
     if(this.props.fireInitEvent){
       this.propagateEvent(null,false);//initial on change event which sends form snapshot to the parent component
     }
   }
 
+
+  State=({values,errors,status})=>{
+    if(this.state===undefined){
+      this.state = {
+        values:{},
+        errors:{},
+        status:{
+          dirty:{},
+          focus:{},
+          valid:false
+        }
+      }
+    }
+    return {
+      values:Object.assign({},this.state.values,values),
+      errors:Object.assign({},this.state.errors,errors),
+      status:Object.assign({},this.state.status,status)
+    };
+
+  }
+
+
+  updateStateFromProps(props){
+    this.setState(this.State(props));
+    this.status('valid',this.isValid());
+  }
+
+
   componentWillReceiveProps(props){
-    this.state = State(props);
-    if(props.dirtyFocusOnErrors){
+    this.updateStateFromProps(props);
+    if(this.props.dirtyFocusOnErrors){
       this.dirtyFocusOnErrors();
+      this.rerender();
     }
   }
 
@@ -70,8 +84,8 @@ class FormBase extends Component{
     if(event){
       const {name} = event;
       if(event.form){
-        const {values,errors,status} = event;
-        this.value(name,{values,errors,status});
+        const {form,values,errors,status} = event;
+        this.value(name,{form,values,errors,status});
       }else{
         const {value} = event;
         this.value(name,value);
@@ -93,6 +107,18 @@ class FormBase extends Component{
     return getterSetter(this.state.errors,name,value,[]);
   }
 
+  status=(name=undefined,value=undefined)=>{
+    return getterSetter(this.state.status,name,value);
+  }
+
+  dirty=(name=undefined,value=undefined)=>{
+    return getterSetter(this.state.status.dirty,name,value,false);
+  }
+
+  focus=(name=undefined,value=undefined)=>{
+    return getterSetter(this.state.status.focus,name,value,false);
+  }
+
   valid=()=>{
     return this.status('valid');
   }
@@ -105,16 +131,12 @@ class FormBase extends Component{
     this.errors(name,[]);
   }
 
-  status=(name=undefined,value=undefined)=>{
-    return getterSetter(this.state.status,name,value);
+  shouldShowErrors=(name)=>{
+    return this.errors(name).length>0&&this.dirty(name);
   }
 
-  dirty=(name=undefined,value=undefined)=>{
-    return getterSetter(this.state.status.dirty,name,value,false);
-  }
-
-  focus=(name=undefined,value=undefined)=>{
-    return getterSetter(this.state.status.focus,name,value,false);
+  shouldShowErrorsText=(name)=>{
+    return this.shouldShowErrors(name)&&this.focus(name);
   }
 
 
@@ -133,18 +155,14 @@ class FormBase extends Component{
     this.state.status.focus={};
   }
 
-  rules(){
-    return this.props.rules;
-  }
 
   onFieldFocusChange=(event)=>{
     const {name,focus} = event;
-    this.resetFocus();
+    if(focus){
+      this.resetFocus();
+    }
     this.focus(name,focus);
     this.rerender();
-    // if we'll need to track accurate focus change propagateEvent should be used
-    // instead of setState
-    // this.propagateEvent(null);
   }
 
   renderField=(Class,props)=>{
@@ -180,8 +198,50 @@ class FormBase extends Component{
     return null;
   }
 
-  isValid=()=>{
+  rules(){
+    return this.props.rules;
+  }
+
+  areAllFormsValid(){
+    // console.log("FORMS");
+    for(const name in this.state.values){
+      const value = this.value(name);
+      if(value&&value.form){
+        if(!value.status.valid){
+          return false;
+        }
+      }
+    }
     return true;
+  }
+
+  validateByRules(){
+    // console.log("RULES");
+    let areAllFieldsValid = true;
+    const fieldsRules = this.rules();
+    // console.log(fieldsRules);
+    for(const name in fieldsRules){
+      const rules = fieldsRules[name];
+      const value = this.value(name);
+      this.resetErrors(name);
+      const errors = [];
+      // console.log(rules);
+      for(const rule of rules){
+        // console.log(rule);
+        const result = rule(name,value);
+        if(result.error){
+          areAllFieldsValid=false;
+          errors.push(result.text);
+        }
+      }
+      this.errors(name,errors);
+    }
+    return areAllFieldsValid;
+  }
+
+  isValid=()=>{
+    // console.log("VALIDATION");
+    return this.validateByRules()&&this.areAllFormsValid();
   }
 
   static defaultProps = {
@@ -190,13 +250,17 @@ class FormBase extends Component{
       console.warn(`Warning:default form onChange callback in form ${event.name}`);
       console.log(event);
     },
-    fireInitEvent:true
+    fireInitEvent:true,
+    dirtyFocusOnErrors:false,
+    rules:{}
   }
 
   static propTypes = {
     name:PropTypes.string.isRequired,
     onChange:PropTypes.func.isRequired,
-    fireInitEvent:PropTypes.bool.isRequired
+    fireInitEvent:PropTypes.bool.isRequired,
+    dirtyFocusOnErrors:PropTypes.bool.isRequired,
+    rules:PropTypes.object.isRequired
   }
 
 }
