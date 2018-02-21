@@ -52,12 +52,9 @@ class FormBase extends Component{
 
   constructor(props){
     super(props);
-    this.state = State(props);
+    this.componentWillReceiveProps(props);
     if(this.props.fireInitEvent){
       this.propagateEvent(null,false);//initial on change event which sends form snapshot to the parent component
-    }
-    if(this.props.dirtyFocusOnErrors){
-      this.dirtyFocusOnErrors();
     }
   }
 
