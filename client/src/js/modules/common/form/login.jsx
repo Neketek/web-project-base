@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form} from 'modules/common/base/form';
+import {Form,Rule} from 'modules/common/base/form';
 import {Text,Date,DateTime,Time,Select,Button} from 'modules/common/input';
 import Grid from 'material-ui/Grid';
 import {
@@ -75,7 +75,7 @@ class LoginForm extends Form{
         </Grid>
     );
   }
-  
+
 }
 
 LoginForm.updateDefaultProps({
@@ -85,10 +85,10 @@ LoginForm.updateDefaultProps({
   },
   rules:{
     login:[
-      (name,value)=>{
-        // console.log({name,value});
-        return value.length==0?{error:true,text:"Login should not be emtpy!"}:{error:false};
-      }
+      Rule.String.notEmpty("Login should not be empty!")
+    ],
+    password:[
+      Rule.String.notEmpty("Password should not be empty!")
     ]
   }
 });
