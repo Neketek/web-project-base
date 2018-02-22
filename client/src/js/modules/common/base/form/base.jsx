@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 /*
  * creates form event object
  */
+
 const Event=(name,{values,errors,status})=>{
   const form = true;
   return {
@@ -258,7 +259,13 @@ class FormBase extends Component{
    * to render method
    */
   render=()=>{
-    return this.form(this.renderField,this.renderForm);
+    const props = {
+      render:{
+        field:this.renderField,
+        form:this.renderForm
+      }
+    }
+    return this.form(props);
   }
 
 
