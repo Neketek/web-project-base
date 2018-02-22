@@ -3,7 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
-
+/*
+ * creates form event object
+ */
 const Event=(name,{values,errors,status})=>{
   const form = true;
   return {
@@ -15,7 +17,9 @@ const Event=(name,{values,errors,status})=>{
   }
 }
 
-
+/*
+ * universal setter getter, propably i'll move it to separate file as an util
+ */
 const getterSetter=(source,name=undefined,value=undefined,def=undefined)=>{
   if(name===undefined){
     throw Error("Value getter didn't receive name!");
@@ -30,7 +34,11 @@ const getterSetter=(source,name=undefined,value=undefined,def=undefined)=>{
 }
 
 class FormBase extends Component{
-
+  /*
+   * creates the initial state from props
+   * fire initial onChange event to provide form snapshot
+   * to the parent component via this.props.onChage
+   */
   constructor(props){
     super(props);
     this.state = this.State(props);
@@ -43,7 +51,16 @@ class FormBase extends Component{
     }
   }
 
-
+  /*
+   * creates state object from props
+   * values: field and sub-forms snapshots
+   * errors: fields snapshot
+   * status:{
+   *  valid: is form data valid
+   *  dirty: fields dirty statuses
+   *  focus: fields focus statuses
+   * }
+   */
   State=({values,errors,status})=>{
     if(this.state===undefined){
       this.state = {
@@ -64,13 +81,17 @@ class FormBase extends Component{
 
   }
 
-
+  /*
+   * creates new state from props and validates it
+   */
   updateStateFromProps(props){
     this.setState(this.State(props));
     this.status('valid',this.isValid());
   }
 
-
+  /*
+   * handles props updates during while component is mounted
+   */
   componentWillReceiveProps(props){
     this.updateStateFromProps(props);
     if(this.props.dirtyFocusOnErrors){
@@ -79,7 +100,9 @@ class FormBase extends Component{
     }
   }
 
-
+  /*
+   * propagates form event to parent component
+   */
   propagateEvent=(event,updateState=true)=>{
     if(event){
       const {name} = event;
@@ -99,62 +122,98 @@ class FormBase extends Component{
     }
   }
 
+  /*
+   * setter/getter for this.state.value[name]
+   * returns null if value[name] is undefined
+   */
   value=(name=undefined,value=undefined)=>{
     return getterSetter(this.state.values,name,value);
   }
-
+  /*
+   * setter/getter for this.state.errors[name]
+   * return [] if errors[name] is undefined
+   */
   errors=(name=undefined,value=undefined)=>{
     return getterSetter(this.state.errors,name,value,[]);
   }
-
+  /*
+   * setter/getter for this.state.status[name]
+   * return null if status[name] is undefined
+   */
   status=(name=undefined,value=undefined)=>{
     return getterSetter(this.state.status,name,value);
   }
-
+  /*
+   * setter/getter for this.state.status.dirty[name]
+   * return false if dirty[name] is undefined
+   */
   dirty=(name=undefined,value=undefined)=>{
     return getterSetter(this.state.status.dirty,name,value,false);
   }
-
+  /*
+   * setter/getter for this.state.status.focus[name]
+   * return false if focus[name] is undefined
+   */
   focus=(name=undefined,value=undefined)=>{
     return getterSetter(this.state.status.focus,name,value,false);
   }
-
+  /*
+   * getter for this.state.status.valid
+   */
   valid=()=>{
     return this.status('valid');
   }
-
+  /*
+   * checks is this.state.errors[name] list is empty
+   */
   hasErrors=(name)=>{
     return this.errors(name).length>0;
   }
-
+  /*
+   * sets this.state.errors[name]=[]
+   */
   resetErrors=(name)=>{
     this.errors(name,[]);
   }
-
+  /*
+   * if field has errors and it's dirty returns true
+   * otherwise returns false
+   */
   shouldShowErrors=(name)=>{
     return this.errors(name).length>0&&this.dirty(name);
   }
-
+  /*
+   * if field should show errors and it's in focus returns true
+   * otherwise returns false
+   */
   shouldShowErrorsText=(name)=>{
     return this.shouldShowErrors(name)&&this.focus(name);
   }
 
+  /*
+   * set dirty(name,true) and focus(name,true) for all names
+   * for which hasErrors(name) returns true
+   */
 
-  // this method is designed to show erros when user tries to submit form which contains errors
   dirtyFocusOnErrors=()=>{
     for(const name in this.state.errors){
-      if(this.errors(name).length>0){
+      if(this.hasErrors(name)){
         this.focus(name,true);
         this.dirty(name,true);
       }
     }
   }
 
-
+  /*
+   * removes focus from all fields
+   */
   resetFocus=()=>{
     this.state.status.focus={};
   }
 
+  /*
+   * tracks focus status of the fields
+   */
 
   onFieldFocusChange=(event)=>{
     const {name,focus} = event;
@@ -165,6 +224,9 @@ class FormBase extends Component{
     this.rerender();
   }
 
+  /*
+   * field render method which contains important predefined props
+   */
   renderField=(Class,props)=>{
     const defaultProps = {
       onChange:this.onChange,
@@ -174,7 +236,9 @@ class FormBase extends Component{
     }
     return <Class {...defaultProps} {...props}></Class>
   }
-
+  /*
+   * sub-form render method which contains important predefined props
+   */
   renderForm=(Class,props)=>{
     const {values,status,errors} = this.value(props.name);
     const defaultProps = {
@@ -187,21 +251,40 @@ class FormBase extends Component{
     return <Class {...defaultProps} {...props}></Class>
   }
 
+  /*
+   * NOTE:do not override
+   * overriden render method which calls form(renderField,renderForm)
+   * makes form creation more comfortable by passing additional arguments
+   * to render method
+   */
   render=()=>{
     return this.form(this.renderField,this.renderForm);
   }
 
 
-  //render method for the form
+  /*
+   * NOTE: do not override defaul render method!
+   * main render method for the form
+   * should be overriden in child classes
+   * to enable rendering
+   */
   form=()=>{
     console.warn("Warning:default form render method");
     return null;
   }
 
+  /*
+   * NOTE: can be overriden
+   * returns field validation rules
+   */
   rules(){
     return this.props.rules;
   }
 
+  /*
+   * checks form.status.valid for each sub-form
+   * returns true if all forms are valid othewise returns false
+   */
   areAllFormsValid(){
     // console.log("FORMS");
     for(const name in this.state.values){
@@ -214,7 +297,12 @@ class FormBase extends Component{
     }
     return true;
   }
-
+  /*
+   * NOTE:do not override!
+   * Performs default fields validation
+   * using given rules.
+   * Saves all errors which were generated by this.rules()[name] to this.state.errors[name]
+   */
   validateByRules(){
     // console.log("RULES");
     let areAllFieldsValid = true;
@@ -239,6 +327,11 @@ class FormBase extends Component{
     return areAllFieldsValid;
   }
 
+  /*
+   * NOTE:can be overriden
+   * default isValid method which checks fields using rules and
+   * forms using their form.status.valid.
+   */
   isValid=()=>{
     // console.log("VALIDATION");
     return this.validateByRules()&&this.areAllFormsValid();
