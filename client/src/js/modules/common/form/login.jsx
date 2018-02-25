@@ -23,7 +23,7 @@ class LoginForm extends Form{
     // this.rerender();
   }
 
-  form=(field,form)=>{
+  form=({render})=>{
 
     const commonProps = (name)=>{
       const error = this.shouldShowErrors(name)
@@ -51,8 +51,8 @@ class LoginForm extends Form{
 
     // console.log(loginProps);
 
-    const login = field(Text,loginProps);
-    const password = field(Text,passwordProps);
+    const login = render.field(Text,loginProps);
+    const password = render.field(Text,passwordProps);
 
 
     return (
