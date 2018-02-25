@@ -1,5 +1,5 @@
 import {render} from "./hot-reload";
-import App from 'modules/app/index'; // app entry component
+import App from 'modules/app/dubbinary'; // app entry component
 
 render(App,"#root"); // initial render
 
