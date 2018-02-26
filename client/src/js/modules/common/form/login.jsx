@@ -79,6 +79,7 @@ class LoginForm extends Form{
 }
 
 LoginForm.updateDefaultProps({
+  name:"login",
   values:{
     password:"",
     login:""
