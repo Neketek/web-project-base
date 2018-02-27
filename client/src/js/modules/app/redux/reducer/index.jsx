@@ -1,6 +1,3 @@
-import router from './router';
 import {combineReducers} from "redux";
-const combinedReducers = combineReducers({
-  router
-});
+const combinedReducers = combineReducers({});
 export default combinedReducers;
