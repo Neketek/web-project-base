@@ -9,6 +9,38 @@ import { createStore } from 'modules/app/redux/store';
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
+import ContainerBase from 'modules/common/base/container';
+class CurrentURL extends ContainerBase{
+
+  render(){
+    return (
+      <div>
+        <button onClick={this.props.goHome}> Go Home </button>
+        <div>{this.props.url}</div>
+      </div>
+    );
+  }
+
+  static mapStateToProps(state){
+    console.log(state);
+    return {
+      url:state.router.location.pathname
+    }
+  }
+
+  static mapDispatchToProps(dispatch){
+    return {
+      goHome(){
+        dispatch(push("/"));
+      }
+    }
+  }
+}
+
+const ConnectedCurrentURL = CurrentURL.connect();
+
+
+
 const development=true;
 const {store,history} = createStore(development);
 import { Route } from 'react-router'
@@ -49,6 +81,7 @@ class App extends React.Component{
                 <Link to="/">Home</Link>
                 <Link to="/about">About</Link>
                 <Link to="/tutorial">Turorial</Link>
+                <ConnectedCurrentURL store={store}></ConnectedCurrentURL>
               </div>
               <div>
                 <Route exact path="/" component={()=><Text>APP</Text>}/>

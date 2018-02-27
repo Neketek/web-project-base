@@ -4,21 +4,10 @@ import { routerMiddleware, routerReducer } from 'react-router-redux';
 import ReduxThunk from "redux-thunk";
 
 
-export const applyStateGetter = (store,GetterClass)=>{
-  const oldGetState = store.getState;
-  store.getState=(getter=false)=>{
-    const state = oldGetState();
-    if(getter){
-      return new GetterClass(state);
-    }else{
-      return state;
-    }
-  };
-  return store;
-}
 
 
-export const createStoreCreator = ({reducers,history,middleware,StateGetterClass})=>{
+
+export const createStoreCreator = ({reducers,history,middleware})=>{
 
   return (development=false)=>{
 
@@ -40,9 +29,6 @@ export const createStoreCreator = ({reducers,history,middleware,StateGetterClass
     }
 
     let store = createStore(combineReducers(reducers),middleware);
-    if(StateGetterClass!==undefined){
-      store = applyStateGetter(store,StateGetterClass);
-    }
     return {store,history};
 
   }
