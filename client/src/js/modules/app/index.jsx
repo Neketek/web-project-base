@@ -9,42 +9,11 @@ import { createStore } from 'modules/app/redux/store';
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
-import ContainerBase from 'modules/common/base/container';
-class CurrentURL extends ContainerBase{
-
-  render(){
-    return (
-      <div>
-        <button onClick={this.props.goHome}> Go Home </button>
-        <div>{this.props.url}</div>
-      </div>
-    );
-  }
-
-  static mapStateToProps(state){
-    console.log(state);
-    return {
-      url:state.router.location.pathname
-    }
-  }
-
-  static mapDispatchToProps(dispatch){
-    return {
-      goHome(){
-        dispatch(push("/"));
-      }
-    }
-  }
-}
-
-const ConnectedCurrentURL = CurrentURL.connect();
-
-
-
 const development=true;
 const {store,history} = createStore(development);
 import { Route } from 'react-router'
 import { Link } from 'react-router-dom';
+import SignUpForm from './form/sign-up';
 
 // store.dispatch(push("/home"));
 // console.log(store);
@@ -59,12 +28,6 @@ const muiTheme = createMuiTheme({
 });
 
 
-class Text extends React.Component{
-  render(){
-    return <div>{this.props.children}</div>
-  }
-}
-
 class App extends React.Component{
 
   constructor(props){
@@ -76,19 +39,7 @@ class App extends React.Component{
       <MuiThemeProvider theme={muiTheme}>
         <Provider store = {store}>
           <ConnectedRouter history={history}>
-            <div>
-              <div>
-                <Link to="/">Home</Link>
-                <Link to="/about">About</Link>
-                <Link to="/tutorial">Turorial</Link>
-                <ConnectedCurrentURL store={store}></ConnectedCurrentURL>
-              </div>
-              <div>
-                <Route exact path="/" component={()=><Text>APP</Text>}/>
-                <Route path="/about" component={()=><Text>ABOUT</Text>}/>
-                <Route path="/tutorial" component={()=><Text>TUTORIAL</Text>}/>
-              </div>
-            </div>
+            <SignUpForm></SignUpForm>
           </ConnectedRouter>
         </Provider>
       </MuiThemeProvider>

@@ -304,6 +304,19 @@ class FormBase extends Component{
     }
     return true;
   }
+
+  useRules=(name,rules)=>{
+    const value = this.value(name);
+    const errors = [];
+    for(const rule of rules){
+      const {error,text} = rule(name,value);
+      if(error){
+        errors.push(text);
+      }
+    }
+    return errors;
+  }
+
   /*
    * NOTE:do not override!
    * Performs default fields validation
@@ -319,15 +332,9 @@ class FormBase extends Component{
       const rules = fieldsRules[name];
       const value = this.value(name);
       this.resetErrors(name);
-      const errors = [];
-      // console.log(rules);
-      for(const rule of rules){
-        // console.log(rule);
-        const result = rule(name,value);
-        if(result.error){
-          areAllFieldsValid=false;
-          errors.push(result.text);
-        }
+      const errors = this.useRules(name,rules);
+      if(errors.length>0){
+        areAllFieldsValid = false;
       }
       this.errors(name,errors);
     }
@@ -340,7 +347,10 @@ class FormBase extends Component{
    * forms using their form.status.valid.
    */
   isValid=()=>{
-    // console.log("VALIDATION");
+    return this.defaultIsValid();
+  }
+
+  defaultIsValid=()=>{
     return this.validateByRules()&&this.areAllFormsValid();
   }
 

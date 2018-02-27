@@ -16,13 +16,6 @@ class LoginForm extends Form{
     this.propagateEvent(event);
   }
 
-
-  onSubmit=()=>{
-    this.dirtyFocusOnErrors();
-    this.propagateEvent(null);
-    // this.rerender();
-  }
-
   form=({render})=>{
 
     const commonProps = (name)=>{
