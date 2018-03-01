@@ -50,11 +50,11 @@ class LoginForm extends Form{
 
     return (
         <Grid container justify='center' spacing={16} alignItems='center'>
-              <Grid item sm={6} xs={12}>
+              <Grid item xs={12}>
                 {login}
                 {error("login")}
               </Grid>
-              <Grid item sm={6} xs={12}>
+              <Grid item xs={12}>
                 {password}
                 {error("password")}
               </Grid>

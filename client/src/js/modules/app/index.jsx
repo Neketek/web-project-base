@@ -8,10 +8,10 @@ import { withStyles } from 'material-ui/styles';
 import { createStore } from 'modules/app/data/redux/store';
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 import { Provider } from 'react-redux';
-
+import MainContainer from './component/container';
 const development=true;
 const {store,history} = createStore(development);
-import { Route } from 'react-router'
+import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
 import SignUpForm from './component/form/sign-up';
 
@@ -39,7 +39,7 @@ class App extends React.Component{
       <MuiThemeProvider theme={muiTheme}>
         <Provider store = {store}>
           <ConnectedRouter history={history}>
-            <SignUpForm></SignUpForm>
+            <MainContainer store={store}></MainContainer>
           </ConnectedRouter>
         </Provider>
       </MuiThemeProvider>
