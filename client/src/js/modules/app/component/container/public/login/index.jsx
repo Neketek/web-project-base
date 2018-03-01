@@ -1,13 +1,15 @@
-import ContainerBase from 'modules/common/base/component/container';
+import AppContainerBase from 'modules/app/component/container/base';
 import LoginForm from 'modules/app/component/form/login';
 import Grid from 'material-ui/Grid';
 import React from 'react';
+import Routing from 'modules/app/component/container/routing';
 
-class LoginContainer extends ContainerBase{
+class LoginContainer extends AppContainerBase{
   container({render}){
+    const onSubmit=()=>this.props.redirect(Routing.Public.signUp());
     return (
       <Grid container justify="center">
-        <LoginForm onChange={this.props.onChange}></LoginForm>
+        <LoginForm onChange={this.props.onChange} onSubmit={onSubmit}></LoginForm>
       </Grid>
     );
   }

@@ -9,6 +9,7 @@ class ContainerBase extends Component{
   }
 
   render(){
+    console.log("RENDER:"+this.props.name);
     const props = {
       render:{
         container:this.renderContainer
@@ -28,6 +29,26 @@ class ContainerBase extends Component{
 
   static mapStateToProps(state,ownProps){
     return {}
+  }
+
+  static updateMapDispatchToProps(newMapDispatchToProps){
+    const oldDispatchToProps = this.mapDispatchToProps;
+    this.mapDispatchToProps = (dispatch,ownProps)=>{
+      return Object.assign(
+        oldDispatchToProps(dispatch,ownProps),
+        newMapDispatchToProps(dispatch,ownProps)
+      )
+    };
+  }
+
+  static updateMapStateToProps(newMapStateToProps){
+    const oldStateToProps = this.mapStateToProps;
+    this.mapStateToProps = (state,ownProps)=>{
+      return Object.assign(
+        oldStateToProps(state,ownProps),
+        newMapStateToProps(state,ownProps)
+      )
+    };
   }
 
 

@@ -9,10 +9,8 @@ import { createStore } from 'modules/app/data/redux/store';
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import MainContainer from './component/container';
-const development=true;
-const {store,history} = createStore(development);
 import { Route } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, BrowserRouter } from 'react-router-dom';
 import SignUpForm from './component/form/sign-up';
 
 // store.dispatch(push("/home"));
@@ -30,18 +28,28 @@ const muiTheme = createMuiTheme({
 
 class App extends React.Component{
 
+
+
   constructor(props){
     super(props);
+
+    //NOTE:doing this only to fix hot reloading
+    let storeSource = this.props;
+    if(!storeSource.store){
+       storeSource = createStore(this.props.development);
+    }
+    this.store=storeSource.store;
+    this.history=storeSource.history;
+
   }
 
   render(){
+    const {history,store} = this;
     return (
       <MuiThemeProvider theme={muiTheme}>
-        <Provider store = {store}>
-          <ConnectedRouter history={history}>
-            <MainContainer store={store}></MainContainer>
-          </ConnectedRouter>
-        </Provider>
+        <ConnectedRouter history={history} store={store}>
+          <MainContainer store={store}></MainContainer>
+        </ConnectedRouter>
       </MuiThemeProvider>
     );
   }
