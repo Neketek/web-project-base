@@ -1,4 +1,4 @@
-import {Button} from 'modules/common/base/input';
+import {Button} from 'modules/common/base/component/input';
 import React from 'react';
 import MaterialButton from 'material-ui/Button';
 

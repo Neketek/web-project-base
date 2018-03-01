@@ -1,4 +1,4 @@
-import Component from 'modules/common/base/react/component';
+import Component from '../react/component';
 import React from 'react';
 import PropTypes from 'prop-types';
 

@@ -5,7 +5,7 @@ import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import { red, grey, amber } from 'material-ui/colors';
 import createPalette from 'material-ui/styles/createPalette';
 import { withStyles } from 'material-ui/styles';
-import { createStore } from 'modules/app/redux/store';
+import { createStore } from 'modules/app/data/redux/store';
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 import { Provider } from 'react-redux';
 
@@ -13,7 +13,7 @@ const development=true;
 const {store,history} = createStore(development);
 import { Route } from 'react-router'
 import { Link } from 'react-router-dom';
-import SignUpForm from './form/sign-up';
+import SignUpForm from './component/form/sign-up';
 
 // store.dispatch(push("/home"));
 // console.log(store);

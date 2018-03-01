@@ -1,4 +1,4 @@
-import {Time} from 'modules/common/base/input';
+import {Time} from 'modules/common/base/component/input';
 import React from 'react';
 import {TimePicker} from 'material-ui-pickers'
 import moment from 'moment';

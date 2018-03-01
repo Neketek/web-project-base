@@ -1,4 +1,4 @@
-import {Select} from 'modules/common/base/input';
+import {Select} from 'modules/common/base/component/input';
 import React from 'react';
 // import SelectField from 'material-ui/Select';
 import SelectField from 'react-select';

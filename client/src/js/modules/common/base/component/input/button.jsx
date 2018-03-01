@@ -1,5 +1,5 @@
 import React from 'react';
-import Component from 'modules/common/base/react/component';
+import Component from '../react/component';
 import PropTypes from 'prop-types';
 
 

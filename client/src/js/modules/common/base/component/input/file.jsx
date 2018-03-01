@@ -1,5 +1,5 @@
 import React from 'react';
-import BaseInput from 'modules/common/base/input/base';
+import BaseInput from './base';
 
 
 class FileInput extends BaseInput{}

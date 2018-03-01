@@ -1,4 +1,4 @@
-import {DateTime} from 'modules/common/base/input';
+import {DateTime} from 'modules/common/base/component/input';
 import React from 'react';
 import {DateTimePicker} from 'material-ui-pickers'
 

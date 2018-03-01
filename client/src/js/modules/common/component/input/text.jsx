@@ -1,4 +1,4 @@
-import {Text} from 'modules/common/base/input';
+import {Text} from 'modules/common/base/component/input';
 import React from 'react';
 import TextField from 'material-ui/TextField';
 
