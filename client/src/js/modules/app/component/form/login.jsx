@@ -12,18 +12,6 @@ import {
 
 class LoginForm extends Form{
 
-  onChange=(event)=>{
-    this.propagateEvent(event);
-  }
-
-  onSubmit=(event)=>{
-    this.dirtyFocusOnErrors();
-    this.rerender();
-    if(this.isValid()){
-      this.props.onSubmit();
-    }
-  }
-
   form=({render})=>{
 
     const commonProps = (name)=>{

@@ -1,7 +1,7 @@
 import Component from '../react/component';
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import {getterSetter} from '../../utils';
 
 /*
  * creates form event object
@@ -18,21 +18,6 @@ const Event=(name,{values,errors,status})=>{
   }
 }
 
-/*
- * universal setter getter, propably i'll move it to separate file as an util
- */
-const getterSetter=(source,name=undefined,value=undefined,def=undefined)=>{
-  if(name===undefined){
-    throw Error("Value getter didn't receive name!");
-  }
-  if(value===undefined){
-    const targetValue = source[name];
-    return targetValue===undefined?def:targetValue;
-  }else{
-    source[name]=value;
-    return value;
-  }
-}
 
 class FormBase extends Component{
   /*
@@ -48,9 +33,24 @@ class FormBase extends Component{
       this.dirtyFocusOnErrors();
     }
     if(this.props.fireInitEvent){
-      this.propagateEvent(null,false);//initial on change event which sends form snapshot to the parent component
+      this.propagateEvent(null,{updateState:false});//initial on change event which sends form snapshot to the parent component
     }
   }
+
+  onChange=(event)=>{
+    this.propagateEvent(event);
+  }
+
+  onSubmit=()=>{
+    if(!this.status('valid')){
+      this.dirtyFocusOnErrors();
+      this.rerender();
+    }else{
+      const {props:{name},state} = this;
+      this.props.onSubmit(Event(name,state));
+    }
+  }
+
 
   /*
    * creates state object from props
@@ -60,7 +60,6 @@ class FormBase extends Component{
    *  valid: is form data valid
    *  dirty: fields dirty statuses
    *  focus: fields focus statuses
-   * }
    */
   State=({values,errors,status})=>{
     if(this.state===undefined){
@@ -104,7 +103,7 @@ class FormBase extends Component{
   /*
    * propagates form event to parent component
    */
-  propagateEvent=(event,updateState=true)=>{
+  propagateEvent=(event,props={updateState:true,validate:true})=>{
     if(event){
       const {name} = event;
       if(event.form){
@@ -116,9 +115,11 @@ class FormBase extends Component{
       }
       this.dirty(name,true);
     }
-    this.status('valid',this.isValid());
+    if(props.validate){
+      this.status('valid',this.isValid());
+    }
     this.props.onChange(Event(this.props.name,this.state));
-    if(updateState){
+    if(props.updateState){
       this.setState(this.state);
     }
   }

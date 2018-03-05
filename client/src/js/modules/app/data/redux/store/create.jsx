@@ -6,4 +6,4 @@ const history = createHistory({
   basename:"/app"
 });
 
-export default createStoreCreator({app,history});
+export default createStoreCreator({reducers:{app},history});
