@@ -1,30 +1,16 @@
-import ContainerBase from 'modules/common/base/component/container';
+import ContainerRoutingBase from 'modules/common/base/component/container/routing';
 import Routing from './routing';
 import { push } from 'react-router-redux';
 import { Route, Switch } from 'react-router';
 import React from 'react';
-class AppContainerBase extends ContainerBase{
-
-
-  constructor(props){
-    super(props);
-  }
-
-  Route=props=>{
-    return <Route {...props} location={this.props.router.location}></Route>
-  }
-
-  RouteSwitch=props=>{
-    return <Switch {...props} location={this.props.router.location}></Switch>
-  }
+class AppContainerBase extends ContainerRoutingBase{
 
   tryToRedirectToLogin(){
-
     const {props} = this;
     if(props.private){
-      const {user,router} = props;
-      if(!user&&Routing.isPrivate()(router.location.pathname)){
-        props.redirect(Routing.Public.login())
+      const {user,location:{pathname}} = props;
+      if(!user&&Routing.Private.contains(pathname)){
+        this.redirect(Routing.Public.route.login())
       }
     }
   }
@@ -40,20 +26,10 @@ AppContainerBase.updateDefaultProps({
 });
 
 AppContainerBase.updateMapStateToProps((state,ownProps)=>{
-  // console.log({ownProps});
-  const {user,router} = state;
+  const {user}= state;
   return {
-    user,
-    router,
-    location:router.location
+    user
   }
 });
-
-AppContainerBase.updateMapDispatchToProps((dispatch,ownProps)=>{
-  return {
-    redirect:path=>dispatch(push(path))
-  }
-});
-
 
 export default AppContainerBase;

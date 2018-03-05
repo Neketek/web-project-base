@@ -6,7 +6,7 @@ import Routing from 'modules/app/component/container/routing';
 
 class LoginContainer extends AppContainerBase{
   container({render}){
-    const onSubmit=()=>this.props.redirect(Routing.Public.signUp());
+    const onSubmit=()=>this.redirect(Routing.Public.route.signUp());
     return (
       <Grid container justify="center">
         <LoginForm onChange={this.props.onChange} onSubmit={onSubmit}></LoginForm>
