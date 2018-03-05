@@ -7,7 +7,7 @@ import _ from 'lodash';
 export default (state={},action)=>{
   switch(action.type){
     case SET_USER_VARIABLE:
-      state = _.copy(state);
+      state = _.clone(state);
       state[action.name]=action.value;
       break;
   }

@@ -1,16 +1,12 @@
-import AppContainerBase from 'modules/app/component/container/base';
+import AppPublicContainerBase from './base';
 import LoginContainer from './login';
 import SignUpContainer from './sign-up';
 import Grid from 'material-ui/Grid';
 import React from 'react';
-import { Route, Switch } from 'react-router';
 
 
-class PublicContainer extends AppContainerBase{
-  container({render}){
-    const {container} = render;
-    const {router,user} = this.props;
-    // console.log(this.props);
+class PublicContainer extends AppPublicContainerBase{
+  container({render:{container}}){
     return (
       <Grid container justify="center">
         <Grid item xs={12}>
@@ -23,10 +19,5 @@ class PublicContainer extends AppContainerBase{
     )
   }
 }
-
-PublicContainer.updateDefaultProps({
-  private:false
-})
-
 
 export default PublicContainer.connect();

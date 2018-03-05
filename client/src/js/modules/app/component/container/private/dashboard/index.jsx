@@ -1,11 +1,12 @@
-import AppContainerPrivateBase from 'modules/app/container/private/base';
+import AppContainerPrivateBase from '../base';
+import React from 'react';
 
 class DashboardContainer extends AppContainerPrivateBase{
   container({render:container}){
     return (
-      <div>Welcome to dashboard</div>
+      <div>Welcome to dashboard:{this.user().email}</div>
     );
   }
 }
 
-export DashboardContainer.connect();
+export default DashboardContainer.connect();

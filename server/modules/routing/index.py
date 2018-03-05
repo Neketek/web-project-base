@@ -15,7 +15,7 @@ def landing():
 
 ##TODO:I need to add login management
 @request.sql_session
-@blueprint.route("/app",methods=['GET'])
+@blueprint.route("/app/",methods=['GET'])
 @blueprint.route("/app/<path:path>",methods=['GET'])
 def app(path=None):
     if current_app.config['DEV']:

@@ -1,9 +1,5 @@
-import AppContainerBase from 'modules/app/container/base';
+import AppContainerBase from 'modules/app/component/container/base';
 
-class AppContainerPublicBase extends AppContainer{}
-
-AppContainerPublicBase.updateDefaultProps({
-  private:false
-});
+class AppContainerPublicBase extends AppContainerBase{}
 
 export default AppContainerPublicBase;
