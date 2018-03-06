@@ -4,6 +4,7 @@ import Grid from 'material-ui/Grid';
 import React from 'react';
 import Routing from 'modules/app/component/container/routing';
 import { push } from 'react-router-redux';
+import {login} from 'modules/app/data/network/ajax/auth';
 import {
   setUserVariable
 } from 'modules/app/data/redux/reducer/user/action';
@@ -21,9 +22,15 @@ class LoginContainer extends AppContainerBase{
 LoginContainer.updateMapDispatchToProps((dispatch,ownProps)=>{
   return {
     onSubmit(event){
-      const {values:{login}}=event;
-      dispatch(setUserVariable("email",login));
-      dispatch(push(Routing.Private.route.dashboard()));
+      console.log("SUBMIT");
+      login().then(
+        data=>{
+          console.log(data);
+        },
+        error=>{
+          console.log(error);
+        }
+      );
     }
   }
 });
