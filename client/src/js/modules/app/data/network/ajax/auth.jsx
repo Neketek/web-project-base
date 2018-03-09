@@ -6,6 +6,11 @@ export const login=(data)=>{
   return DefaultRequest().url('/app/login').jsonBody(data).fetch();
 }
 
+export const signUp=(data)=>{
+  return DefaultRequest().url('/app/sign-up').jsonBody(data).fetch();
+}
+
 export default {
-  login
+  login,
+  signUp
 }

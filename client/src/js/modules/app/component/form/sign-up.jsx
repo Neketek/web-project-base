@@ -1,6 +1,7 @@
 import React from 'react';
 import {Form,Rule} from 'modules/common/base/component/form';
-import {Text,Date,DateTime,Time,Select,Button} from 'modules/common/component/input';
+import {Text,Date,DateTime,Time,Select,Button,InputError} from 'modules/common/component/input';
+import NameForm from './name';
 import Grid from 'material-ui/Grid';
 import {
   FormLabel,
@@ -24,34 +25,26 @@ class SignUpForm extends Form{
     this.propagateEvent(event);
   }
 
-  form=({render})=>{
+  form=({render:{form,error,field}})=>{
 
-    const commonProps = (name,label)=>{
-      const error = this.shouldShowErrors(name)
+    const {labels} = this.props;
+
+    const commonProps = (name)=>{
       return {
         name,
-        label:label?label:name[0].toUpperCase()+name.slice(1),
+        label:labels[name],
         fullWidth:true,
         required:true,
-        error
       }
     };
 
-
-    const firstNameProps = {
-      ...commonProps('firstName',"First Name"),
-    };
-
-    const lastNameProps = {
-      ...commonProps('lastName',"Last Name")
-    };
 
     const emailProps = {
       ...commonProps('email')
     };
 
     const emailConfirmationProps = {
-      ...commonProps("emailConfirmation","Confirm Email")
+      ...commonProps("emailConfirmation")
     }
 
     const passwordProps = {
@@ -60,46 +53,45 @@ class SignUpForm extends Form{
     };
 
     const passwordConfirmationProps = {
-      ...commonProps("passwordConfirmation","Confirm Password"),
+      ...commonProps("passwordConfirmation"),
       type:"password"
     };
 
-    const inviteCodeProps = {
-      ...commonProps("inviteCode","Invite Code")
-    }
-
-    const error=(name)=>this.shouldShowErrorsText(name)?<FormHelperText error>{this.errors(name)[0]}</FormHelperText>:null;
     const showConfirmation=(name)=>!this.hasErrors(name)&&this.hasErrors(name+"Confirmation");
 
-    const firstName = render.field(Text,firstNameProps);
-    const lastName = render.field(Text,lastNameProps);
-    const email = render.field(Text,emailProps);
-    const emailConfirmation = showConfirmation("email")?render.field(Text,emailConfirmationProps):null;
-    const password = render.field(Text,passwordProps);
-    const passwordConfirmation = showConfirmation("password")?render.field(Text,passwordConfirmationProps):null;
-    const inviteCode = this.props.inviteCode?render.field(Text,inviteCodeProps):null;
+    const email = field(Text,emailProps);
+    const emailError = error(InputError,{name:emailProps.name});
 
-    const renderFieldAndError=(field,error)=>{
-      if(!field){
+    const emailConfirmation = showConfirmation("email")?field(Text,emailConfirmationProps):null;
+    const emailConfirmationError = error(InputError,{name:emailConfirmationProps.name});
+
+    const password = field(Text,passwordProps);
+    const passwordError = error(InputError,{name:passwordProps.name});
+
+    const passwordConfirmation = showConfirmation("password")?field(Text,passwordConfirmationProps):null;
+    const passwordConfirmationError = error(InputError,{name:passwordConfirmationProps.name});
+
+    const renderFieldAndError=(f,e)=>{
+      if(!f){
         return null;
       }
       return (
         <Grid item xs={12}>
-          {field}
-          {error}
+          {f}
+          {e}
         </Grid>
       )
     };
 
     return (
         <Grid container justify='center' spacing={16} alignItems='center'>
-          {renderFieldAndError(firstName,error("firstName"))}
-          {renderFieldAndError(lastName,error("lastName"))}
-          {renderFieldAndError(email,error("email"))}
-          {renderFieldAndError(emailConfirmation,error("emailConfirmation"))}
-          {renderFieldAndError(password,error("password"))}
-          {renderFieldAndError(passwordConfirmation,error("passwordConfirmation"))}
-          {renderFieldAndError(inviteCode,error("inviteCode"))}
+          <Grid item xs={12}>
+            {form(NameForm,{name:"name"})}
+          </Grid>
+          {renderFieldAndError(email,emailError)}
+          {renderFieldAndError(emailConfirmation,emailConfirmationError)}
+          {renderFieldAndError(password,passwordError)}
+          {renderFieldAndError(passwordConfirmation,passwordConfirmationError)}
         </Grid>
     );
   }
@@ -121,21 +113,27 @@ class SignUpForm extends Form{
 
 SignUpForm.updateDefaultProps({
   name:"signUp",
+  labels:{
+    email:"Email",
+    password:"Password",
+    emailConfirmation:"Confirm email",
+    passwordConfirmation:"Confirm password",
+    name:{
+      first:"First name",
+      last:"Last name"
+    }
+  },
   values:{
     email:"",
     emailConfirmation:"",
     password:"",
     passwordConfirmation:"",
-    firstName:"",
-    lastName:""
+    name:{
+      first:"",
+      last:""
+    }
   },
   rules:{
-    firstName:[
-      Rule.String.notEmpty("First name should not be empty!")
-    ],
-    lastName:[
-      Rule.String.notEmpty("Last name should not be empty!")
-    ],
     email:[
       Rule.String.notEmpty("Email should not be empty!"),
       Rule.String.email()
@@ -143,8 +141,7 @@ SignUpForm.updateDefaultProps({
     password:[
       Rule.String.notEmpty("Password should not be empty!")
     ]
-  },
-  inviteCode:true
+  }
 });
 
 

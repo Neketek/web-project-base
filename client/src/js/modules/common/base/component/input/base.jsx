@@ -61,7 +61,8 @@ class InputBase extends Component{
     name:"noname",
     label:"no label",
     disabled:false,
-    required:false
+    required:false,
+    error:false
   }
 
   static propTypes = {
@@ -71,6 +72,7 @@ class InputBase extends Component{
     value:PropTypes.any,
     name:PropTypes.string.isRequired,
     disabled:PropTypes.bool.isRequired,
+    error:PropTypes.bool.isRequired,
     label:PropTypes.oneOfType([PropTypes.string,PropTypes.node])
   }
 

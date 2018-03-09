@@ -4,7 +4,7 @@ import Grid from 'material-ui/Grid';
 import React from 'react';
 import Routing from 'modules/app/component/container/routing';
 import { push } from 'react-router-redux';
-import {login} from 'modules/app/data/network/ajax/auth';
+import { login } from 'modules/app/data/network/ajax/auth';
 import {
   setUserVariable
 } from 'modules/app/data/redux/reducer/user/action';

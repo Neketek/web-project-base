@@ -69,6 +69,7 @@ class FormBase extends Component{
         status:{
           dirty:{},
           focus:{},
+          form:{}, //nested forms statuses
           valid:false
         }
       }
@@ -108,12 +109,13 @@ class FormBase extends Component{
       const {name} = event;
       if(event.form){
         const {form,values,errors,status} = event;
-        this.value(name,{form,values,errors,status});
+        this.value(name,values);
+        this.formStatus(name,{values,errors,status});
       }else{
         const {value} = event;
         this.value(name,value);
+        this.dirty(name,true);
       }
-      this.dirty(name,true);
     }
     if(props.validate){
       this.status('valid',this.isValid());
@@ -158,6 +160,10 @@ class FormBase extends Component{
    */
   focus=(name=undefined,value=undefined)=>{
     return getterSetter(this.state.status.focus,name,value,false);
+  }
+
+  formStatus=(name=undefined,value=undefined)=>{
+    return getterSetter(this.state.status.form,name,value,{});
   }
   /*
    * getter for this.state.status.valid
@@ -226,15 +232,34 @@ class FormBase extends Component{
     this.rerender();
   }
 
+
+  /*
+   * standard error render method which contains important predefined props
+   * and contains default condition which decides
+   */
+
+  renderFieldError=(Class,props)=>{
+    const {name}=props;
+    // console.log(props);
+    const shouldRenderError = this.shouldShowErrorsText(name);
+    if(!shouldRenderError){
+      return null;
+    }
+    return <Class {...props}>{this.errors(name)[0]}</Class>
+  }
+
   /*
    * field render method which contains important predefined props
    */
+
   renderField=(Class,props)=>{
+    const {name} = props;
     const defaultProps = {
       onChange:this.onChange,
       onBlur:this.onFieldFocusChange,
       onFocus:this.onFieldFocusChange,
-      value:this.value(props.name)
+      value:this.value(name),
+      error:this.shouldShowErrors(name)
     }
     return <Class {...defaultProps} {...props}></Class>
   }
@@ -242,7 +267,8 @@ class FormBase extends Component{
    * sub-form render method which contains important predefined props
    */
   renderForm=(Class,props)=>{
-    const {values,status,errors} = this.value(props.name);
+    const {name}=props;
+    const {values,status,errors} = this.formStatus(name);
     const defaultProps = {
       onChange:this.onChange,
       fireInitEvent:false,
@@ -263,7 +289,8 @@ class FormBase extends Component{
     const props = {
       render:{
         field:this.renderField,
-        form:this.renderForm
+        form:this.renderForm,
+        error:this.renderFieldError
       }
     }
     return this.form(props);
@@ -295,8 +322,8 @@ class FormBase extends Component{
    */
   areAllFormsValid(){
     // console.log("FORMS");
-    for(const name in this.state.values){
-      const value = this.value(name);
+    for(const name in this.state.status.form){
+      const value = this.formStatus(name);
       if(value&&value.form){
         if(!value.status.valid){
           return false;
