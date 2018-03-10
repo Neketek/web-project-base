@@ -1,10 +1,11 @@
-from sqlalchemy import Column,Integer,String,ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from sqlalchemy.types import BigInteger,Date,Boolean
-from modules.models.sql.base import Entity,BaseClass
+from sqlalchemy.types import BigInteger, Date, Boolean
+from modules.models.sql.base import Entity, BaseClass
 
-class Email(Entity,BaseClass):
 
-    email = Column(String(128),unique=True,index=True)
+class Email(Entity, BaseClass):
 
-    users=relationship("User",back_populates="email",uselist=False)
+    email = Column(String(128), unique=True, index=True)
+
+    user = relationship("User", back_populates="email", uselist=False)

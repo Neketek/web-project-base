@@ -22,7 +22,6 @@ class LoginContainer extends AppContainerBase{
 LoginContainer.updateMapDispatchToProps((dispatch,ownProps)=>{
   return {
     onSubmit(event){
-      console.log("SUBMIT");
       login().then(
         data=>{
           console.log(data);

@@ -8,7 +8,7 @@ class SignUpContainer extends AppContainerBase{
   container({render}){
     return (
       <Grid container justify="center">
-        <SignUpForm onChange={this.props.onChange}></SignUpForm>
+        <SignUpForm onChange={this.props.onChange} onSubmit={this.props.onSubmit}></SignUpForm>
       </Grid>
     );
   }
@@ -20,14 +20,37 @@ export const signUpAction=data=>(dispatch,getState)=>{
       first:data.firstName,
       last:data.lastName
     },
-    email:data.email,
-    password:data.password
+    password:data.password,
+    email:data.email
   }
+  signUp(signUpData).then(
+    response=>{
+      response.json().then(
+        data=>{
+          console.log(data);
+        },
+        error=>{
+
+        }
+      )
+    },
+    error=>{
+      console.log(error);
+    }
+  )
 }
 
 SignUpContainer.updateDefaultProps({
   onChange(event){
     console.log(event);
+  }
+});
+
+SignUpContainer.updateMapDispatchToProps((dispatch,ownProps)=>{
+  return {
+    onSubmit(event){
+      dispatch(signUpAction(event.values));
+    }
   }
 });
 

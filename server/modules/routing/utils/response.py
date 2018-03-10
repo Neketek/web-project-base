@@ -4,7 +4,10 @@ from modules.exceptions import UserFriendlyException, InternalServerException
 
 
 def json(func):
-    '''Request wrapper which forms json response from dict which source function returns.'''
+    '''
+    Request wrapper which forms json
+    response from dict which source function returns.
+    '''
     @wraps(func)
     def json_response_wrapper(*args, **kwargs):
         return jsonify(func(*args, **kwargs))
@@ -12,7 +15,7 @@ def json(func):
 
 
 def user_friendly_exceptions(func):
-    '''Request wrapper which intercepts exceptions forms dict containgin
+    '''Request wrapper which intercepts exceptions forms dict containing
     error data and blocking internal server exception response
     by returning generic dict.'''
     @wraps(func)

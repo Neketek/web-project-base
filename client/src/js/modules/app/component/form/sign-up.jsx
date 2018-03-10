@@ -39,6 +39,14 @@ class SignUpForm extends Form{
     };
 
 
+    const firstNameProps={
+      ...commonProps('firstName')
+    };
+
+    const lastNameProps={
+      ...commonProps('lastName')
+    }
+
     const emailProps = {
       ...commonProps('email')
     };
@@ -58,6 +66,12 @@ class SignUpForm extends Form{
     };
 
     const showConfirmation=(name)=>!this.hasErrors(name)&&this.hasErrors(name+"Confirmation");
+
+    const firstName = field(Text,firstNameProps);
+    const firstNameError = error(InputError,{name:firstNameProps.name});
+
+    const lastName = field(Text,lastNameProps);
+    const lastNameError = error(InputError,{name:lastNameProps.name});
 
     const email = field(Text,emailProps);
     const emailError = error(InputError,{name:emailProps.name});
@@ -85,13 +99,19 @@ class SignUpForm extends Form{
 
     return (
         <Grid container justify='center' spacing={16} alignItems='center'>
-          <Grid item xs={12}>
-            {form(NameForm,{name:"name"})}
-          </Grid>
+          {renderFieldAndError(firstName,firstNameError)}
+          {renderFieldAndError(lastName,lastNameError)}
           {renderFieldAndError(email,emailError)}
           {renderFieldAndError(emailConfirmation,emailConfirmationError)}
           {renderFieldAndError(password,passwordError)}
           {renderFieldAndError(passwordConfirmation,passwordConfirmationError)}
+          <Grid item xs={12}>
+            <Grid container justify='center'>
+              <Button  variant='raised' size='large' name='login' onClick={this.onSubmit}>
+                Sign up
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
     );
   }
@@ -109,8 +129,6 @@ class SignUpForm extends Form{
   }
 }
 
-
-
 SignUpForm.updateDefaultProps({
   name:"signUp",
   labels:{
@@ -118,22 +136,24 @@ SignUpForm.updateDefaultProps({
     password:"Password",
     emailConfirmation:"Confirm email",
     passwordConfirmation:"Confirm password",
-    name:{
-      first:"First name",
-      last:"Last name"
-    }
+    firstName:"First name",
+    lastName:"Last name"
   },
   values:{
     email:"",
     emailConfirmation:"",
     password:"",
     passwordConfirmation:"",
-    name:{
-      first:"",
-      last:""
-    }
+    firstName:"",
+    lastName:""
   },
   rules:{
+    firstName:[
+      Rule.String.notEmpty("Should not be empty!")
+    ],
+    lastName:[
+      Rule.String.notEmpty("Should not be empty!")
+    ],
     email:[
       Rule.String.notEmpty("Email should not be empty!"),
       Rule.String.email()

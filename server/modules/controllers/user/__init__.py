@@ -1,5 +1,11 @@
 from modules.controllers.base import ControllerBase
-from modules.controllers.user.create import create
-class UserController(ControllerBase):
+from modules.controllers.user.create import Create
+from modules.controllers.user.login import Login
 
-    def create(*args):return create(*args)
+
+class UserController(
+    ControllerBase,
+    Create,
+    Login
+):
+    pass

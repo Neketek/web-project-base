@@ -97,7 +97,6 @@ class FormBase extends Component{
     this.updateStateFromProps(props);
     if(this.props.dirtyFocusOnErrors){
       this.dirtyFocusOnErrors();
-      this.rerender();
     }
   }
 
@@ -165,6 +164,11 @@ class FormBase extends Component{
   formStatus=(name=undefined,value=undefined)=>{
     return getterSetter(this.state.status.form,name,value,{});
   }
+
+  formDirtyFocusOnErrors=(name=undefined,value=undefined)=>{
+    return getterSetter(this.state.status.form[name],value,false);
+  }
+
   /*
    * getter for this.state.status.valid
    */
@@ -210,6 +214,9 @@ class FormBase extends Component{
         this.dirty(name,true);
       }
     }
+    for(const name in this.state.status.form){
+      this.formDirtyFocusOnErrors(name,true);
+    }
   }
 
   /*
@@ -217,6 +224,9 @@ class FormBase extends Component{
    */
   resetFocus=()=>{
     this.state.status.focus={};
+    for(const name in this.state.status.form){
+      this.formDirtyFocusOnErrors(name,false);
+    }
   }
 
   /*
@@ -268,13 +278,14 @@ class FormBase extends Component{
    */
   renderForm=(Class,props)=>{
     const {name}=props;
-    const {values,status,errors} = this.formStatus(name);
+    const {values,status,errors,dirtyFocusOnErrors} = this.formStatus(name);
     const defaultProps = {
       onChange:this.onChange,
-      fireInitEvent:false,
+      fireInitEvent:true,
       values,
       status,
-      errors
+      errors,
+      dirtyFocusOnErrors
     }
     return <Class {...defaultProps} {...props}></Class>
   }
