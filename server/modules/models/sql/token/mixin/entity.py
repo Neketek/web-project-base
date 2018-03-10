@@ -1,8 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
-from sqlalchemy import func
 from sqlalchemy.types import BigInteger, DateTime, Boolean, TIMESTAMP
-from modules.models.sql.base import BaseClass, Entity
+from modules.models.sql.base.mixin.entity import BaseEntityMixin
 from datetime import datetime, timedelta
 from sqlalchemy.ext.declarative import declared_attr
 import uuid
@@ -12,7 +10,7 @@ def token_generator(length):
     return lambda: uuid.uuid4().hex[:length]
 
 
-class UserVerificationTokenMixin(Entity):
+class TokenEntityMixin(BaseEntityMixin):
 
     TOKEN_LIFESPAN = 15*16
     TOKEN_LENGTH = 6
@@ -30,15 +28,6 @@ class UserVerificationTokenMixin(Entity):
             .seconds >= self.__class__.TOKEN_LIFESPAN
 
     @declared_attr
-    def user_id(cls):
-        return Column(
-            BigInteger(),
-            ForeignKey('user.id'),
-            nullable=False,
-            index=True
-            )
-
-    @declared_attr
     def token(cls):
         return Column(
             String(cls.TOKEN_LENGTH),
@@ -49,20 +38,3 @@ class UserVerificationTokenMixin(Entity):
     number_of_generations = Column(Integer(), nullable=False, default=1)
 
     verified = Column(Boolean(), nullable=False, default=False)
-
-
-class UserEmailVerificationToken(UserVerificationTokenMixin, BaseClass):
-
-    user = relationship("User", back_populates="email_verification_token")
-
-
-class UserPhoneVerificationToken(UserVerificationTokenMixin, BaseClass):
-
-    user = relationship("User", back_populates="phone_verification_token")
-
-
-class UserPasswordResetToken(UserVerificationTokenMixin, BaseClass):
-
-    TOKEN_LENGTH = 12
-
-    user = relationship("User", back_populates="password_reset_token")
