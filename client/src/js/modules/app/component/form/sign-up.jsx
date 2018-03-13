@@ -121,13 +121,21 @@ SignUpForm.updateDefaultProps({
     email:"Email",
     password:"Password",
     emailConfirmation:"Confirm email",
-    passwordConfirmation:"Confirm password"
+    passwordConfirmation:"Confirm password",
+    name:{
+      first:"Pidar First Name",
+      last:"Hiuila Last Name"
+    }
   },
   values:{
     email:"",
     emailConfirmation:"",
     password:"",
-    passwordConfirmation:""
+    passwordConfirmation:"",
+    name:{
+      first:"Nikita",
+      last:"Balakin"
+    }
   },
   rules:{
     email:[

@@ -3,19 +3,14 @@ import {Form,Rule} from 'modules/common/base/component/form';
 import {Text,Date,DateTime,Time,Select,Button,InputError} from 'modules/common/component/input';
 import Grid from 'material-ui/Grid';
 
-const FIRST_NAME_FIELD_NAME = "first";
-const LAST_NAME_FIELD_NAME = "last";
-
 class NameForm extends Form{
 
   form=({render:{field,error}})=>{
 
-    const {labels}=this.props;
-
     const commonProps = (name)=>{
       return {
         name,
-        label:labels[name],
+        label:this.label(name),
         fullWidth:true,
         required:true
       }

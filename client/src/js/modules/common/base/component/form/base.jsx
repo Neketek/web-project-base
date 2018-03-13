@@ -33,9 +33,11 @@ class FormBase extends Component{
     // "private" object which stores not shared state
     this.private = {
       /*
-       * if focus(name,value) was called at least once should be true.
-       * if dirtyFocusOnErrors calls reset this value to false.
-       * important to understand should form reset focus entirely after
+       * if focus(name,value) was called at least once
+       * during component lifecycle, this value should be true.
+       * dirtyFocusOnErrors calls reset this value to false.
+       * This value is important to understand
+       * should form reset focus entirely after
        * props.dirtyFocusOnErrors was changed.
        */
       fieldFocusChanged:false
@@ -195,6 +197,19 @@ class FormBase extends Component{
   isNested=(name=undefined)=>{
     return this.nested(name).name===undefined;
   }
+  /*
+   * allows modification of the static labels withoud
+   * change of the getter
+   */
+  labels=()=>{
+    return this.props.labels;
+  }
+  /*
+   * label getter
+   */
+  label=(name)=>{
+    return this.labels()[name];
+  }
 
   /*
    * getter for this.state.status.valid
@@ -307,11 +322,18 @@ class FormBase extends Component{
   renderForm=(Class,props)=>{
     const {name}=props;
     const nestedFormState = this.nested(name);
+    const values = this.value(name);
     const dirtyFocusOnErrors = this.dirty(name)&&this.focus(name);
     const defaultProps = {
       onChange:this.onChange,
       dirtyFocusOnErrors,
       ...nestedFormState,
+      /*
+       * supressing nestedFormState.values to be able to set them
+       * in the parent form state.values
+       */
+      values,
+      labels:this.label(name),
       resetParentFocus:()=>{
         // console.log("reset focus parent");
         this.resetFocus();
@@ -436,6 +458,7 @@ class FormBase extends Component{
     errors:{},
     nested:{},
     rules:{},
+    labels:{},
     fireInitEvent:true,
     dirtyFocusOnErrors:false
   }
@@ -452,6 +475,7 @@ class FormBase extends Component{
       dirty:PropTypes.object
     }),
     rules:PropTypes.object.isRequired,
+    labels:PropTypes.object.isRequired,
     fireInitEvent:PropTypes.bool.isRequired,
     dirtyFocusOnErrors:PropTypes.bool.isRequired
   }
