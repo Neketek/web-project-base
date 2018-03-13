@@ -256,6 +256,7 @@ class FormBase extends Component{
         this.dirty(name,true);
       }
     }
+    this.private.fieldFocusChanged = false;
   }
 
   /*
