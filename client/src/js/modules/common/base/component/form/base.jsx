@@ -35,7 +35,7 @@ class FormBase extends Component{
       /*
        * if focus(name,value) was called at least once
        * during component lifecycle, this value should be true.
-       * dirtyFocusOnErrors calls reset this value to false.
+       * resetFocus calls reset this value to false.
        * This value is important to understand
        * should form reset focus entirely after
        * props.dirtyFocusOnErrors was changed.
@@ -256,14 +256,18 @@ class FormBase extends Component{
         this.dirty(name,true);
       }
     }
-    this.private.fieldFocusChanged = false;
   }
 
   /*
    * removes focus from all fields
    */
   resetFocus=()=>{
+    this.private.fieldFocusChanged = false;
     this.state.status.focus={};
+    const {resetParentFocus}=this.props;
+    if(resetParentFocus){
+      resetParentFocus();
+    }
   }
 
   /*
@@ -278,11 +282,7 @@ class FormBase extends Component{
       this.resetFocus();
     }
     this.focus(name,focus);
-    const {resetParentFocus}=this.props;
     this.propagateEvent(null);
-    if(resetParentFocus){
-      resetParentFocus();
-    }
   }
 
 
@@ -334,10 +334,7 @@ class FormBase extends Component{
        */
       values,
       labels:this.label(name),
-      resetParentFocus:()=>{
-        // console.log("reset focus parent");
-        this.resetFocus();
-      }
+      resetParentFocus:this.resetFocus
     }
     return <Class {...defaultProps} {...props}></Class>
   }

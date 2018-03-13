@@ -123,8 +123,8 @@ SignUpForm.updateDefaultProps({
     emailConfirmation:"Confirm email",
     passwordConfirmation:"Confirm password",
     name:{
-      first:"Pidar First Name",
-      last:"Hiuila Last Name"
+      first:"First name",
+      last:"Last name"
     }
   },
   values:{
@@ -133,8 +133,8 @@ SignUpForm.updateDefaultProps({
     password:"",
     passwordConfirmation:"",
     name:{
-      first:"Nikita",
-      last:"Balakin"
+      first:"",
+      last:""
     }
   },
   rules:{
