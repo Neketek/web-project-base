@@ -6,14 +6,14 @@ from modules.models.sql.base.mixin.base.column import \
     base_column_mixin
 
 
-@base_column_mixin()
-def EmailChildMixin():
+@base_column_mixin
+def UserSessionChildMixin():
     return dict(
         column=dict(
             type=BigInteger(),
-            name='email_id'
+            name='user_session_id'
         ),
         key=dict(
-            location='email.id'
+            location='user_session.id'
         )
     )

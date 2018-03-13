@@ -1,6 +1,8 @@
 from ..mixin.child import UserChildMixin
-from modules.models.sql.base import BaseClass, Entity
+from modules.models.sql.base import BaseClass
+from modules.models.sql.base.mixin.entity import BaseEnityMixin
+from modules.models.sql.token.mixin.base import BaseTokenMixin
 
 
-class UserSession(BaseClass, Entity, UserChildMixin):
-    pass
+class UserSession(BaseClass, BaseEnityMixin, BaseTokenMixin):
+    TOKEN_LENGTH = 64

@@ -14,6 +14,14 @@ class BaseClass:
         return name
 
     @property
+    def Model(self):
+        return self.__class__
+
+    @Model.setter
+    def Model(self, value):
+        raise Exception("Entity Model can't be changed at runtime!")
+
+    @property
     def session(self):
         return object_session(self)
 

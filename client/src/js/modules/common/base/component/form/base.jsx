@@ -7,14 +7,16 @@ import {getterSetter} from '../../utils';
  * creates form event object
  */
 
-const Event=(name,{values,errors,status})=>{
+
+const Event=(name,{values,errors,status,nested})=>{
   const form = true;
   return {
     form,
     name,
     values,
     errors,
-    status
+    status,
+    nested
   }
 }
 
@@ -28,12 +30,22 @@ class FormBase extends Component{
   constructor(props){
     super(props);
     this.state = this.State(props);
+    // "private" object which stores not shared state
+    this.private = {
+      /*
+       * if focus(name,value) was called at least once should be true.
+       * if dirtyFocusOnErrors calls reset this value to false.
+       * important to understand should form reset focus entirely after
+       * props.dirtyFocusOnErrors was changed.
+       */
+      fieldFocusChanged:false
+    };
     this.status('valid',this.isValid());
     if(this.props.dirtyFocusOnErrors){
       this.dirtyFocusOnErrors();
     }
     if(this.props.fireInitEvent){
-      this.propagateEvent(null,{updateState:false});//initial on change event which sends form snapshot to the parent component
+      this.propagateEvent(null,{rerender:false});//initial on change event which sends form snapshot to the parent component
     }
   }
 
@@ -44,7 +56,7 @@ class FormBase extends Component{
   onSubmit=()=>{
     if(!this.status('valid')){
       this.dirtyFocusOnErrors();
-      this.rerender();
+      this.propagateEvent(null);
     }else{
       const {props:{name},state} = this;
       this.props.onSubmit(Event(name,state));
@@ -61,7 +73,7 @@ class FormBase extends Component{
    *  dirty: fields dirty statuses
    *  focus: fields focus statuses
    */
-  State=({values,errors,status})=>{
+  State=({values,errors,status,nested})=>{
     if(this.state===undefined){
       this.state = {
         values:{},
@@ -69,15 +81,16 @@ class FormBase extends Component{
         status:{
           dirty:{},
           focus:{},
-          form:{}, //nested forms statuses
           valid:false
-        }
+        },
+        nested:{}
       }
     }
     return {
       values:Object.assign({},this.state.values,values),
       errors:Object.assign({},this.state.errors,errors),
-      status:Object.assign({},this.state.status,status)
+      status:Object.assign({},this.state.status,status),
+      nested:Object.assign({},this.state.nested,nested)
     };
 
   }
@@ -95,21 +108,32 @@ class FormBase extends Component{
    */
   componentWillReceiveProps(props){
     this.updateStateFromProps(props);
-    if(this.props.dirtyFocusOnErrors){
-      this.dirtyFocusOnErrors();
+    if(this.props.dirtyFocusOnErrors!=props.dirtyFocusOnErrors){
+      // console.log("DIRTY FOCUS UPDATE:"+this.props.name);
+      // console.log({value:props.dirtyFocusOnErrors,old:this.props.dirtyFocusOnErrors});
+      // console.log({fieldFocusChanged:this.private.fieldFocusChanged})
+      if(props.dirtyFocusOnErrors){
+        this.dirtyFocusOnErrors();
+      }else if(!this.private.fieldFocusChanged){
+        this.resetFocus();
+      }
+      this.propagateEvent(null);
     }
   }
 
   /*
    * propagates form event to parent component
    */
-  propagateEvent=(event,props={updateState:true,validate:true})=>{
+
+  propagateEvent=(event,props={rerender:true,validate:true})=>{
+    // console.log("EVENT");
+    // console.log({event});
     if(event){
-      const {name} = event;
-      if(event.form){
+      const {name,form} = event;
+      if(form){
         const {form,values,errors,status} = event;
         this.value(name,values);
-        this.formStatus(name,{values,errors,status});
+        this.nested(name,{values,errors,status});
       }else{
         const {value} = event;
         this.value(name,value);
@@ -120,7 +144,7 @@ class FormBase extends Component{
       this.status('valid',this.isValid());
     }
     this.props.onChange(Event(this.props.name,this.state));
-    if(props.updateState){
+    if(props.rerender){
       this.setState(this.state);
     }
   }
@@ -158,15 +182,18 @@ class FormBase extends Component{
    * return false if focus[name] is undefined
    */
   focus=(name=undefined,value=undefined)=>{
+    if(value!==undefined){
+      this.private.fieldFocusChanged=true;
+    }
     return getterSetter(this.state.status.focus,name,value,false);
   }
 
-  formStatus=(name=undefined,value=undefined)=>{
-    return getterSetter(this.state.status.form,name,value,{});
+  nested=(name=undefined,value=undefined)=>{
+    return getterSetter(this.state.nested,name,value,{});
   }
 
-  formDirtyFocusOnErrors=(name=undefined,value=undefined)=>{
-    return getterSetter(this.state.status.form[name],value,false);
+  isNested=(name=undefined)=>{
+    return this.nested(name).name===undefined;
   }
 
   /*
@@ -208,15 +235,13 @@ class FormBase extends Component{
    */
 
   dirtyFocusOnErrors=()=>{
-    for(const name in this.state.errors){
-      if(this.hasErrors(name)){
+    for(const name in this.state.values){
+      if(this.hasErrors(name)||this.isNested(name)){
         this.focus(name,true);
         this.dirty(name,true);
       }
     }
-    for(const name in this.state.status.form){
-      this.formDirtyFocusOnErrors(name,true);
-    }
+    this.private.fieldFocusChanged = false;
   }
 
   /*
@@ -224,9 +249,6 @@ class FormBase extends Component{
    */
   resetFocus=()=>{
     this.state.status.focus={};
-    for(const name in this.state.status.form){
-      this.formDirtyFocusOnErrors(name,false);
-    }
   }
 
   /*
@@ -234,12 +256,18 @@ class FormBase extends Component{
    */
 
   onFieldFocusChange=(event)=>{
-    const {name,focus} = event;
+    // console.log({fieldFocusChangedEvent:event});
+    const {name,focus}=event;
     if(focus){
+      // console.log('reset parent focus');
       this.resetFocus();
     }
     this.focus(name,focus);
-    this.rerender();
+    const {resetParentFocus}=this.props;
+    this.propagateEvent(null);
+    if(resetParentFocus){
+      resetParentFocus();
+    }
   }
 
 
@@ -278,14 +306,16 @@ class FormBase extends Component{
    */
   renderForm=(Class,props)=>{
     const {name}=props;
-    const {values,status,errors,dirtyFocusOnErrors} = this.formStatus(name);
+    const nestedFormState = this.nested(name);
+    const dirtyFocusOnErrors = this.dirty(name)&&this.focus(name);
     const defaultProps = {
       onChange:this.onChange,
-      fireInitEvent:true,
-      values,
-      status,
-      errors,
-      dirtyFocusOnErrors
+      dirtyFocusOnErrors,
+      ...nestedFormState,
+      resetParentFocus:()=>{
+        // console.log("reset focus parent");
+        this.resetFocus();
+      }
     }
     return <Class {...defaultProps} {...props}></Class>
   }
@@ -315,7 +345,7 @@ class FormBase extends Component{
    * to enable rendering
    */
   form=()=>{
-    console.warn("Warning:default form render method");
+    console.warn("Warning:default form render method. Override this.form method!");
     return null;
   }
 
@@ -333,12 +363,10 @@ class FormBase extends Component{
    */
   areAllFormsValid(){
     // console.log("FORMS");
-    for(const name in this.state.status.form){
-      const value = this.formStatus(name);
-      if(value&&value.form){
-        if(!value.status.valid){
-          return false;
-        }
+    for(const name in this.state.nested){
+      const {status:{valid}} = this.nested(name);
+      if(!valid){
+        return false
       }
     }
     return true;
@@ -394,22 +422,38 @@ class FormBase extends Component{
   }
 
   static defaultProps = {
-    name:"noname",
+    name:null,
     onChange(event){
       console.warn(`Warning:default form onChange callback in form ${event.name}`);
       console.log(event);
     },
+    onSubmit(event){
+      console.warn(`Warning:default form onSubmit callback in form ${event.name}`);
+      console.log(event);
+    },
+    values:{},
+    status:{},
+    errors:{},
+    nested:{},
+    rules:{},
     fireInitEvent:true,
-    dirtyFocusOnErrors:false,
-    rules:{}
+    dirtyFocusOnErrors:false
   }
 
   static propTypes = {
     name:PropTypes.string.isRequired,
     onChange:PropTypes.func.isRequired,
+    onSubmit:PropTypes.func,
+    values:PropTypes.object,
+    errors:PropTypes.object,
+    status:PropTypes.shape({
+      valid:PropTypes.bool,
+      focus:PropTypes.object,
+      dirty:PropTypes.object
+    }),
+    rules:PropTypes.object.isRequired,
     fireInitEvent:PropTypes.bool.isRequired,
-    dirtyFocusOnErrors:PropTypes.bool.isRequired,
-    rules:PropTypes.object.isRequired
+    dirtyFocusOnErrors:PropTypes.bool.isRequired
   }
 
 }
