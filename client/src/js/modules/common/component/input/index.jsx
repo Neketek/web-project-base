@@ -5,3 +5,4 @@ export { default as DateTime } from './datetime';
 export { default as Select } from './select';
 export { default as Button} from './button';
 export { default as InputError} from './error';
+export { default as Tabs } from './tabs';

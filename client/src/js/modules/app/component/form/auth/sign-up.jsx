@@ -1,7 +1,7 @@
 import React from 'react';
 import {Form,Rule} from 'modules/common/base/component/form';
 import {Text,Date,DateTime,Time,Select,Button,InputError} from 'modules/common/component/input';
-import NameForm from './name';
+import NameForm from '../name';
 import Grid from 'material-ui/Grid';
 import {
   FormLabel,

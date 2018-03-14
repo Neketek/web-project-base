@@ -35,7 +35,7 @@ class FormBase extends Component{
       /*
        * if focus(name,value) was called at least once
        * during component lifecycle, this value should be true.
-       * resetFocus calls reset this value to false.
+       * resetFocus and dirtyFocusOnErrors calls reset this value to false.
        * This value is important to understand
        * should form reset focus entirely after
        * props.dirtyFocusOnErrors was changed.
@@ -133,9 +133,9 @@ class FormBase extends Component{
     if(event){
       const {name,form} = event;
       if(form){
-        const {form,values,errors,status} = event;
+        const {form,values,errors,status,nested} = event;
         this.value(name,values);
-        this.nested(name,{values,errors,status});
+        this.nested(name,{values,errors,status,nested});
       }else{
         const {value} = event;
         this.value(name,value);
@@ -265,6 +265,10 @@ class FormBase extends Component{
   resetFocus=()=>{
     this.private.fieldFocusChanged = false;
     this.state.status.focus={};
+    /*
+     * this allows nested forms to reset parent form fields focus
+     * when one of their fields becomes focused.
+     */
     const {resetParentFocus}=this.props;
     if(resetParentFocus){
       resetParentFocus();

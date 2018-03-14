@@ -1,5 +1,5 @@
 import AppContainerBase from 'modules/app/component/container/base';
-import SignUpForm from 'modules/app/component/form/sign-up';
+import SignUpForm from 'modules/app/component/form/auth/sign-up';
 import Grid from 'material-ui/Grid';
 import React from 'react';
 import { signUp } from 'modules/app/data/network/ajax/auth';
