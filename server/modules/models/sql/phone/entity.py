@@ -3,10 +3,16 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.types import BigInteger, Date
 from modules.models.sql.base.model import BaseClass
 from modules.models.sql.base.mixin.entity import BaseEntityMixin
-from modules.models.sql.base.mixin.date.creation import CreationDateMixin
+from modules.models.sql.base.mixin.date import\
+    CreationDateTimeMixin, ModificationDateTimeMixin
 
 
-class Phone(BaseClass, BaseEntityMixin, CreationDateMixin):
+class Phone(
+    BaseClass,
+    BaseEntityMixin,
+    CreationDateTimeMixin,
+    ModificationDateTimeMixin
+):
 
     number = Column(String(20), index=True, nullable=False)
 

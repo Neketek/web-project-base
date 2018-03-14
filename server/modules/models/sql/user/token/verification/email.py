@@ -1,4 +1,4 @@
-from modules.models.sql.user.token.mixin.entity import \
+from modules.models.sql.user.token.mixin.verification import \
     UserVerificationTokenMixin
 from sqlalchemy.orm import relationship
 from modules.models.sql.base.model import BaseClass

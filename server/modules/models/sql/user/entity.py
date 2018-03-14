@@ -2,8 +2,8 @@ from modules.models.sql.base.model import BaseClass
 from modules.models.sql.base.mixin.entity import BaseEntityMixin
 from modules.models.sql.email.mixin.child import EmailChildMixin
 from modules.models.sql.phone.mixin.child import PhoneChildMixin
-from modules.models.sql.base.mixin.date.creation import CreationDateMixin
-from modules.models.sql.user.session.mixin.child import UserSessionChildMixin
+from modules.models.sql.base.mixin.date import\
+    CreationDateTimeMixin, ModificationDateTimeMixin
 from sqlalchemy import \
     Column, Integer, String, ForeignKey,\
     func, or_, and_, desc, asc
@@ -30,7 +30,8 @@ class User(
             nullable=False
         )
     ),
-    CreationDateMixin
+    CreationDateTimeMixin,
+    ModificationDateTimeMixin
 ):
 
     first_name = Column(String(128), nullable=False, default="")
@@ -58,7 +59,7 @@ class User(
         uselist=False
     )
 
-    session = relationship(
+    user_session = relationship(
         "UserSession",
         back_populates='user',
         uselist=False

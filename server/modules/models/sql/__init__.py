@@ -5,6 +5,9 @@ from modules.models.sql.base.model import BaseClass
 from modules.models.sql.email.entity import Email
 from modules.models.sql.phone.entity import Phone
 from modules.models.sql.user.entity import User
+from modules.models.sql.user.session.entity import \
+    UserSession, UserSessionStringKeyValue,\
+    UserSessionIntegerKeyValue
 from modules.models.sql.user.token.verification.email import \
     UserEmailVerificationToken
 from modules.models.sql.user.token.verification.phone import \

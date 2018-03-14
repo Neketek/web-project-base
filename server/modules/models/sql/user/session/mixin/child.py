@@ -6,7 +6,7 @@ from modules.models.sql.base.mixin.base.column import \
     base_column_mixin
 
 
-@base_column_mixin
+@base_column_mixin()
 def UserSessionChildMixin():
     return dict(
         column=dict(

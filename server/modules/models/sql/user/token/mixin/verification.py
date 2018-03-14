@@ -9,7 +9,11 @@ from modules.models.sql.token.mixin.verification import VerificationTokenMixin
 
 
 class UserVerificationTokenMixin(
-    BaseEntityMixin,
+    UserChildMixin(
+        column=dict(
+            primary_key=True
+        )
+    ),
     VerificationTokenMixin
 ):
     pass

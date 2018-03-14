@@ -20,7 +20,8 @@ def base_column_mixin(*extensions):
 
             del column['name']
             del column['type']
-            del key['location']
+            if key_location is not None:
+                del key['location']
 
             def column_prop(cls):
                 col_args = [

@@ -1,12 +1,17 @@
 from .base import BaseTokenMixin
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
-from modules.models.sql.base.mixin.date.creation import CreationDateMixin
+from modules.models.sql.base.mixin.date import\
+    CreationDateTimeMixin, ModificationDateTimeMixin
 from datetime import datetime, timedelta
 from sqlalchemy import func
 from sqlalchemy.orm.exc import NoResultFound
 
 
-class VerificationTokenMixin(BaseTokenMixin, CreationDateMixin):
+class VerificationTokenMixin(
+    BaseTokenMixin,
+    CreationDateTimeMixin,
+    ModificationDateTimeMixin
+):
 
     TOKEN_LIFESPAN = 15*16
 

@@ -1,5 +1,5 @@
 import AppContainerBase from 'modules/app/component/container/base';
-import AuthForm from 'modules/app/component/form/auth';
+import LoginForm from 'modules/app/component/form/auth/login';
 import Grid from 'material-ui/Grid';
 import React from 'react';
 import Routing from 'modules/app/component/container/routing';
@@ -13,7 +13,7 @@ class LoginContainer extends AppContainerBase{
   container({render}){
     return (
       <Grid container justify="center">
-        <AuthForm onChange={this.props.onChange} onSubmit={this.props.onSubmit}></AuthForm>
+        <LoginForm onChange={this.props.onChange} onSubmit={this.props.onSubmit}></LoginForm>
       </Grid>
     );
   }
