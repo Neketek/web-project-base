@@ -19,17 +19,27 @@ class LoginContainer extends AppContainerBase{
   }
 }
 
+const actionLogin=data=>(dispatch,getState)=>{
+  const {email,password}=data;
+  login({email,password}).then(
+    data=>data.json().then(
+      data=>{
+        console.log(data);
+      },
+      parsingError=>{
+        console.log(parsingError);
+      }
+    ),
+    error=>{
+      console.log(error);
+    }
+  )
+}
+
 LoginContainer.updateMapDispatchToProps((dispatch,ownProps)=>{
   return {
     onSubmit(event){
-      login().then(
-        data=>{
-          console.log(data);
-        },
-        error=>{
-          console.log(error);
-        }
-      );
+      dispatch(actionLogin(event.values));
     }
   }
 });

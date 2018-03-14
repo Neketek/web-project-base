@@ -23,8 +23,8 @@ def user_friendly_exceptions(func):
         try:
             return func(*args, **kwars)
         except UserFriendlyException as e:
-            return vars(e)()
+            return jsonify(vars(e)())
         except Exception as e:
-            return vars(InternalServerException())()
+            return jsonify(vars(InternalServerException())())
 
     return user_friendly_wrapper

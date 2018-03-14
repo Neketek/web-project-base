@@ -66,7 +66,8 @@ class User(
     )
 
     def password_check(self, password):
-        password_hash = User.hash_user_password(password, self.password_salt)
+        password_hash, salt = \
+            User.hash_user_password(password, self.password_salt)
         return password_hash == self.password_hash
 
     @staticmethod

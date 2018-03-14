@@ -15,14 +15,8 @@ class SignUpContainer extends AppContainerBase{
 }
 
 export const signUpAction=data=>(dispatch,getState)=>{
-  const signUpData = {
-    name:{
-      first:data.firstName,
-      last:data.lastName
-    },
-    password:data.password,
-    email:data.email
-  }
+  const {name,password,email}=data;
+  const signUpData = {name,password,email};
   signUp(signUpData).then(
     response=>{
       response.json().then(

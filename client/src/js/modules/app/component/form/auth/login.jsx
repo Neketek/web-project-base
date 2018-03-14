@@ -18,7 +18,7 @@ class LoginForm extends Form{
       const error = this.shouldShowErrors(name)
       return {
         name,
-        label:name[0].toUpperCase()+name.slice(1),
+        label:this.label(name),
         fullWidth:true,
         required:true,
         error
@@ -27,7 +27,7 @@ class LoginForm extends Form{
 
 
     const loginProps = {
-      ...commonProps('login')
+      ...commonProps('email')
     };
 
     const passwordProps = {
@@ -71,10 +71,14 @@ LoginForm.updateDefaultProps({
   name:"login",
   values:{
     password:"",
-    login:""
+    email:""
+  },
+  labels:{
+    email:"Email",
+    password:"Password"
   },
   rules:{
-    login:[
+    email:[
       Rule.String.notEmpty("Login should not be empty!")
     ],
     password:[

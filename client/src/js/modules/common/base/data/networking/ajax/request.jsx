@@ -86,12 +86,12 @@ class AjaxRequest{
   }
 
   cookies(){
-    this.props.cridentials = 'same-origin';
+    this.props.credentials = 'same-origin';
     return this;
   }
 
   CORSCookies(){
-    this.props.cridentials = 'include';
+    this.props.credentials = 'include';
     return this;
   }
 

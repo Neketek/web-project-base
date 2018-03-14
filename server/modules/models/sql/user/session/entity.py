@@ -27,11 +27,13 @@ class UserSession(
     )
     integers = relationship(
         "UserSessionIntegerKeyValue",
-        back_populates='user_session'
+        back_populates='user_session',
+        lazy='dynamic'
     )
     strings = relationship(
         "UserSessionStringKeyValue",
-        back_populates='user_session'
+        back_populates='user_session',
+        lazy='dynamic'
     )
 
 
