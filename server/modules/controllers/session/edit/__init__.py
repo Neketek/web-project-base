@@ -2,6 +2,7 @@ from flask import session
 
 
 class Edit():
+
     def set_user_session_data(
         self,
         user_entity=None

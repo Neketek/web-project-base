@@ -1,6 +1,6 @@
 import React from 'react';
 import {Form,Rule} from 'modules/common/base/component/form';
-import {Text,Date,DateTime,Time,Select,Button} from 'modules/common/component/input';
+import {Text,Date,DateTime,Time,Select,Button,InputError} from 'modules/common/component/input';
 import Grid from 'material-ui/Grid';
 import {
   FormLabel,
@@ -12,7 +12,7 @@ import {
 
 class LoginForm extends Form{
 
-  form=({render})=>{
+  form=({render:{field,error,form}})=>{
 
     const commonProps = (name)=>{
       const error = this.shouldShowErrors(name)
@@ -36,23 +36,25 @@ class LoginForm extends Form{
     }
 
 
-    const error=(name)=>this.shouldShowErrorsText(name)?<FormHelperText error>{this.errors(name)[0]}</FormHelperText>:null;
+
 
     // console.log(loginProps);
 
-    const login = render.field(Text,loginProps);
-    const password = render.field(Text,passwordProps);
+    const login = field(Text,loginProps);
+    const loginError = error(InputError,{name:'email'});
 
+    const password = field(Text,passwordProps);
+    const passwordError = error(InputError,{name:'password'});
 
     return (
         <Grid container justify='center' spacing={16} alignItems='center'>
               <Grid item xs={12}>
                 {login}
-                {error("login")}
+                {loginError}
               </Grid>
               <Grid item xs={12}>
                 {password}
-                {error("password")}
+                {passwordError}
               </Grid>
               <Grid item xs={12}>
                 <Grid container justify='center'>
@@ -79,7 +81,7 @@ LoginForm.updateDefaultProps({
   },
   rules:{
     email:[
-      Rule.String.notEmpty("Login should not be empty!")
+      Rule.String.notEmpty("Email should not be empty!")
     ],
     password:[
       Rule.String.notEmpty("Password should not be empty!")
