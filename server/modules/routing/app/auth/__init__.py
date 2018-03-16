@@ -22,7 +22,8 @@ def register(app):
 @utils.request.sql_session
 def login(json=None, sql_session=None):
     user_entity = UserController(sql_session).login(json)
-    SessionController(sql_session).set_user_session_data(user_entity)
+    SessionController(sql_session).set_user_session_data(user_entity)\
+        .set_permanent(permanent=True)
     return jsonify(dict(login=True))
 
 

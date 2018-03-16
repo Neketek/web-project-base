@@ -20,21 +20,12 @@ login = SessionLoginManager()
 @login.get_user
 def get_user(sql_session=None):
     user_session_data = SessionController(sql_session).get_user_session_data()
-    print('USER SESSION DATA')
-    print(user_session_data)
     return UserController(sql_session).session_login(**user_session_data)
 
 
 @login.unauthorized
 def unauthorized(sql_session=None, original=None):
-    ignore = [
-        url_for('app.auth.login'),
-        url_for('app.auth.sign_up')
-    ]
-    if request.path not in ignore:
-        return redirect(url_for('app.auth.login'))
-    else:
-        return original()
+    return redirect(url_for('app.auth.login'))
 
 
 CACHE_ID = uuid.uuid4().hex

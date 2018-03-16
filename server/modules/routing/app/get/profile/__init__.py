@@ -16,7 +16,7 @@ def register(app):
 @utils.response.user_friendly_exceptions
 @utils.request.json
 @login.required
-def get_user_profile(user_context=None, json=None):
+def user(user_context=None, json=None):
     json = dict(id=user_context.id)
     json_resp = UserController(user_context=user_context)\
         .get_profile(json=json)
