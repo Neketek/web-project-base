@@ -3,8 +3,12 @@ from modules.routing.utils import request, response
 import uuid
 
 blueprint = Blueprint("landing", __name__)
-
+url_prefix = ""
 CACHE_ID = uuid.uuid4().hex
+
+
+def register(app):
+    app.register_blueprint(blueprint, url_prefix=url_prefix)
 
 
 @blueprint.route("/", methods=['GET'])

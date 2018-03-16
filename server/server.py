@@ -1,19 +1,25 @@
 from flask import Flask
-from modules.config import flask_app
-from modules.routing.app.auth import blueprint as app_auth_blueprint
-from modules.routing.app import blueprint as app_blueprint
-from modules.routing.landing import blueprint as landing_blueprint
+from modules.config.flask import TEMPLATE_FOLDER
+from modules.routing.app.auth import register as app_auth_register
+from modules.routing.app.get.profile import\
+    register as app_get_profile_register
+from modules.routing.app import register as app_register
+from modules.routing.landing import register as landing_register
 import sys
 
-app = Flask(__name__, template_folder=flask_app.TEMPLATE_FOLDER)
-app.register_blueprint(app_auth_blueprint, url_prefix='/app')
-app.register_blueprint(app_blueprint, url_prefix='/app')
-app.register_blueprint(landing_blueprint)
+app = Flask(__name__, template_folder=TEMPLATE_FOLDER)
+
+app_register(app)
+app_auth_register(app)
+app_get_profile_register(app)
+landing_register(app)
 
 
 if __name__ == '__main__':
-    if 'production' not in sys.argv:
-        app.config.from_object('modules.config.flask_app.DevelopmentConfig')
+    if 'prod' not in sys.argv:
+        app.config.from_object('modules.config.flask.Development')
     else:
-        app.config.from_object('modules.config.flask_app.ProductionConfig')
+        app.config.from_object('modules.config.flask_app.Production')
     app.run(debug=True, host="0.0.0.0", port=8080, threaded=True)
+else:
+    app.config.from_object('modules.config.flask_app.Production')

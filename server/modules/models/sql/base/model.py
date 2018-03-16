@@ -22,11 +22,11 @@ class BaseClass:
         raise Exception("Entity Model can't be changed at runtime!")
 
     @property
-    def session(self):
+    def sql_session(self):
         return object_session(self)
 
-    @session.setter
-    def session(self, value):
+    @sql_session.setter
+    def sql_session(self, value):
         raise Exception(
             "Session binding can't be set via entity.session property!")
 

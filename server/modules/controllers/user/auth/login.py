@@ -22,12 +22,26 @@ class Login:
                 .filter(sql.User.email_id == email_id_query.c.id)\
                 .one()
 
-            print('User found')
+            # print('User found')
 
             if not user_entity.password_check(password):
-                print('Password check failed')
+                # print('Password check failed')
                 raise NoResultFound()
 
         except NoResultFound:
             raise UserFriendlyException(message='Invalid login data!')
         return user_entity
+
+    def session_login(self, uid=None, token=None):
+        if uid is None or token is None:
+            return None
+        try:
+            user_entity = self.sql_session\
+                .query(sql.User)\
+                .filter(sql.User.id == uid)\
+                .one()
+        except NoResultFound:
+            return None
+        return user_entity\
+            if user_entity.session.token == token\
+            else None

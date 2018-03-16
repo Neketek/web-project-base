@@ -32,6 +32,15 @@ class MissingValueException(UserFriendlyException):
         self.message = message.format(value)
 
 
+class NotFoundException(UserFriendlyException):
+    def __init__(
+        self,
+        message='Requested {0} was not found!',
+        value='item'
+    ):
+        self.message = message.format(value)
+
+
 class InternalServerException(JsonException):
 
     GROUP = 'internal'

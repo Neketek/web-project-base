@@ -49,7 +49,7 @@ class Create:
                 sql.UserEmailVerificationToken()
             user_entity.phone_verification_token =\
                 sql.UserPhoneVerificationToken()
-            user_entity.user_session = sql.UserSession()
+            user_entity.session = sql.UserSession()
             self.sql_session.add(user_entity)
 
         return user_entity

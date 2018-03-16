@@ -37,7 +37,7 @@ class UserSessionKeyMixin(
         )
 
     @declared_attr
-    def user_session(cls):
+    def session(cls):
         return relationship(
             'UserSession',
             back_populates=cls.BACK_POPULATES
