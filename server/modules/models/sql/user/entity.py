@@ -59,7 +59,7 @@ class User(
         uselist=False
     )
 
-    user_session = relationship(
+    session = relationship(
         "UserSession",
         back_populates='user',
         uselist=False
@@ -76,3 +76,24 @@ class User(
         password_hash = hashlib.sha512((password + salt).encode('utf-8'))\
             .hexdigest()
         return password_hash, salt
+
+    def json(self):
+
+        phone = self.phone.number if self.phone is not None else None
+        email = self.email.email
+
+        name = {
+            'first': self.first_name,
+            'last': self.last_name
+        }
+
+        return {
+            'id': self.id,
+            'name': name,
+            'email': email,
+            'phone': phone,
+            'datetime': {
+                'creation': self.creation_date_time,
+                'modification': self.modification_date_time
+            }
+        }

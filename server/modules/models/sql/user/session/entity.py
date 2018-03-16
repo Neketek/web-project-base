@@ -4,7 +4,7 @@ from modules.models.sql.base.mixin.entity import BaseEntityMixin
 from modules.models.sql.token.mixin.base import BaseTokenMixin
 from .mixin.value import UserSessionKeyValue
 from modules.models.sql.user.mixin.child import UserChildMixin
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.schema import UniqueConstraint
 
@@ -23,16 +23,22 @@ class UserSession(
     TOKEN_LENGTH = 64
     user = relationship(
         'User',
-        back_populates='user_session'
+        back_populates='session'
     )
-    integers = relationship(
+    integer = relationship(
         "UserSessionIntegerKeyValue",
-        back_populates='user_session',
+        back_populates='session',
         lazy='dynamic'
     )
-    strings = relationship(
+    string = relationship(
         "UserSessionStringKeyValue",
-        back_populates='user_session',
+        back_populates='session',
+        lazy='dynamic'
+    )
+
+    boolean = relationship(
+        "UserSessionBooleanKeyValue",
+        back_populates='session',
         lazy='dynamic'
     )
 
@@ -45,7 +51,7 @@ class UserSessionIntegerKeyValue(
         )
     )
 ):
-    BACK_POPULATES = "integers"
+    BACK_POPULATES = "integer"
 
 
 class UserSessionStringKeyValue(
@@ -56,4 +62,15 @@ class UserSessionStringKeyValue(
         )
     )
 ):
-    BACK_POPULATES = "strings"
+    BACK_POPULATES = "string"
+
+
+class UserSessionBooleanKeyValue(
+    BaseClass,
+    UserSessionKeyValue(
+        column=dict(
+            type=Boolean()
+        )
+    )
+):
+    BACK_POPULATES = "boolean"

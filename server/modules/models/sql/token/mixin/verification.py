@@ -25,7 +25,7 @@ class VerificationTokenMixin(
         if creation is None:
             return None
         expiration = creation + timedelta(seconds=TOKEN_LIFESPAN)
-        return self.session.query(
+        return self.sql_session.query(
             expiration <= func.now().label('expired')
         ).one()['expired']
 

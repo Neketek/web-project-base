@@ -89,8 +89,13 @@ class SessionLoginManager:
             try:
                 user = self.__get_user(sql_session=sql_session)
                 if user is None:
-                    return self.unauthorized(sql_session=sql_session)
-                return func(user=user, *args, **kwars)
+                    def original():
+                        return func(*args, **kwars)
+                    return self.__unauthorized(
+                        sql_session=sql_session,
+                        original=original
+                    )
+                return func(user_context=user, *args, **kwars)
             except Exception as e:
                 return self.__error(exception=e, sql_session=sql_session)
 
