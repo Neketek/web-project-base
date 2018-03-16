@@ -18,3 +18,10 @@ class Edit():
         session.permanent = permanent
         session.permanent_session_lifetime = permanent_lifetime
         return self
+
+    def clear_user_session_data(
+        self
+    ):
+        session.pop('uid')
+        session.pop('token')
+        return self

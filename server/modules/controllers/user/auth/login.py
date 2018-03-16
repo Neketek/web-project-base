@@ -7,7 +7,7 @@ class Login:
 
     def login(self, data):
         try:
-            email = data['email']
+            email = data['email'].strip().lower()
             password = data['password']
         except KeyError as e:
             raise MissingValueException(value=e.args[0])

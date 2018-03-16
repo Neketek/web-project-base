@@ -9,11 +9,11 @@ class Create:
 
         try:
             password = data['password']
-            email = data['email']
+            email = data['email'].strip().lower()
             name = data['name']
             try:
-                first_name = name['first']
-                last_name = name['last']
+                first_name = name['first'].strip()
+                last_name = name['last'].strip()
             except KeyError as e:
                 raise MissingValueException(value="{0} name".format(e.args[0]))
         except KeyError as e:
