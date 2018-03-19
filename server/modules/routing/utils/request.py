@@ -15,8 +15,11 @@ def sql_session(func):
         sql_session = ScopedSession()
         try:
             result = func(sql_session=sql_session, *args, **kwars)
+        except Exception:
+            sql_session.rollback()
         finally:
             ScopedSession.remove()
+        # sql_session.commit()
         return result
 
     return sql_session_wrapper

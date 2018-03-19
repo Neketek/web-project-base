@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template,\
     redirect, url_for, current_app, request
-from modules.routing.utils.request import SessionLoginManager
+from modules.routing import utils
 from modules.controllers.session import SessionController
 from modules.controllers.user import UserController
 from functools import wraps
@@ -14,7 +14,7 @@ def register(app):
     app.register_blueprint(blueprint, url_prefix=url_prefix)
 
 
-login = SessionLoginManager()
+login = utils.request.SessionLoginManager()
 
 
 @login.get_user
@@ -52,3 +52,12 @@ def render_app_on_get(func):
 @login.required
 def app(user_context=None):
     return render_app()
+
+
+# @blueprint.route("/init", methods=['POST'])
+# @login.required
+# @utils.request.json
+# def init(user_context=None, json=None):
+#     print("INIT")
+#     print(json)
+#     return dict(init=True)
