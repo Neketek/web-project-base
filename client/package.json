@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "downshift": "^1.28.1",
     "fetch-polyfill": "^0.8.2",
     "lodash": "^4.17.5",
     "material-ui": "^1.0.0-beta.33",

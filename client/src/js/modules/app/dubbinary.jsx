@@ -3,7 +3,7 @@ import React from "react";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 
-import {Text, Select} from 'modules/common/input'
+import {Text, SelectExp} from 'modules/common/input';
 import LoginForm from 'modules/common/form/login';
 
 class App extends React.Component{
@@ -17,12 +17,30 @@ class App extends React.Component{
   }
 
   render(){
+    let options = [
+      {label:'One', value:1},
+      {label:'Two', value:2},
+      {label:'Three', value:3},
+
+    ];
     return (
 
       <MuiThemeProvider>
         <Paper style={{padding:50}} zDepth={1} rounded={false}>
-          <Text></Text>
-          <Select></Select>
+          {/* <Text></Text> */}
+          <SelectExp
+            name={"SingleSelection"}
+            value={{label:"label", value:1}}
+            options={options}
+            onChange={selectedItem => console.log(selectedItem)}
+            label="Select the value:"
+            placeholder="Placeholder"
+            resetValue={null}
+            onBlur={()=>console.log("onBlur!")}
+            onFocus={()=>console.log("onFocus!")}
+            disabled={false}
+            isLoading={false}
+          ></SelectExp>
         </Paper>
 
       </MuiThemeProvider>
