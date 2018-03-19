@@ -2,10 +2,25 @@ from modules.models import sql
 
 
 class ControllerBase:
-    def __init__(self, sql_session=None, user_context=None):
+
+    def __init__(
+        self,
+        user_context=None,
+        timezone='UTC',
+        sql_session=None
+    ):
         self.user_context = user_context
         if sql_session is not None:
             self.sql_session = sql_session
+        self.timezone = timezone
+
+    @property
+    def timezone(self):
+        return self.__timezone__
+
+    @timezone.setter
+    def timezone(self, value):
+        self.__timezone__ = value
 
     @property
     def sql_session(self):

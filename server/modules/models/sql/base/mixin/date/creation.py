@@ -7,7 +7,7 @@ class CreationDateTimeMixin:
     @declared_attr
     def creation_date_time(cls):
         return Column(
-            DateTime(timezone=True),
+            DateTime(),
             server_default=func.now(),
             nullable=False
         )

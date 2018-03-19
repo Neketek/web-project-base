@@ -9,6 +9,7 @@ from modules.controllers.user import UserController
 from modules.controllers.session import SessionController
 from modules.exceptions import UserFriendlyException
 
+
 blueprint = Blueprint("app.auth", __name__)
 url_prefix = "/app"
 
@@ -22,9 +23,10 @@ def register(app):
 @utils.response.user_friendly_exceptions
 @utils.request.json
 @utils.request.sql_session
-def login(json=None, sql_session=None):
-    user_entity = UserController(sql_session).login(json)
-    SessionController(sql_session).set_user_session_data(user_entity)\
+@utils.request.timezone
+def login(json=None, sql_session=None, timezone=None):
+    user_entity = UserController(sql_session=sql_session).login(json)
+    SessionController().set_user_session_data(user_entity)\
         .set_permanent(permanent=True)
     return jsonify(dict(login=True))
 
@@ -44,10 +46,10 @@ def logout():
 @utils.request.json
 @utils.request.sql_session
 def sign_up(json={}, sql_session=None):
-    user_entity = UserController(sql_session).create(json)
+    user_entity = UserController(sql_session=sql_session).create(json)
     sql_session.commit()
     sql_session.refresh(user_entity)
-    SessionController(sql_session).set_user_session_data(user_entity)
+    SessionController().set_user_session_data(user_entity)
     return jsonify(dict(signUp=True))
 
 
@@ -55,7 +57,7 @@ def sign_up(json={}, sql_session=None):
 @utils.response.user_friendly_exceptions
 @utils.request.json
 @utils.request.sql_session
-def check(entity=None, json=None, sql_session=None):
+def check(entity=None, json={}, sql_session=None):
     if entity == 'email':
         Controller = PhoneController
     elif entity == 'phone':
@@ -66,5 +68,5 @@ def check(entity=None, json=None, sql_session=None):
         value = json[entity]
     except KeyError as e:
         raise UserFriendlyException("Can't find '{0}' in json!".format(entity))
-    free = Controller(sql_session=sql_session).is_used_by_user(value)
+    free = not Controller(sql_session=sql_session).is_used_by_user(value)
     return jsonify(dict(free=free))

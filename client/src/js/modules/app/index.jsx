@@ -9,7 +9,7 @@ import { createStore } from 'modules/app/data/redux/store';
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import MainContainer from './component/container';
-
+import Cookies from './data/network/cookies';
 // store.dispatch(push("/home"));
 // console.log(store);
 
@@ -37,7 +37,7 @@ class App extends React.Component{
     }
     this.store=storeSource.store;
     this.history=storeSource.history;
-
+    Cookies.updateTimezoneCookie();
   }
 
   render(){

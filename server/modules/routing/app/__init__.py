@@ -19,8 +19,9 @@ login = utils.request.SessionLoginManager()
 
 @login.get_user
 def get_user(sql_session=None):
-    user_session_data = SessionController(sql_session).get_user_session_data()
-    return UserController(sql_session).session_login(**user_session_data)
+    user_session_data = SessionController().get_user_session_data()
+    return UserController(sql_session=sql_session)\
+        .session_login(**user_session_data)
 
 
 @login.unauthorized
@@ -52,12 +53,3 @@ def render_app_on_get(func):
 @login.required
 def app(user_context=None):
     return render_app()
-
-
-# @blueprint.route("/init", methods=['POST'])
-# @login.required
-# @utils.request.json
-# def init(user_context=None, json=None):
-#     print("INIT")
-#     print(json)
-#     return dict(init=True)

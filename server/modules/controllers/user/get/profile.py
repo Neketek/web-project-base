@@ -21,4 +21,4 @@ class GetProfile():
                 raise MissingValueException(value=e.args[0])
             except NoResultFound:
                 raise NotFoundException(value='user')
-            return user_entity.json()
+            return user_entity.json(timezone=self.timezone)

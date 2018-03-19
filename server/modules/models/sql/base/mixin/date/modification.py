@@ -7,7 +7,7 @@ class ModificationDateTimeMixin:
     @declared_attr
     def modification_date_time(cls):
         return Column(
-            DateTime(timezone=True),
+            DateTime(),
             server_default=func.now(),
             onupdate=func.now(),
             nullable=False
