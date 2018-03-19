@@ -3,8 +3,8 @@ import React from "react";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 
-import {Text, SelectExp} from 'modules/common/input';
-import LoginForm from 'modules/common/form/login';
+import SelectExp from 'modules/common/input/select-exp.jsx';
+import {Text} from 'modules/common/component/input';
 
 class App extends React.Component{
   constructor(props){
