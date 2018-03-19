@@ -3,10 +3,18 @@ body{
 }
 
 .paper{
-  width:auto;
-  height: 100px;
+  padding: 30px;
 }
 
 #root{
   margin: 10px;
+}
+
+.red{
+  background-color: red;
+}
+
+.font{
+  font-family:'Roboto';
+  font-size: 40px;
 }

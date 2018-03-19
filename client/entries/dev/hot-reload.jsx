@@ -4,10 +4,10 @@ import React from "react";
 
 // Component: root component like app or landing index component
 // rootSelector: jquery style selector which is used to define React root DOM element
-export const render=(Component,rootSelector)=>{
+export const render=(Component,props,rootSelector)=>{
   return ReactDOM.render(
     <AppContainer>
-      <Component/>
+      <Component {...props}/>
     </AppContainer>,
     document.querySelector(rootSelector)
   );
