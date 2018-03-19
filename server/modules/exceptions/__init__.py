@@ -1,28 +1,52 @@
 class JsonException(Exception):
 
-    def __init__(self,**kwars):
-        self.set_props(**kwars)
-
-    def set_props(self,name=None,message=None,group=None,id=None):
-        self.name = name
-        self.message = message
-        self.group = group
-        self.id = id
+    GROUP = None
+    ID = None
 
     def __dict__(self):
         return {
-            'name':self.name,
-            'message':self.message,
-            'group':self.group,
-            'id':self.id
+            'error': True,
+            'name': self.__class__.__name__,
+            'message': self.message,
+            'group': self.__class__.GROUP,
+            'id': self.__class__.ID
         }
 
-class UserFriendlyException(JsonException):
-    def __init__(self):
-        self.set_props(name="UserFriendlyException")
 
+class UserFriendlyException(JsonException):
+
+    GROUP = 'user'
+
+    def __init__(
+        self,
+        message='Non critical error occured.'
+    ):
+        self.message = message
+
+
+class MissingValueException(UserFriendlyException):
+    def __init__(
+        self,
+        message="Required value '{0}' is missed!", value=''
+    ):
+        self.message = message.format(value)
+
+
+class NotFoundException(UserFriendlyException):
+    def __init__(
+        self,
+        message='Requested {0} was not found!',
+        value='item'
+    ):
+        self.message = message.format(value)
 
 
 class InternalServerException(JsonException):
-    def __init__(self):
-        self.set_props(name="InternalServerException")
+
+    GROUP = 'internal'
+
+    def __init__(
+        self,
+        message="Internal server error detected. We are sorry for this."
+    ):
+        self.message = message
