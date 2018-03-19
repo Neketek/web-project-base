@@ -23,3 +23,6 @@ package-lock.json
 *.tmp
 *.dump
 *.code-workspace
+
+# Vscode
+.vscode
