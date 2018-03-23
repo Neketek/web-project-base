@@ -66,6 +66,18 @@ class User(
         uselist=False
     )
 
+    auth_facebook = relationship(
+        "UserAuthFacebook",
+        back_populates='user',
+        uselist=False
+    )
+
+    auth_google = relationship(
+        "UserAuthGoogle",
+        back_populates='user',
+        uselist=False
+    )
+
     def password_check(self, password):
         password_hash, salt = \
             User.hash_user_password(password, self.password_salt)

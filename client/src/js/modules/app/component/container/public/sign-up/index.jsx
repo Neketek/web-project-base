@@ -18,19 +18,8 @@ export const signUpAction=data=>(dispatch,getState)=>{
   const {name,password,email}=data;
   const signUpData = {name,password,email};
   signUp(signUpData).then(
-    response=>{
-      response.json().then(
-        data=>{
-          console.log(data);
-        },
-        error=>{
-
-        }
-      )
-    },
-    error=>{
-      console.log(error);
-    }
+    data=>console.log(data),
+    error=>console.log(error)
   )
 }
 

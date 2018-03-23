@@ -305,7 +305,17 @@ class FormBase extends Component{
     }
     return <Class {...props}>{this.errors(name)[0]}</Class>
   }
-
+  /*
+   * simplified version of field render method
+   */
+  renderInput=(Class,props)=>{
+    const {name} = props;
+    const defaultProps = {
+      onChange:this.onChange,
+      value:this.value(name)
+    }
+    return <Class {...defaultProps} {...props}></Class>
+  }
   /*
    * field render method which contains important predefined props
    */
@@ -316,6 +326,7 @@ class FormBase extends Component{
       onChange:this.onChange,
       onBlur:this.onFieldFocusChange,
       onFocus:this.onFieldFocusChange,
+      label:this.label(name),
       value:this.value(name),
       error:this.shouldShowErrors(name)
     }
@@ -353,6 +364,7 @@ class FormBase extends Component{
   render=()=>{
     const props = {
       render:{
+        input:this.renderInput,
         field:this.renderField,
         form:this.renderForm,
         error:this.renderFieldError
