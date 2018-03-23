@@ -36,6 +36,7 @@
     "history": "^4.7.2",
     "lodash": "^4.17.5",
     "material-ui": "^1.0.0-beta.33",
+    "material-ui-icons": "^1.0.0-beta.36",
     "material-ui-pickers": "^1.0.0-beta.15.1",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",

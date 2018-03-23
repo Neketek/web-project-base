@@ -5,6 +5,8 @@ import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import { MenuItem } from 'material-ui/Menu';
 import Downshift from 'downshift';
+import {ArrowDropUp,ArrowDropDown,
+  ClearIcon, CancelIcon, ThreeDRotation} from 'material-ui-icons';
 
 const DEFAULT_NOT_FOUND_LABEL = "No results found";
 
@@ -108,6 +110,7 @@ class SelectInput extends React.Component{
           highlightedIndex,
         }) => (
           <div>
+            <div style={{position: 'relative', display: 'inline-block'}}>
             <SelectTextInput
               {...getInputProps({
                 label:this.props.label,
@@ -115,6 +118,10 @@ class SelectInput extends React.Component{
                 onClick:this.onTextFieldClick
               })}
               ></SelectTextInput>
+              {isOpen?<ArrowDropUp style={{position: 'absolute', right: 0, top: 15, width: 20, height: 20}}/>:
+              <ArrowDropDown style={{position: 'absolute', right: 0, top: 15, width: 20, height: 20}}/>}
+            </div>
+            <ThreeDRotation/>
             {isOpen ? (
               <SelectOptions
                 options={this.props.options}
