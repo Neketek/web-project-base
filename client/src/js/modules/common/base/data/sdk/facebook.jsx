@@ -23,7 +23,6 @@ class FacebookSDK{
     }
 
     static FBRequestPromise=({request,args=[]})=>{
-
       const promiseExecutor = (resolve,reject)=>{
         try{
           request(response=>resolve(response),...args);
@@ -36,8 +35,8 @@ class FacebookSDK{
 
     }
 
-    static login({scope}){
-      const args = [scope];
+    static login(props){
+      const args = [props];
       const request = this.FB.login;
       return this.FBRequestPromise({request,args});
     }

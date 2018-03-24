@@ -32,6 +32,14 @@ class MissingValueException(UserFriendlyException):
         self.message = message.format(value)
 
 
+class InvalidLoginData(UserFriendlyException):
+    def __init__(
+        self,
+        message='Invalid login data'
+    ):
+        self.message = message
+
+
 class NotFoundException(UserFriendlyException):
     def __init__(
         self,

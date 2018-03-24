@@ -14,6 +14,11 @@ class ControllerBase:
             self.sql_session = sql_session
         self.timezone = timezone
 
+    def query(self, query_builder):
+        def binded_query(**kwargs):
+            return query_builder(self.sql_session, **kwargs)
+        return binded_query
+
     @property
     def timezone(self):
         return self.__timezone__

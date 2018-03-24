@@ -90,6 +90,10 @@ class User(
             .hexdigest()
         return password_hash, salt
 
+    @staticmethod
+    def generate_random_password():
+        return uuid.uuid4().hex
+
     def json(self, timezone=None):
 
         phone = self.phone.number if self.phone is not None else None

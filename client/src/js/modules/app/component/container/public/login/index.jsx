@@ -27,7 +27,7 @@ class LoginContainer extends AppContainerBase{
 
 const actionLogin=data=>(dispatch,getState)=>{
   const {email,password}=data;
-  login({email,password}).then(
+  login({native:{email,password}}).then(
     data=>console.log(data),
     error=>console.log(error)
   )
@@ -35,7 +35,7 @@ const actionLogin=data=>(dispatch,getState)=>{
 
 const actionFacebookLogin=()=>(dispatch,getState)=>{
   Facebook.login({scope:'public_profile,email'}).then(
-    facebook=>login({facebook}).then(
+    facebook=>login({facebook:facebook.authResponse}).then(
       data=>console.log(data),
       error=>console.log(error)
     ),

@@ -1,5 +1,5 @@
 from facepy import GraphAPI
-from facepy.exceptions import OAuthError
+from facepy import OAuthError
 import logging
 logger = logging.getLogger()
 logger.disabled = True
