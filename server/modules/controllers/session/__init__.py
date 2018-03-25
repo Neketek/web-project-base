@@ -3,5 +3,5 @@ from .edit import Edit
 from .get import Get
 
 
-class SessionController(ControllerBase, Edit, Get):
-    pass
+class Session(ControllerBase):
+    INTEGRATE = (Edit, Get)

@@ -1,9 +1,10 @@
 from modules.models import sql
 from modules.exceptions import MissingValueException, NotFoundException
 from sqlalchemy.orm.exc import NoResultFound
+from modules.controllers.base import ControllerBase
 
 
-class GetProfile():
+class Profile(ControllerBase):
 
     def get_profile(
         self,

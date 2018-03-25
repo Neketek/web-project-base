@@ -1,7 +1,6 @@
-from .profile import GetProfile
+from .profile import Profile
+from modules.controllers.base import ControllerBase
 
 
-class Get(
-    GetProfile
-):
-    pass
+class Get(ControllerBase):
+    INTEGRATE = (Profile,)

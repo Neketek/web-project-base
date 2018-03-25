@@ -2,21 +2,18 @@ from modules.models import sql
 from modules.models import query
 from sqlalchemy.orm.exc import NoResultFound
 from modules.exceptions import MissingValueException, UserFriendlyException
+from modules.controllers.base import ControllerBase
 
 
-class Create:
+class Create(ControllerBase):
 
     def create_with_facebook_data(self, data):
         facebook = dict(accessToken=data['accessToken'])
-        name = dict(
-            first=data['first_name'],
-            last=data['last_name']
-        )
         email = data['email']
         data = dict(
-            name=name,
+            name=data['name'],
             password=sql.User.generate_random_password(),
-            email=email
+            email=data['email']
         )
         return self.create(data, email_verified=True, facebook=facebook)
 

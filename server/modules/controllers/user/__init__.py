@@ -3,9 +3,7 @@ from .auth import Auth
 from .get import Get
 
 
-class UserController(
-    ControllerBase,
-    Auth,
-    Get
+class User(
+    ControllerBase
 ):
-    pass
+    INTEGRATE = (Get, Auth)

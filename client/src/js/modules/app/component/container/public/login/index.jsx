@@ -34,7 +34,7 @@ const actionLogin=data=>(dispatch,getState)=>{
 }
 
 const actionFacebookLogin=()=>(dispatch,getState)=>{
-  Facebook.login({scope:'public_profile,email'}).then(
+  Facebook.login({scope:'public_profile,email',response_type:'code'}).then(
     facebook=>login({facebook:facebook.authResponse}).then(
       data=>console.log(data),
       error=>console.log(error)

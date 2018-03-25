@@ -2,9 +2,14 @@ from modules.models import sql
 from modules.models import query
 from modules.exceptions import MissingValueException, InvalidLoginData
 from sqlalchemy.orm.exc import NoResultFound
+from modules.config import facebook
+from facepy import GraphAPI, OAuthError, SignedRequest
+from flask import request
+from modules.controllers.facebook import Facebook
+from modules.controllers.base import ControllerBase
 
 
-class Login:
+class Login(ControllerBase):
 
     def __is_native_login__(self, data):
         try:
@@ -43,31 +48,28 @@ class Login:
         raise InvalidLoginData()
 
     def facebook_login(self, data):
-        # print("FACEBOOK LOGIN")
-        # print(data)
         try:
-            # print(data)
-            access_token = data['accessToken']
-            from facepy import GraphAPI, OAuthError
-            graph = GraphAPI(access_token)
             try:
-                fb_data = graph.get('/me?fields=email,first_name,last_name')
-                # print(fb_data)
-                email = fb_data['email']
+                native_login_data = Facebook()\
+                    .get_native_verified_login_data(data)
+                access_token = native_login_data['accessToken']
+                email = native_login_data['email']
                 user_entity = self.query(query.sql.user.get_by)(
                     email=email
                 ).one()
                 if user_entity.auth_facebook is None:
                     user_entity.auth_facebook = \
-                        sql.UserAuthFacebook(access_token=access_token)
+                        sql.UserAuthFacebook(
+                            access_token=access_token
+                        )
                 else:
                     user_entity.auth_facebook.access_token = access_token
                 return user_entity
             except OAuthError:
                 raise InvalidLoginData()
             except NoResultFound:
-                fb_data['accessToken'] = access_token
-                return self.create_with_facebook_data(fb_data)
+                return self.root.Auth().Create()\
+                    .create_with_facebook_data(native_login_data)
         except KeyError as e:
             raise MissingValueException(value=e.args[0])
         raise InvalidLoginData()

@@ -2,8 +2,7 @@ from ..base import ControllerBase
 from .get import Get
 
 
-class PhoneController(
-    ControllerBase,
-    Get
+class Phone(
+    ControllerBase
 ):
-    pass
+    INTEGRATE = (Get,)

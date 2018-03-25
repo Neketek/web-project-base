@@ -1,7 +1,8 @@
 from flask import session
+from modules.controllers.base import ControllerBase
 
 
-class Edit():
+class Edit(ControllerBase):
 
     def set_user_session_data(
         self,
