@@ -46,6 +46,8 @@ class LoginForm extends Form{
     const password = field(Text,passwordProps);
     const passwordError = error(InputError,{name:'password'});
 
+    const date = field(Date,commonProps('date'));
+
     return (
         <Grid container justify='center' spacing={16} alignItems='center'>
               <Grid item xs={12}>
@@ -55,6 +57,9 @@ class LoginForm extends Form{
               <Grid item xs={12}>
                 {password}
                 {passwordError}
+              </Grid>
+              <Grid item xs={12}>
+                {date}
               </Grid>
               <Grid item xs={6}>
                 <Grid container justify='center'>

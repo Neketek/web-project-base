@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template,\
     redirect, url_for, current_app, request
 from modules.routing import utils
-from modules.controllers.session import SessionController
-from modules.controllers.user import UserController
+from modules.controllers.session import Session
+from modules.controllers.user import User
 from functools import wraps
 import uuid
 
@@ -19,8 +19,8 @@ login = utils.request.SessionLoginManager()
 
 @login.get_user
 def get_user(sql_session=None):
-    user_session_data = SessionController().get_user_session_data()
-    return UserController(sql_session=sql_session)\
+    user_session_data = Session().Get().get_user_session_data()
+    return User(sql_session=sql_session).Auth().Login()\
         .session_login(**user_session_data)
 
 
