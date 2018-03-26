@@ -1,4 +1,5 @@
 flask
 sqlalchemy
 psycopg2
+pytz
 facepy
