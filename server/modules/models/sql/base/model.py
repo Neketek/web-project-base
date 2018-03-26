@@ -2,6 +2,10 @@ from sqlalchemy.ext.declarative import declarative_base, declared_attr
 import re
 from sqlalchemy.orm.session import object_session
 
+SET_OBJECT_SESSION_TIMEZONE_QUERY = '''
+SET SESSION timezone TO '{0}';
+'''
+
 
 class BaseClass:
 

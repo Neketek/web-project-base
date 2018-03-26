@@ -13,6 +13,7 @@ from sqlalchemy.types import BigInteger, Date, DateTime, Boolean, TIMESTAMP
 from datetime import datetime
 import hashlib
 import uuid
+from modules.models.converter.datetime import DateTime, Time, Date
 
 
 class User(
@@ -65,6 +66,18 @@ class User(
         uselist=False
     )
 
+    auth_facebook = relationship(
+        "UserAuthFacebook",
+        back_populates='user',
+        uselist=False
+    )
+
+    auth_google = relationship(
+        "UserAuthGoogle",
+        back_populates='user',
+        uselist=False
+    )
+
     def password_check(self, password):
         password_hash, salt = \
             User.hash_user_password(password, self.password_salt)
@@ -77,23 +90,32 @@ class User(
             .hexdigest()
         return password_hash, salt
 
-    def json(self):
+    @staticmethod
+    def generate_random_password():
+        return uuid.uuid4().hex
+
+    def json(self, timezone=None):
 
         phone = self.phone.number if self.phone is not None else None
         email = self.email.email
+        name = dict(
+            first=self.first_name,
+            last=self.last_name
+        )
 
-        name = {
-            'first': self.first_name,
-            'last': self.last_name
-        }
+        creation = \
+            DateTime.To.string(self.creation_date_time, timezone)
+        modification = \
+            DateTime.To.string(self.modification_date_time, timezone)
 
-        return {
-            'id': self.id,
-            'name': name,
-            'email': email,
-            'phone': phone,
-            'datetime': {
-                'creation': self.creation_date_time,
-                'modification': self.modification_date_time
-            }
-        }
+        return dict(
+            id=self.id,
+            name=name,
+            email=email,
+            phone=phone,
+            datetime=dict(
+                creation=creation,
+                modification=modification
+            ),
+            timezone=timezone
+        )

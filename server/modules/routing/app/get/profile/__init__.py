@@ -1,7 +1,7 @@
 from flask import \
     Blueprint, render_template, redirect, url_for, current_app, jsonify
 from modules.routing import utils
-from modules.controllers.user import UserController
+from modules.controllers.user import User
 from modules.routing.app import login
 
 blueprint = Blueprint("app.get.profile", __name__)
@@ -13,11 +13,12 @@ def register(app):
 
 
 @blueprint.route("/user", methods=['POST', 'GET'])
-@utils.response.user_friendly_exceptions
+# @utils.response.user_friendly_exceptions
 @utils.request.json
+@utils.request.timezone
 @login.required
-def get_user_profile(user_context=None, json=None):
+def user(user_context=None, timezone=None, json=None):
     json = dict(id=user_context.id)
-    json_resp = UserController(user_context=user_context)\
+    json_resp = User(user_context, timezone).Get()\
         .get_profile(json=json)
     return jsonify(json_resp)

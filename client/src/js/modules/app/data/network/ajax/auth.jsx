@@ -10,7 +10,12 @@ export const signUp=(data)=>{
   return DefaultRequest().url('/app/sign-up').jsonBody(data).fetch();
 }
 
+export const logout=(data)=>{
+  return DefaultRequest().url('/app/logout').jsonBody(data).fetch();
+}
+
 export default {
   login,
-  signUp
+  signUp,
+  logout
 }

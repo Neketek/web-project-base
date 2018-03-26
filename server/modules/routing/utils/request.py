@@ -4,6 +4,17 @@ from flask import request
 import json
 
 
+def timezone(func):
+    '''
+    request decorator which gets timezone name from timezone cookie
+    '''
+    @wraps(func)
+    def timezone_wrapper(*args, **kwargs):
+        tz = request.cookies.get('timezone')
+        return func(timezone=tz, *args, **kwargs)
+    return timezone_wrapper
+
+
 def sql_session(func):
     '''
     request decorator which initializes
@@ -15,9 +26,12 @@ def sql_session(func):
         sql_session = ScopedSession()
         try:
             result = func(sql_session=sql_session, *args, **kwars)
+            return result
+        except Exception as e:
+            sql_session.rollback()
+            raise e
         finally:
             ScopedSession.remove()
-        return result
 
     return sql_session_wrapper
 

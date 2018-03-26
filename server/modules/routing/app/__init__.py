@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template,\
     redirect, url_for, current_app, request
-from modules.routing.utils.request import SessionLoginManager
-from modules.controllers.session import SessionController
-from modules.controllers.user import UserController
+from modules.routing import utils
+from modules.controllers.session import Session
+from modules.controllers.user import User
 from functools import wraps
 import uuid
 
@@ -14,27 +14,19 @@ def register(app):
     app.register_blueprint(blueprint, url_prefix=url_prefix)
 
 
-login = SessionLoginManager()
+login = utils.request.SessionLoginManager()
 
 
 @login.get_user
 def get_user(sql_session=None):
-    user_session_data = SessionController(sql_session).get_user_session_data()
-    print('USER SESSION DATA')
-    print(user_session_data)
-    return UserController(sql_session).session_login(**user_session_data)
+    user_session_data = Session().Get().get_user_session_data()
+    return User(sql_session=sql_session).Auth().Login()\
+        .session_login(**user_session_data)
 
 
 @login.unauthorized
 def unauthorized(sql_session=None, original=None):
-    ignore = [
-        url_for('app.auth.login'),
-        url_for('app.auth.sign_up')
-    ]
-    if request.path not in ignore:
-        return redirect(url_for('app.auth.login'))
-    else:
-        return original()
+    return redirect(url_for('app.auth.login'))
 
 
 CACHE_ID = uuid.uuid4().hex

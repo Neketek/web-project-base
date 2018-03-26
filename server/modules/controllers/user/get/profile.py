@@ -1,9 +1,10 @@
 from modules.models import sql
 from modules.exceptions import MissingValueException, NotFoundException
 from sqlalchemy.orm.exc import NoResultFound
+from modules.controllers.base import ControllerBase
 
 
-class GetProfile():
+class Profile(ControllerBase):
 
     def get_profile(
         self,
@@ -21,4 +22,4 @@ class GetProfile():
                 raise MissingValueException(value=e.args[0])
             except NoResultFound:
                 raise NotFoundException(value='user')
-            return user_entity.json()
+            return user_entity.json(timezone=self.timezone)

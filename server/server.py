@@ -19,7 +19,7 @@ if __name__ == '__main__':
     if 'prod' not in sys.argv:
         app.config.from_object('modules.config.flask.Development')
     else:
-        app.config.from_object('modules.config.flask_app.Production')
+        app.config.from_object('modules.config.flask.Production')
     app.run(debug=True, host="0.0.0.0", port=8080, threaded=True)
 else:
-    app.config.from_object('modules.config.flask_app.Production')
+    app.config.from_object('modules.config.flask.Production')

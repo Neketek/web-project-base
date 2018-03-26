@@ -101,7 +101,24 @@ class AjaxRequest{
   }
 
   fetch(){
+    if(this.props.headers['Accept'] == 'application/json'){
+      return this.fetchJSONResponse();
+    }else{
+      return this.fetchResponse();
+    }
+  }
+
+  fetchResponse(){
     return fetch(this.url,this.props).then(status,requestError);
+  }
+
+  fetchJSONResponse(){
+    return new Promise((resolve,reject)=>{
+      this.fetchResponse().then(
+        data=>data.json().then(json=>resolve(json),error=>reject(error)),
+        error=>reject(error)
+      );
+    });
   }
 
 }

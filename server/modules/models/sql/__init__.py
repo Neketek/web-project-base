@@ -1,15 +1,17 @@
-from modules.models.sql.session import SQL_DB_ENGINE as engine
-from modules.models.sql.session import ScopedSession
-from modules.models.sql.session import Session
-from modules.models.sql.base.model import BaseClass
-from modules.models.sql.email.entity import Email
-from modules.models.sql.phone.entity import Phone
-from modules.models.sql.user.entity import User
-from modules.models.sql.user.session.entity import \
+from .session import SQL_DB_ENGINE as engine
+from .session import ScopedSession
+from .session import Session
+from .base.model import BaseClass
+from .email.entity import Email
+from .phone.entity import Phone
+from .user.entity import User
+from .user.auth.facebook.entity import UserAuthFacebook
+from .user.auth.google.entity import UserAuthGoogle
+from .user.session.entity import \
     UserSession, UserSessionStringKeyValue,\
     UserSessionIntegerKeyValue
-from modules.models.sql.user.token.verification.email import \
+from .user.token.verification.email import \
     UserEmailVerificationToken
-from modules.models.sql.user.token.verification.phone import \
+from .user.token.verification.phone import \
     UserPhoneVerificationToken
-from modules.models.sql.user.token.reset.password import UserPasswordResetToken
+from .user.token.reset.password import UserPasswordResetToken

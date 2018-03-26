@@ -9,7 +9,8 @@ import { createStore } from 'modules/app/data/redux/store';
 import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import MainContainer from './component/container';
-
+import Cookies from './data/network/cookies';
+import { Facebook } from 'modules/common/base/data/sdk';
 // store.dispatch(push("/home"));
 // console.log(store);
 
@@ -37,7 +38,42 @@ class App extends React.Component{
     }
     this.store=storeSource.store;
     this.history=storeSource.history;
+    Cookies.updateTimezoneCookie();
 
+    Facebook.init({
+      appId:"173426159970380",
+      version:"v2.8"
+    });
+
+    Facebook.getLoginStatus().then(
+      data=>{
+        if(data.status=='connected'){
+          Facebook.logout().then(
+            data=>{
+              console.log("LOG OUT");
+              console.log(data);
+            },
+            error=>{
+              console.log(error);
+            }
+          );
+        }
+      },
+      error=>{
+        console.log(error);
+      }
+    );
+
+
+    // FB.getLoginStatus(response=>{
+    //   console.log("LOG IN CHECK");
+    //   loginStatus = response;
+    //   console.log(response);
+    //   FB.logout(response=>{
+    //     console.log("LOG OUT");
+    //     console.log(response);
+    //   });
+    // });
   }
 
   render(){

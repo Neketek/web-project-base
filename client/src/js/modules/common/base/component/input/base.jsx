@@ -27,7 +27,7 @@ class InputBase extends Component{
   }
 
   componentWillReceiveProps(props){
-    this.state.value = this.props.value;
+    this.state.value = props.value;
   }
 
   //input render method
