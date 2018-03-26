@@ -20,7 +20,7 @@ def register(app):
 
 @blueprint.route("/login", methods=['POST', 'GET'])
 @render_app_on_get
-@utils.response.user_friendly_exceptions
+# @utils.response.user_friendly_exceptions
 @utils.request.json
 @utils.request.sql_session
 @utils.request.timezone
@@ -28,7 +28,7 @@ def login(json=None, sql_session=None, timezone=None):
     user_entity =\
         User(sql_session=sql_session).Auth().Login().login(json)
     user_entity.sql_session.commit()
-    Session().set_user_session_data(user_entity)\
+    Session().Edit().set_user_session_data(user_entity)\
         .set_permanent(permanent=True)
     return jsonify(dict(login=True))
 
@@ -37,7 +37,7 @@ def login(json=None, sql_session=None, timezone=None):
 @render_app_on_get
 @utils.response.user_friendly_exceptions
 def logout():
-    Session().clear_user_session_data()\
+    Session().Edit().clear_user_session_data()\
         .set_permanent(permanent=False)
     return jsonify(dict(logout=True))
 
@@ -51,7 +51,7 @@ def sign_up(json={}, sql_session=None):
     user_entity = User(sql_session=sql_session).Auth().Create().create(json)
     sql_session.commit()
     sql_session.refresh(user_entity)
-    Session().set_user_session_data(user_entity)
+    Session().Edit().set_user_session_data(user_entity)
     return jsonify(dict(signUp=True))
 
 
@@ -70,5 +70,5 @@ def check(entity=None, json={}, sql_session=None):
         value = json[entity]
     except KeyError as e:
         raise UserFriendlyException("Can't find '{0}' in json!".format(entity))
-    free = not Controller(sql_session=sql_session).is_used_by_user(value)
+    free = not Controller(sql_session=sql_session).Get().is_used_by_user(value)
     return jsonify(dict(free=free))
