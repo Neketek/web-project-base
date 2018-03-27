@@ -25,7 +25,6 @@ class LoginForm extends Form{
       }
     };
 
-
     const loginProps = {
       ...commonProps('email')
     };
@@ -34,9 +33,6 @@ class LoginForm extends Form{
       ...commonProps('password'),
       type:"password"
     }
-
-
-
 
     // console.log(loginProps);
 
@@ -47,6 +43,8 @@ class LoginForm extends Form{
     const passwordError = error(InputError,{name:'password'});
 
     const date = field(Date,commonProps('date'));
+    const dateTime = field(DateTime,commonProps('DateTime'));
+    const time = field(Time,commonProps('Time'));
 
     return (
         <Grid container justify='center' spacing={16} alignItems='center'>

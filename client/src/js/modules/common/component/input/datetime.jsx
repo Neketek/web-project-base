@@ -1,6 +1,9 @@
 import {DateTime} from 'modules/common/base/component/input';
 import React from 'react';
-import {DateTimePicker} from 'material-ui-pickers'
+import {DateTimePicker} from 'material-ui-pickers';
+import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+
 
 class DateTimeInput extends DateTime{
 
@@ -13,7 +16,10 @@ class DateTimeInput extends DateTime{
     const override = {
       format:DateTime.FORMAT
     }
-    return this.input(DateTimePicker,this.props,override);
+
+    const element = this.input(DateTimePicker,this.props,override);
+
+    return <MuiPickersUtilsProvider children={element} utils={MomentUtils} />
   }
 
 }

@@ -2,6 +2,8 @@ import {Time} from 'modules/common/base/component/input';
 import React from 'react';
 import {TimePicker} from 'material-ui-pickers'
 import moment from 'moment';
+import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 
 class TimeInput extends Time{
 
@@ -21,7 +23,9 @@ class TimeInput extends Time{
       format:Time.FORMAT
     }
 
-    return this.input(TimePicker,this.props,override);
+    const element = this.input(TimePicker,this.props,override);
+
+    return <MuiPickersUtilsProvider children={element} utils={MomentUtils} />;
 
   }
 
