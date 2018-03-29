@@ -20,7 +20,7 @@ def register(app):
 
 @blueprint.route("/login", methods=['POST', 'GET'])
 @render_app_on_get
-# @utils.response.user_friendly_exceptions
+@utils.response.user_friendly_exceptions
 @utils.request.json
 @utils.request.sql_session
 @utils.request.timezone
