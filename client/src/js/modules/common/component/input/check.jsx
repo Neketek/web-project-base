@@ -1,27 +1,29 @@
 import React from 'react';
-import {Check} from 'modules/common/base/component/input';
+import { Check } from 'modules/common/base/component/input';
+import { FormGroup, FormControlLabel } from 'material-ui/Form';
 import CheckBox from 'material-ui/Checkbox';
 import PropTypes from 'prop-types';
 
 
 class CheckInput extends Check{
 
-    onCheck = (event) => {
-
+    onChange = (event,checked) => {
         console.log('Show Check: ' + event.target.checked);
-        this.propagateValue(!this.state.value);
+        this.propagateValue(checked);
     }
 
 
     render() {
-    
-        const props = {...this.props};
-        props.checked = this.state.value;
-        props.onChange = this.onCheck;
+        const props = this.inputProps(this.props,{checked:this.state.value});
         delete props.value;
         delete props.error;
-        
-        return this.input(CheckBox,props,{});
+        const input = <CheckBox {...props}/>;
+        return (
+          <FormControlLabel
+            control={input}
+            label={props.label}
+          />
+        )
     }
 }
 

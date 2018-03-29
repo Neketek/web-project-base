@@ -30,19 +30,27 @@ class InputBase extends Component{
     this.state.value = props.value;
   }
 
-  //input render method
-  input=(Class,props,override)=>{
-    const overridingProps=Object.assign(
+
+
+  inputProps=(props,override)=>{
+    const overridingProps = Object.assign(
+      {},
+      props,
       {
         onChange:this.onChange,
         onFocus:this.onFocus,
         onBlur:this.onBlur,
         value:this.state.value,
-        name:this.props.name
+        name:props.name
       },
       override
     );
-    return <Class {...props} {...overridingProps}></Class>
+    return overridingProps;
+  }
+
+  //input render method
+  input=(Class,props,override)=>{
+    return <Class {...this.inputProps(props,override)}></Class>
   }
 
 

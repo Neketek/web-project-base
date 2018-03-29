@@ -34,9 +34,9 @@ class LoginForm extends Form{
       type:"password"
     }
 
-    const elementProps = {
-      ...commonProps('checkbox'),
-      error: ' '
+    const rememberMeProps = {
+      name:"rememberMe",
+      label:this.label("rememberMe")
     }
 
     // console.log(loginProps);
@@ -50,7 +50,8 @@ class LoginForm extends Form{
     const date = field(Date,commonProps('date'));
     const dateTime = field(DateTime,commonProps('DateTime'));
     const time = field(Time,commonProps('Time'));
-    const check = field(Check,{name:'check'});
+
+    const rememberMe = input(Check,rememberMeProps);
 
     return (
         <Grid container justify='center' spacing={16} alignItems='center'>
@@ -63,7 +64,7 @@ class LoginForm extends Form{
                 {passwordError}
               </Grid>
               <Grid item xs={12}>
-                {check}
+                {rememberMe}
               </Grid>
               <Grid item xs={6}>
                 <Grid container justify='center'>
@@ -93,7 +94,8 @@ LoginForm.updateDefaultProps({
   },
   labels:{
     email:"Email",
-    password:"Password"
+    password:"Password",
+    rememberMe:"Remember me"
   },
   rules:{
     email:[
