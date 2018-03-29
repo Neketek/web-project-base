@@ -1,6 +1,6 @@
 import React from 'react';
 import {Form,Rule} from 'modules/common/base/component/form';
-import {Text,Date,DateTime,Time,Select,Button,InputError} from 'modules/common/component/input';
+import {Text,Date,DateTime,Time,Select,Button,InputError,Check} from 'modules/common/component/input';
 import Grid from 'material-ui/Grid';
 import {
   FormLabel,
@@ -12,7 +12,7 @@ import {
 
 class LoginForm extends Form{
 
-  form=({render:{field,error,form}})=>{
+  form=({render:{field,error,form,input}})=>{
 
     const commonProps = (name)=>{
       const error = this.shouldShowErrors(name)
@@ -34,6 +34,11 @@ class LoginForm extends Form{
       type:"password"
     }
 
+    const elementProps = {
+      ...commonProps('checkbox'),
+      error: ' '
+    }
+
     // console.log(loginProps);
 
     const login = field(Text,loginProps);
@@ -45,6 +50,7 @@ class LoginForm extends Form{
     const date = field(Date,commonProps('date'));
     const dateTime = field(DateTime,commonProps('DateTime'));
     const time = field(Time,commonProps('Time'));
+    const check = field(Check,{name:'check'});
 
     return (
         <Grid container justify='center' spacing={16} alignItems='center'>
@@ -57,7 +63,7 @@ class LoginForm extends Form{
                 {passwordError}
               </Grid>
               <Grid item xs={12}>
-                {date}
+                {check}
               </Grid>
               <Grid item xs={6}>
                 <Grid container justify='center'>
