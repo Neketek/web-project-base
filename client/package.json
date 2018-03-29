@@ -7,6 +7,7 @@
     "dev": "webpack-dev-server",
     "dev-neketek-app": "webpack-dev-server --env.entry app --env.path neketek.jsx",
     "dev-jerichofs-app": "webpack-dev-server --env.entry app --env.path jerichofs.jsx",
+    "dev-dubbinary-app": "webpack-dev-server --env.entry app --env.path dubbinary.jsx",
     "prod-app": "webpack --env.production --env.entry app --env.path app.jsx",
     "prod-landing": "webpack --env.production --env.entry landing --env.path landing.jsx"
   },
@@ -31,6 +32,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "downshift": "^1.28.1",
     "fetch-polyfill": "^0.8.2",
     "history": "^4.7.2",
     "js-cookie": "^2.2.0",
