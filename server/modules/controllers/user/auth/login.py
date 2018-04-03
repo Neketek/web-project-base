@@ -2,9 +2,6 @@ from modules.models import sql
 from modules.models import query
 from modules.exceptions import MissingValueException, InvalidLoginData
 from sqlalchemy.orm.exc import NoResultFound
-from modules.config import facebook
-from facepy import GraphAPI, OAuthError, SignedRequest
-from flask import request
 from modules.controllers.facebook import Facebook
 from modules.controllers.base import ControllerBase
 
@@ -50,7 +47,7 @@ class Login(ControllerBase):
     def facebook_login(self, data):
         try:
             try:
-                native_login_data = Facebook()\
+                native_login_data = Facebook().Get()\
                     .get_native_verified_login_data(data)
                 access_token = native_login_data['accessToken']
                 email = native_login_data['email']
@@ -65,8 +62,6 @@ class Login(ControllerBase):
                 else:
                     user_entity.auth_facebook.access_token = access_token
                 return user_entity
-            except OAuthError:
-                raise InvalidLoginData()
             except NoResultFound:
                 return self.root.Auth().Create()\
                     .create_with_facebook_data(native_login_data)

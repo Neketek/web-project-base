@@ -9,7 +9,6 @@ class Create(ControllerBase):
 
     def create_with_facebook_data(self, data):
         facebook = dict(accessToken=data['accessToken'])
-        email = data['email']
         data = dict(
             name=data['name'],
             password=sql.User.generate_random_password(),

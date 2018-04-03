@@ -1,20 +1,21 @@
 from modules.models import sql
+from modules.utils.object import ClassIntegration
 
 
-class ControllerBase:
+class ControllerBase(ClassIntegration):
 
     INTEGRATE = ()
 
-    def intergrate(self, cls):
+    def __class_integration_classes_list__(self):
+        return self.__class__.INTEGRATE
 
-        def caller():
-            return cls(
-                user_context=self.user_context,
-                sql_session=self.sql_session,
-                timezone=self.timezone,
-                root=self if self.root is None else self.root
-            )
-        self.__setattr__(cls.__name__, caller)
+    def __class_integration_kwargs__(self, cls):
+        return dict(
+            user_context=self.user_context,
+            sql_session=self.sql_session,
+            timezone=self.timezone,
+            root=self if self.root is None else self.root
+        )
 
     def __init__(
         self,
@@ -27,10 +28,7 @@ class ControllerBase:
         self.sql_session = sql_session
         self.timezone = timezone
         self.root = root
-        # print(self.__class__.__name__)
-        for cls in self.__class__.INTEGRATE:
-            # print(cls)
-            self.intergrate(cls)
+        self.__class_integration_integrate_all__()
 
     def query(self, query_builder):
         def binded_query(**kwargs):
