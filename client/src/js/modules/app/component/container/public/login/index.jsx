@@ -26,8 +26,8 @@ class LoginContainer extends AppContainerBase{
 }
 
 const actionLogin=data=>(dispatch,getState)=>{
-  const {email,password}=data;
-  login({native:{email,password}}).then(
+  const {email,password,rememberMe:permanent}=data;
+  login({native:{email,password},permanent}).then(
     data=>console.log(data),
     error=>console.log(error)
   )

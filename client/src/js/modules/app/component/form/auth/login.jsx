@@ -90,7 +90,8 @@ LoginForm.updateDefaultProps({
   name:"login",
   values:{
     password:"",
-    email:""
+    email:"",
+    rememberMe:false
   },
   labels:{
     email:"Email",

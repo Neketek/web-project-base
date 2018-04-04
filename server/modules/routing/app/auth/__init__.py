@@ -1,7 +1,7 @@
 from flask import \
-    Blueprint, jsonify, request
+    Blueprint, jsonify
 from modules.routing import utils
-from flask import session
+# from flask import session
 from modules.routing.app import render_app_on_get
 from modules.controllers.email import Email
 from modules.controllers.phone import Phone
@@ -29,7 +29,7 @@ def login(json=None, sql_session=None, timezone=None):
         User(sql_session=sql_session).Auth().Login().login(json)
     user_entity.sql_session.commit()
     Session().Edit().set_user_session_data(user_entity)\
-        .set_permanent(permanent=True)
+        .set_permanent_from_json(json)
     return jsonify(dict(login=True))
 
 

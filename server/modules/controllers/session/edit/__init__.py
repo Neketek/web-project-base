@@ -1,5 +1,6 @@
 from flask import session
 from modules.controllers.base import ControllerBase
+PERMANENT_SESSION_LIFETIME = 60*24*3
 
 
 class Edit(ControllerBase):
@@ -12,11 +13,21 @@ class Edit(ControllerBase):
         session['token'] = user_entity.session.token
         return self
 
+    def set_permanent_from_json(self, json={}):
+        permanent = json.get('permanent', False)
+        permanent_lifetime = \
+            json.get('permanent_lifetime', PERMANENT_SESSION_LIFETIME)
+        self.set_permanent(
+            permanent=permanent,
+            permanent_lifetime=permanent_lifetime
+        )
+
     def set_permanent(
         self,
         permanent=True,
-        permanent_lifetime=60*24*3
+        permanent_lifetime=PERMANENT_SESSION_LIFETIME
     ):
+
         session.permanent = permanent
         session.permanent_session_lifetime = permanent_lifetime
         return self

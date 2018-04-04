@@ -70,7 +70,7 @@ class Login(ControllerBase):
         raise InvalidLoginData()
 
     def native_login(self, data):
-
+        # print('NATIVE LOGIN!!!')
         try:
             email = data['email'].strip().lower()
             password = data['password']
@@ -81,9 +81,11 @@ class Login(ControllerBase):
             user_entity = \
                 self.query(query.sql.user.get_by)(email=email).one()
         except NoResultFound:
+            # print("EMAIL WAS NOT FOUND")
             raise InvalidLoginData()
 
         if not user_entity.password_check(password):
+            # print("PASSWORD CHECK FAILED")
             raise InvalidLoginData()
 
         return user_entity

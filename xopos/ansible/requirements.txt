@@ -3,3 +3,4 @@ sqlalchemy
 psycopg2
 pytz
 facepy
+google-api-python-client
