@@ -8,7 +8,10 @@ from modules.controllers.base import ControllerBase
 class Create(ControllerBase):
 
     def create_with_facebook_data(self, data):
-        facebook = dict(accessToken=data['accessToken'])
+        facebook = dict(
+            accessToken=data['accessToken'],
+            accessTokenExpiresAt=data['accessTokenExpiresAt']
+        )
         data = dict(
             name=data['name'],
             password=sql.User.generate_random_password(),
@@ -63,8 +66,13 @@ class Create(ControllerBase):
             user_entity = sql.User()
             auth_facebook = None
             try:
-                access_token = facebook['accessToken']
-                auth_facebook = sql.UserAuthFacebook(access_token=access_token)
+                auth_facebook_kwargs = dict(
+                    access_token=facebook['accessToken'],
+                    expiration_date_time=facebook['accessTokenExpiresAt']
+                )
+                auth_facebook = sql.UserAuthFacebook(
+                    **auth_facebook_kwargs
+                )
             except KeyError:
                 pass
             user_entity.auth_facebook = auth_facebook

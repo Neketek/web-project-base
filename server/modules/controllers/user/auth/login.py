@@ -50,6 +50,8 @@ class Login(ControllerBase):
                 native_login_data = Facebook().Get()\
                     .get_native_verified_login_data(data)
                 access_token = native_login_data['accessToken']
+                expiration_date_time = \
+                    native_login_data['accessTokenExpiresAt']
                 email = native_login_data['email']
                 user_entity = self.query(query.sql.user.get_by)(
                     email=email
@@ -57,10 +59,13 @@ class Login(ControllerBase):
                 if user_entity.auth_facebook is None:
                     user_entity.auth_facebook = \
                         sql.UserAuthFacebook(
-                            access_token=access_token
+                            access_token=access_token,
+                            expiration_date_time=expiration_date_time
                         )
                 else:
                     user_entity.auth_facebook.access_token = access_token
+                    user_entity.auth_facebook.expiration_date_time = \
+                        expiration_date_time
                 return user_entity
             except NoResultFound:
                 return self.root.Auth().Create()\
