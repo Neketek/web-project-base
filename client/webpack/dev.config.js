@@ -17,7 +17,11 @@ module.exports = dirname=>{
 
     var commonConfig = new Config(dirname);
 
-    var config = commonConfig.createEntryOutput().dev(env.entry, env.path);
+    let { polyfills, entry, path:outPath } = env;
+
+    polyfills = polyfills=="true" || polyfills===undefined;
+
+    var config = commonConfig.createEntryOutput(polyfills).dev(entry, outPath);
 
     config.resolve = commonConfig.createResolve();
 

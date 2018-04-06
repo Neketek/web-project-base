@@ -10,7 +10,7 @@ import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-ro
 import { Provider } from 'react-redux';
 import MainContainer from './component/container';
 import Cookies from './data/network/cookies';
-import { Facebook } from 'modules/common/base/data/sdk';
+import { Facebook } from 'modules/common/base/data/api';
 // store.dispatch(push("/home"));
 // console.log(store);
 
@@ -24,14 +24,14 @@ const muiTheme = createMuiTheme({
 });
 
 
+
+
 class App extends React.Component{
 
 
 
   constructor(props){
     super(props);
-
-    //NOTE:doing this only to fix hot reloading
     let storeSource = this.props;
     if(!storeSource.store){
        storeSource = createStore(this.props.development);
@@ -39,45 +39,41 @@ class App extends React.Component{
     this.store=storeSource.store;
     this.history=storeSource.history;
     Cookies.updateTimezoneCookie();
-
-    Facebook.init({
-      appId:"173426159970380",
-      version:"v2.8"
+    this.state = {loading:true}
+    window.setOnAPIInitializedCallback(()=>{
+      this.state.loading = false;
+      this.forceUpdate();
     });
+    // Facebook.getLoginStatus().then(
+    //   data=>{
+    //     if(data.status=='connected'){
+    //       Facebook.logout().then(
+    //         data=>{
+    //           console.log("LOG OUT");
+    //           console.log(data);
+    //         },
+    //         error=>{
+    //           console.log(error);
+    //         }
+    //       );
+    //     }
+    //   },
+    //   error=>{
+    //     console.log(error);
+    //   }
+    // );
 
-    Facebook.getLoginStatus().then(
-      data=>{
-        if(data.status=='connected'){
-          Facebook.logout().then(
-            data=>{
-              console.log("LOG OUT");
-              console.log(data);
-            },
-            error=>{
-              console.log(error);
-            }
-          );
-        }
-      },
-      error=>{
-        console.log(error);
-      }
-    );
-
-
-    // FB.getLoginStatus(response=>{
-    //   console.log("LOG IN CHECK");
-    //   loginStatus = response;
-    //   console.log(response);
-    //   FB.logout(response=>{
-    //     console.log("LOG OUT");
-    //     console.log(response);
-    //   });
-    // });
   }
 
   render(){
+    console.log("RENDER");
+    console.log({state:this.state});
     const {history,store} = this;
+    if(this.state.loading){
+      return (
+        <div>Loading SDK</div>
+      )
+    }
     return (
       <MuiThemeProvider theme={muiTheme}>
         <ConnectedRouter history={history} store={store}>

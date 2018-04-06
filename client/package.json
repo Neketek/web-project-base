@@ -9,6 +9,7 @@
     "dev-jerichofs-app": "webpack-dev-server --env.entry app --env.path jerichofs.jsx",
     "dev-dubbinary-app": "webpack-dev-server --env.entry app --env.path dubbinary.jsx",
     "prod-app": "webpack --env.production --env.entry app --env.path app.jsx",
+    "prod-app-api": "webpack --env.polyfills false --env.production --env.entry app-api --env.path app-api.jsx",
     "prod-landing": "webpack --env.production --env.entry landing --env.path landing.jsx"
   },
   "author": "arachnid42 team",

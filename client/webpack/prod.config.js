@@ -26,14 +26,19 @@ const UGLIFY_JS_PLUGIN = new webpack.optimize.UglifyJsPlugin({
 
 module.exports = dirname =>{
   return env =>{
-    var commonConfig = new Config(__dirname);
+    const commonConfig = new Config(__dirname);
 
-    var config = commonConfig.createEntryOutput().prod(env.entry, env.path);
+    let { polyfills, entry, path:outPath } = env;
 
+    polyfills = polyfills=="true" || polyfills===undefined;
+
+    // console.log({polyfills, entry, outPath});
+
+    const config = commonConfig.createEntryOutput(polyfills).prod(entry,outPath);
     config.resolve = commonConfig.createResolve();
 
-    const ProdCSSPlugin = (entryName)=>{
-      const filename = path.join("../css",entryName+".css");
+    const ProdCSSPlugin = ()=>{
+      const filename = path.join("../css",entry+".css");
       return new ExtractTextPlugin({filename});
     };
 
@@ -45,7 +50,7 @@ module.exports = dirname =>{
           "NODE_ENV": JSON.stringify("production")
         }
       }),
-      ProdCSSPlugin(env.entry),
+      ProdCSSPlugin(),
       UGLIFY_JS_PLUGIN,
       new webpack.NamedModulesPlugin(),
       new webpack.NoEmitOnErrorsPlugin()

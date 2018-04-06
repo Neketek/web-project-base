@@ -36,7 +36,10 @@ class Config {
     }
   }
 
-  getPolyfils(){
+  getPolyfils(polyfills=true){
+    if(!polyfills){
+      return []
+    }
     return [
       "babel-polyfill",
       "fetch-polyfill"
@@ -63,7 +66,7 @@ class Config {
 
   }
 
-  createEntryOutput() {
+  createEntryOutput(polyfills=true) {
 
     const entries = {};
 
@@ -71,7 +74,7 @@ class Config {
       const entryConfig = {};
 
       entryConfig[entryName] = [
-        ...this.getPolyfils(),
+        ...this.getPolyfils(polyfills),
         "react-hot-loader/patch",
         "webpack-dev-server/client?" + this.DEV_SERVER_PATH,
         "webpack/hot/only-dev-server",
@@ -93,7 +96,7 @@ class Config {
       const entryConfig = {};
 
       entryConfig[entryName] = [
-        ...this.getPolyfils(),
+        ...this.getPolyfils(polyfills),
         path.join(this.CLIENT_PROD_ENTRIES_ROOT, entryPath)
       ];
 

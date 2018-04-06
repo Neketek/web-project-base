@@ -8,7 +8,7 @@ import { login } from 'modules/app/data/network/ajax/auth';
 import {
   setUserVariable
 } from 'modules/app/data/redux/reducer/user/action';
-import {Facebook} from 'modules/common/base/data/sdk';
+import {Facebook} from 'modules/common/base/data/api';
 
 class LoginContainer extends AppContainerBase{
   container({render}){

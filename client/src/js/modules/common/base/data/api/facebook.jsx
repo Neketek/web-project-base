@@ -1,25 +1,18 @@
-const defaultProps = {
-  appId:'your-app-id',
-  autoLogAppEvents:true,
-  xfbml:true,
-  version:'v2.12'
-}
-
-class FacebookSDK{
+class FacebookAPI{
 
     static get FB(){
-      if(!FB){
+      if(!window.FB){
         throw Error(
           "Facebook SDK is undefined." +
           "Check SDK loading status and scripts loading order and mode."
         )
       }
-      return FB;
+      return window.FB;
     }
 
-    static init(props){
-      const initProps = Object.assign({},defaultProps,props)
-      this.FB.init(initProps);
+
+    static get isFacebookSDKInitilized(){
+      return window.FB!==undefined;
     }
 
     static FBRequestPromise=({request,args=[]})=>{
@@ -54,4 +47,4 @@ class FacebookSDK{
 }
 
 
-export default FacebookSDK;
+export default FacebookAPI;
