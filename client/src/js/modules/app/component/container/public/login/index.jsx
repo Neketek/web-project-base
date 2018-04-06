@@ -8,9 +8,12 @@ import { login } from 'modules/app/data/network/ajax/auth';
 import {
   setUserVariable
 } from 'modules/app/data/redux/reducer/user/action';
-import {Facebook} from 'modules/common/base/data/api';
+import { Facebook,Google } from 'modules/common/base/data/api';
 
 class LoginContainer extends AppContainerBase{
+  constructor(props){
+    super(props);
+  }
   container({render}){
     return (
       <Grid container justify="center">
@@ -18,6 +21,7 @@ class LoginContainer extends AppContainerBase{
           onChange={this.props.onChange}
           onSubmit={this.props.onSubmit}
           onFacebookLogin={this.props.onFacebookLogin}
+          onGoogleLogin={this.props.onGoogleLogin}
         >
         </LoginForm>
       </Grid>
@@ -43,6 +47,14 @@ const actionFacebookLogin=()=>(dispatch,getState)=>{
   );
 }
 
+const actionGoogleLogin=()=>(dispatch,getState)=>{
+  console.log({auth2:Google.auth2});
+  Google.signIn().then(
+    resp=>console.log(resp),
+    error=>console.log(error)
+  );
+}
+
 LoginContainer.updateMapDispatchToProps((dispatch,ownProps)=>{
   return {
     onSubmit(event){
@@ -50,6 +62,9 @@ LoginContainer.updateMapDispatchToProps((dispatch,ownProps)=>{
     },
     onFacebookLogin(){
       dispatch(actionFacebookLogin());
+    },
+    onGoogleLogin(){
+      dispatch(actionGoogleLogin());
     }
   }
 });

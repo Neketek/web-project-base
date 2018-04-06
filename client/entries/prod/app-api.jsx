@@ -51,7 +51,7 @@ googleAPIScriptElement.onload=()=>{
   gapi.load("auth2",()=>{
     gapi.auth2.init({
       client_id:"941779526949-5eiip6mkv9bu7ed8eu4tmrhflg4canso.apps.googleusercontent.com",
-      scope: 'profile,email'
+      scope: 'profile email'
     }).then(()=>{
       window.GoogleAPIAuth2Initilized = true;
       window.onAPIInitialized();

@@ -66,17 +66,24 @@ class LoginForm extends Form{
               <Grid item xs={12}>
                 {rememberMe}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <Grid container justify='center'>
                   <Button variant='raised' size='large' name='login' onClick={this.onSubmit}>
                     Login
                   </Button>
                 </Grid>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <Grid container justify='center'>
                   <button name='facebook' onClick={this.props.onFacebookLogin}>
                     Facebook login
+                  </button>
+                </Grid>
+              </Grid>
+              <Grid item xs={4}>
+                <Grid container justify='center'>
+                  <button name='google' onClick={this.props.onGoogleLogin}>
+                    Google login
                   </button>
                 </Grid>
               </Grid>
