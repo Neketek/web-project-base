@@ -1,22 +1,14 @@
+const createAsyncScriptElement=(src)=>{
+  const e = document.createElement("script");
+  e.async = true;
+  e.defer = true;
+  e.src = src;
+  return e;
+}
 //creates asynch element for fb sdk script
-const createFacebookSDKScriptElement=()=>{
-  const e = document.createElement("script");
-  e.async = true;
-  e.defer = true;
-  e.src = "https://connect.facebook.net/en_US/sdk.js";
-  return e;
-}
-
+const createFacebookSDKScriptElement=()=>createAsyncScriptElement("https://connect.facebook.net/en_US/sdk.js");
 // creates async element for google api script
-const createGoogleAPIScriptElement=()=>{
-  const e = document.createElement("script");
-  e.async = true;
-  e.defer = true;
-  e.src = "https://apis.google.com/js/api.js";
-  return e;
-}
-
-
+const createGoogleAPIScriptElement=()=>createAsyncScriptElement("https://apis.google.com/js/api.js");
 // condition which checks status of the third party APIs
 const isAPIInitialized=()=>window.FacebookSDKInitialized&&window.GoogleAPIAuth2Initilized;
 
