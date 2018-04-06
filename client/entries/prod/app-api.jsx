@@ -27,7 +27,7 @@ window.setOnAPIInitializedCallback=(callback)=>{
   }
   window.onAPIInitialized();
 }
-
+// setting empty callback to avoid undefined errors
 window.setOnAPIInitializedCallback(()=>{});
 
 
