@@ -1,6 +1,6 @@
 export { default as Base } from './base';
 export { default as Check } from './check';
-export { default as Radio } from './radio';
+export { default as RadioBase } from './radio';
 export { default as Select } from './select';
 export { default as File } from './file';
 export { default as Text } from './text';

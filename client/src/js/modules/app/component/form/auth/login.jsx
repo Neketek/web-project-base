@@ -1,6 +1,6 @@
 import React from 'react';
 import {Form,Rule} from 'modules/common/base/component/form';
-import {Text,Date,DateTime,Time,Select,Button,InputError,Check} from 'modules/common/component/input';
+import {Text,Date,DateTime,Time,Select,Button,InputError,Check,Radio} from 'modules/common/component/input';
 import Grid from 'material-ui/Grid';
 import {
   FormLabel,
@@ -39,6 +39,11 @@ class LoginForm extends Form{
       label:this.label("rememberMe")
     }
 
+    const radioProps = {
+      name:"radioElement",
+      label:this.label("radioElement")
+    }
+
     // console.log(loginProps);
 
     const login = field(Text,loginProps);
@@ -53,6 +58,8 @@ class LoginForm extends Form{
 
     const rememberMe = input(Check,rememberMeProps);
 
+    const radio = input(Radio, radioProps);
+
     return (
         <Grid container justify='center' spacing={16} alignItems='center'>
               <Grid item xs={12}>
@@ -64,7 +71,7 @@ class LoginForm extends Form{
                 {passwordError}
               </Grid>
               <Grid item xs={12}>
-                {rememberMe}
+                {radio}
               </Grid>
               <Grid item xs={4}>
                 <Grid container justify='center'>
@@ -103,7 +110,8 @@ LoginForm.updateDefaultProps({
   labels:{
     email:"Email",
     password:"Password",
-    rememberMe:"Remember me"
+    rememberMe:"Remember me",
+    radioElement:"Radio Element"
   },
   rules:{
     email:[
