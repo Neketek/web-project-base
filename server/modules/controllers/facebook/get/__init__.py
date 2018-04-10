@@ -4,7 +4,7 @@ from modules.config.facebook import \
     APP_SECRET_KEY, APP_ACCESS_TOKEN, APP_ID, OAUTH_REDIRECT_URI
 from modules.exceptions import MissingValueException, UserFriendlyException
 from datetime import datetime
-
+import json
 
 def access_token_debug_url(input_token=None):
     return "/debug_token?input_token={0}&access_token={1}".format(
@@ -36,6 +36,27 @@ def invalid_fb_data_error():
 
 
 class Get(ControllerBase):
+
+    def get_authorization_url(
+        self,
+        redirect_uri=None,
+        scope="public_profile,email",
+        state={}
+    ):
+        return (
+            "https://www.facebook.com/v2.12/dialog/oauth?" +
+            "redirect_uri={0}" +
+            "&app_id={1}"
+            "&response_type=code" +
+            "&scope={2}" +
+            "&state=\"{3}\""
+        ).format(
+            redirect_uri,
+            APP_ID,
+            scope,
+            json.dumps(state)
+        )
+
 
     def get_native_verified_login_data(self, data):
         try:

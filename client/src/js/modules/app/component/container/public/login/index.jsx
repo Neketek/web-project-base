@@ -48,10 +48,23 @@ const actionFacebookLogin=()=>(dispatch,getState)=>{
 }
 
 const actionGoogleLogin=()=>(dispatch,getState)=>{
-  console.log({auth2:Google.auth2});
-  Google.signIn().then(
-    resp=>console.log(resp),
-    error=>console.log(error)
+  // console.log({auth2:Google.auth2});
+  Google.grantOfflineAccess().then(
+    google=>{
+      console.log(google);
+      // const {Zi:{access_token:accessToken,id_token:idToken}} = google;
+      login({google}).then(
+        data=>{
+          console.log(data);
+        },
+        error=>{
+          console.log(data);
+        }
+      )
+    },
+    error=>{
+      console.log(error);
+    }
   );
 }
 
@@ -64,6 +77,9 @@ LoginContainer.updateMapDispatchToProps((dispatch,ownProps)=>{
       dispatch(actionFacebookLogin());
     },
     onGoogleLogin(){
+      // Google.signOut().then(
+      //   data=>console.log(data),
+      // )
       dispatch(actionGoogleLogin());
     }
   }

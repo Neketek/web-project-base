@@ -20,7 +20,16 @@ class Create(ControllerBase):
         return self.create(data, email_verified=True, facebook=facebook)
 
     def create_with_google_data(self, data):
-        pass
+        google = dict(
+            accessToken=data['accessToken'],
+            accessTokenExpiresAt=data['accessTokenExpiresAt']
+        )
+        data = dict(
+            name=data['name'],
+            password=sql.User.generate_random_password(),
+            email=data['email']
+        )
+        return self.create(data, email_verified=True, google=google)
 
     def create(
         self,
@@ -65,6 +74,7 @@ class Create(ControllerBase):
             # TODO add method to save google and facebook oauth tokens
             user_entity = sql.User()
             auth_facebook = None
+            auth_google = None
             try:
                 auth_facebook_kwargs = dict(
                     access_token=facebook['accessToken'],
@@ -75,7 +85,19 @@ class Create(ControllerBase):
                 )
             except KeyError:
                 pass
+            try:
+                auth_google_kwargs = dict(
+                    access_token=google['accessToken'],
+                    expiration_date_time=google['accessTokenExpiresAt'],
+                    refresh_token=google['refreshToken']
+                )
+                auth_google = sql.UserAuthGoogle(
+                    **auth_google_kwargs
+                )
+            except KeyError:
+                pass
             user_entity.auth_facebook = auth_facebook
+            user_entity.auth_google = auth_google
             user_entity.first_name = first_name
             user_entity.last_name = last_name
             user_entity.email = email_entity

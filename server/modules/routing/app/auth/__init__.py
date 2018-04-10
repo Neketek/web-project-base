@@ -1,11 +1,12 @@
 from flask import \
-    Blueprint, jsonify
+    Blueprint, jsonify, redirect, request, url_for
 from modules.routing import utils
-# from flask import session
 from modules.routing.app import render_app_on_get
 from modules.controllers.email import Email
 from modules.controllers.phone import Phone
 from modules.controllers.user import User
+from modules.controllers.google import Google
+from modules.controllers.facebook import Facebook
 from modules.controllers.session import Session
 from modules.exceptions import UserFriendlyException
 
@@ -53,6 +54,44 @@ def sign_up(json={}, sql_session=None):
     sql_session.refresh(user_entity)
     Session().Edit().set_user_session_data(user_entity)
     return jsonify(dict(signUp=True))
+
+
+@blueprint.route("/authorize/<provider>", methods=['GET'])
+@utils.request.sql_session
+def authorize(provider=None, sql_session=None):
+
+    print(request.url)
+    print(request.args)
+    print(not request.args)
+
+    if provider == 'google':
+        code = request.args.get('code')
+        if code is not None:
+            login_data = Google().Auth().exchange_code(
+                code=code,
+                redirect_uri=request.base_url
+            )
+            user_entity = User(
+                sql_session=sql_session
+            ).Auth().Login().login(
+                dict(google=login_data)
+            )
+            Session().Edit().set_user_session_data(user_entity)
+            return jsonify(user_entity.json())
+        elif not request.args:
+            return redirect(Google().Auth().get_authorization_url(
+                redirect_uri=request.base_url
+            ))
+
+    if provider == 'facebook':
+        if request.args.get('code') is not None:
+            return request.args.get('code')
+        elif not request.args:
+            return redirect(Facebook().Get().get_authorization_url(
+                redirect_uri=request.base_url
+            ))
+
+    return redirect(url_for("app.auth.login"))
 
 
 @blueprint.route("/sign-up/check/<entity>", methods=['POST'])

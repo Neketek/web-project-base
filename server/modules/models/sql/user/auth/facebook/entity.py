@@ -20,4 +20,4 @@ class UserAuthFacebook(
     )
 ):
     user = relationship("User", back_populates="auth_facebook")
-    access_token = Column(String(256), nullable=False)
+    access_token = Column(String(512), nullable=False)

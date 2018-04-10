@@ -75,16 +75,16 @@ class LoginForm extends Form{
               </Grid>
               <Grid item xs={4}>
                 <Grid container justify='center'>
-                  <button name='facebook' onClick={this.props.onFacebookLogin}>
+                  <a href="/app/authorize/facebook" name='facebook' >
                     Facebook login
-                  </button>
+                  </a>
                 </Grid>
               </Grid>
               <Grid item xs={4}>
                 <Grid container justify='center'>
-                  <button name='google' onClick={this.props.onGoogleLogin}>
+                  <a href="/app/authorize/google" name='google' >
                     Google login
-                  </button>
+                  </a>
                 </Grid>
               </Grid>
         </Grid>

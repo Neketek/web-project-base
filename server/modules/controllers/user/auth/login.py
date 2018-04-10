@@ -2,7 +2,6 @@ from modules.models import sql
 from modules.models import query
 from modules.exceptions import MissingValueException, InvalidLoginData
 from sqlalchemy.orm.exc import NoResultFound
-from modules.controllers.facebook import Facebook
 from modules.controllers.base import ControllerBase
 
 
@@ -40,42 +39,62 @@ class Login(ControllerBase):
             raise InvalidLoginData()
 
     def google_login(self, data):
-        print("GOOGLE LOGIN")
-        print(data)
+        try:
+            email = data.get('email')
+            user_entity = self.query(query.sql.user.get_by)(
+                email=email
+            ).one()
+            access_token = data['accessToken']
+            expiration_date_time = data['accessTokenExpiresAt']
+            refresh_token = data['refreshToken']
+            if user_entity.auth_google is None:
+                user_entity.auth_google = sql.UserAuthGoogle(
+                    access_token=access_token,
+                    expiration_date_time=expiration_date_time,
+                    refresh_token=refresh_token
+                )
+            else:
+                user_entity.auth_google.access_token =\
+                    access_token
+                user_entity.auth_google.expiration_date_time =\
+                    expiration_date_time
+                if refresh_token is not None:
+                    user_entity.auth_google.refresh_token =\
+                        refresh_token
+            return user_entity
+        except NoResultFound:
+            self.root.Auth().Create().create_with_google_data(data)
+        except KeyError as e:
+            raise MissingValueException(value=e.args[0])
         raise InvalidLoginData()
 
     def facebook_login(self, data):
         try:
-            try:
-                native_login_data = Facebook().Get()\
-                    .get_native_verified_login_data(data)
-                access_token = native_login_data['accessToken']
-                expiration_date_time = \
-                    native_login_data['accessTokenExpiresAt']
-                email = native_login_data['email']
-                user_entity = self.query(query.sql.user.get_by)(
-                    email=email
-                ).one()
-                if user_entity.auth_facebook is None:
-                    user_entity.auth_facebook = \
-                        sql.UserAuthFacebook(
-                            access_token=access_token,
-                            expiration_date_time=expiration_date_time
-                        )
-                else:
-                    user_entity.auth_facebook.access_token = access_token
-                    user_entity.auth_facebook.expiration_date_time = \
-                        expiration_date_time
-                return user_entity
-            except NoResultFound:
-                return self.root.Auth().Create()\
-                    .create_with_facebook_data(native_login_data)
+            expiration_date_time = data['accessTokenExpiresAt']
+            access_token = data['accessToken']
+            email = data['email']
+            user_entity = self.query(query.sql.user.get_by)(
+                email=email
+            ).one()
+            if user_entity.auth_facebook is None:
+                user_entity.auth_facebook = \
+                    sql.UserAuthFacebook(
+                        access_token=access_token,
+                        expiration_date_time=expiration_date_time
+                    )
+            else:
+                user_entity.auth_facebook.access_token = access_token
+                user_entity.auth_facebook.expiration_date_time = \
+                    expiration_date_time
+            return user_entity
+        except NoResultFound:
+            return self.root.Auth().Create()\
+                .create_with_facebook_data(data)
         except KeyError as e:
             raise MissingValueException(value=e.args[0])
         raise InvalidLoginData()
 
     def native_login(self, data):
-        # print('NATIVE LOGIN!!!')
         try:
             email = data['email'].strip().lower()
             password = data['password']
@@ -86,11 +105,9 @@ class Login(ControllerBase):
             user_entity = \
                 self.query(query.sql.user.get_by)(email=email).one()
         except NoResultFound:
-            # print("EMAIL WAS NOT FOUND")
             raise InvalidLoginData()
 
         if not user_entity.password_check(password):
-            # print("PASSWORD CHECK FAILED")
             raise InvalidLoginData()
 
         return user_entity
