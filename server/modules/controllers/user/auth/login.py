@@ -63,7 +63,7 @@ class Login(ControllerBase):
                         refresh_token
             return user_entity
         except NoResultFound:
-            self.root.Auth().Create().create_with_google_data(data)
+            return self.root.Auth().Create().create_with_google_data(data)
         except KeyError as e:
             raise MissingValueException(value=e.args[0])
         raise InvalidLoginData()

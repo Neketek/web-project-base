@@ -77,6 +77,8 @@ def authorize(provider=None, sql_session=None):
                 dict(google=login_data)
             )
             Session().Edit().set_user_session_data(user_entity)
+            sql_session.commit()
+            sql_session.refresh(user_entity)
             return jsonify(user_entity.json())
         elif not request.args:
             return redirect(Google().Auth().get_authorization_url(
