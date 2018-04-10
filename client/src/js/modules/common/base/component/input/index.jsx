@@ -8,3 +8,4 @@ export { default as Date } from './date';
 export { default as DateTime } from './datetime';
 export { default as Time } from './time';
 export { default as Button } from './button';
+export { default as SwitchBase } from './switch';
