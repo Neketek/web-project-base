@@ -3,6 +3,7 @@ class JsonException(Exception):
     GROUP = None
     ID = None
 
+    @property
     def __dict__(self):
         return {
             'error': True,
@@ -27,8 +28,12 @@ class UserFriendlyException(JsonException):
 class MissingValueException(UserFriendlyException):
     def __init__(
         self,
-        message="Required value '{0}' is missed!", value=''
+        message="Required value '{0}' is missed!",
+        value='',
+        key_error=None
     ):
+        if key_error is not None:
+            value = key_error.args[0]
         self.message = message.format(value)
 
 

@@ -1,5 +1,5 @@
 from flask import \
-    Blueprint, jsonify, redirect, request, url_for, render_template
+    Blueprint, jsonify, redirect, request, url_for
 from modules.routing import utils
 from modules.routing.app import render_app_on_get
 from modules.controllers.email import Email
@@ -21,7 +21,7 @@ def register(app):
 
 @blueprint.route("/login", methods=['POST', 'GET'])
 @render_app_on_get
-@utils.response.user_friendly_exceptions
+@utils.response.user_friendly_exceptions("json")
 @utils.request.json
 @utils.request.sql_session
 @utils.request.timezone
@@ -36,7 +36,7 @@ def login(json=None, sql_session=None, timezone=None):
 
 @blueprint.route("/logout", methods=['POST', 'GET'])
 @render_app_on_get
-@utils.response.user_friendly_exceptions
+@utils.response.user_friendly_exceptions("json")
 def logout():
     Session().Edit().clear_user_session_data()\
         .set_permanent(permanent=False)
@@ -45,7 +45,7 @@ def logout():
 
 @blueprint.route("/sign-up", methods=['POST', 'GET'])
 @render_app_on_get
-@utils.response.user_friendly_exceptions
+@utils.response.user_friendly_exceptions("json")
 @utils.request.json
 @utils.request.sql_session
 def sign_up(json={}, sql_session=None):
@@ -57,12 +57,9 @@ def sign_up(json={}, sql_session=None):
 
 
 @blueprint.route("/authorize/<provider>", methods=['GET'])
+@utils.response.user_friendly_exceptions("template")
 @utils.request.sql_session
 def authorize(provider=None, sql_session=None):
-
-    print(request.url)
-    print(request.args)
-    print(not request.args)
 
     provider_auth_controller = None
     if provider == 'google':
@@ -75,45 +72,32 @@ def authorize(provider=None, sql_session=None):
 
     if provider_auth_controller is None or code is None and request.args:
         return redirect(url_for("app.auth.login"))
-    try:
-        if code is not None:
-            user_login_controller = User(
-                sql_session=sql_session
-            ).Auth().Login()
-            login_data = provider_auth_controller.exchange_code(
-                code=code,
+    if code is not None:
+        user_login_controller = User(
+            sql_session=sql_session
+        ).Auth().Login()
+        login_data = provider_auth_controller.exchange_code(
+            code=code,
+            redirect_uri=redirect_uri
+        )
+        user_login_data = dict()
+        user_login_data[provider] = login_data
+        user_entity = user_login_controller.login(user_login_data)
+        Session().Edit().set_user_session_data(user_entity)
+        sql_session.commit()
+        sql_session.refresh(user_entity)
+        # TODO: replace with redirect to dashboard
+        return jsonify(user_entity.json())
+    elif not request.args:
+        return redirect(
+            provider_auth_controller.get_authorization_url(
                 redirect_uri=redirect_uri
             )
-            user_login_data = dict()
-            user_login_data[provider] = login_data
-            user_entity = user_login_controller.login(user_login_data)
-            Session().Edit().set_user_session_data(user_entity)
-            sql_session.commit()
-            sql_session.refresh(user_entity)
-            # TODO: replace with redirect to dashboard
-            return jsonify(user_entity.json())
-        elif not request.args:
-            return redirect(
-                provider_auth_controller.get_authorization_url(
-                    redirect_uri=redirect_uri
-                )
-            )
-    except UserFriendlyException as e:
-        return render_template(
-            "error.hmtl",
-            name=e.name,
-            message=e.message
-        )
-    except Exception as e:
-        return render_template(
-            "error.html",
-            name="Internal Server Error",
-            message="Something bad happened"
         )
 
 
 @blueprint.route("/sign-up/check/<entity>", methods=['POST'])
-@utils.response.user_friendly_exceptions
+@utils.response.user_friendly_exceptions("json")
 @utils.request.json
 @utils.request.sql_session
 def check(entity=None, json={}, sql_session=None):

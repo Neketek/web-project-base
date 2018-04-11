@@ -13,7 +13,7 @@ def register(app):
 
 
 @blueprint.route("/user", methods=['POST', 'GET'])
-# @utils.response.user_friendly_exceptions
+@utils.response.user_friendly_exceptions("json")
 @utils.request.json
 @utils.request.timezone
 @login.required

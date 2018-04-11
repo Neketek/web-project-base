@@ -53,8 +53,8 @@ def json_in_form(func):
     json data from the form and provides it as named argument
     '''
     def json_in_form_wrapper(*args, **kwargs):
-        json = json.loads(request.form['json'])
-        return func(json=json, *args, **kwargs)
+        data = json.loads(request.form['json'])
+        return func(json=data, *args, **kwargs)
     return json_in_form_wrapper
 
 

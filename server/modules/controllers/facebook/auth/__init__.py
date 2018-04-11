@@ -1,7 +1,7 @@
 from modules.controllers.base import ControllerBase
 from modules.config import facebook
 
-# from modules.exceptions import MissingValueException, UserFriendlyException
+from modules.exceptions import UserFriendlyException, InternalServerException
 from datetime import datetime
 import requests
 import json
@@ -51,6 +51,17 @@ class Auth(ControllerBase):
             )
         ).json()
 
+        try:
+            response['access_token']
+        except KeyError as e:
+            try:
+                print(response)
+                raise UserFriendlyException(
+                    message=response['error']['message']
+                )
+            except KeyError:
+                raise InternalServerException()
+
         access_token_response = requests.get(
             "https://graph.facebook.com/v2.12/oauth/access_token",
             dict(
@@ -61,6 +72,7 @@ class Auth(ControllerBase):
                 fb_exchange_token=response['access_token']
             )
         ).json()
+
 
         token_debug_response = requests.get(
             "https://graph.facebook.com/v2.12/debug_token",
