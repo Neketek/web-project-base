@@ -1,5 +1,5 @@
 from flask import \
-    Blueprint, jsonify, redirect, request, url_for
+    Blueprint, jsonify, redirect, request, url_for, render_template
 from modules.routing import utils
 from modules.routing.app import render_app_on_get
 from modules.controllers.email import Email
@@ -64,36 +64,52 @@ def authorize(provider=None, sql_session=None):
     print(request.args)
     print(not request.args)
 
+    provider_auth_controller = None
     if provider == 'google':
-        code = request.args.get('code')
+        provider_auth_controller = Google().Auth()
+    elif provider == 'facebook':
+        provider_auth_controller = Facebook().Auth()
+
+    code = request.args.get('code')
+    redirect_uri = request.base_url
+
+    if provider_auth_controller is None or code is None and request.args:
+        return redirect(url_for("app.auth.login"))
+    try:
         if code is not None:
-            login_data = Google().Auth().exchange_code(
-                code=code,
-                redirect_uri=request.base_url
-            )
-            user_entity = User(
+            user_login_controller = User(
                 sql_session=sql_session
-            ).Auth().Login().login(
-                dict(google=login_data)
+            ).Auth().Login()
+            login_data = provider_auth_controller.exchange_code(
+                code=code,
+                redirect_uri=redirect_uri
             )
+            user_login_data = dict()
+            user_login_data[provider] = login_data
+            user_entity = user_login_controller.login(user_login_data)
             Session().Edit().set_user_session_data(user_entity)
             sql_session.commit()
             sql_session.refresh(user_entity)
+            # TODO: replace with redirect to dashboard
             return jsonify(user_entity.json())
         elif not request.args:
-            return redirect(Google().Auth().get_authorization_url(
-                redirect_uri=request.base_url
-            ))
-
-    if provider == 'facebook':
-        if request.args.get('code') is not None:
-            return request.args.get('code')
-        elif not request.args:
-            return redirect(Facebook().Get().get_authorization_url(
-                redirect_uri=request.base_url
-            ))
-
-    return redirect(url_for("app.auth.login"))
+            return redirect(
+                provider_auth_controller.get_authorization_url(
+                    redirect_uri=redirect_uri
+                )
+            )
+    except UserFriendlyException as e:
+        return render_template(
+            "error.hmtl",
+            name=e.name,
+            message=e.message
+        )
+    except Exception as e:
+        return render_template(
+            "error.html",
+            name="Internal Server Error",
+            message="Something bad happened"
+        )
 
 
 @blueprint.route("/sign-up/check/<entity>", methods=['POST'])
