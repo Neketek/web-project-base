@@ -1,7 +1,7 @@
 from modules.models import sql
 from modules.models import query
 from sqlalchemy.orm.exc import NoResultFound
-from modules.exceptions import MissingValueException, UserFriendlyException
+from modules.exceptions import MissingValueError, UserFriendlyError
 from modules.controllers.base import ControllerBase
 
 
@@ -48,9 +48,9 @@ class Create(ControllerBase):
                 first_name = name['first'].strip()
                 last_name = name['last'].strip()
             except KeyError as e:
-                raise MissingValueException(value="{0} name".format(e.args[0]))
+                raise MissingValueError(value="{0} name".format(e.args[0]))
         except KeyError as e:
-            raise MissingValueException(value=e.args[0])
+            raise MissingValueError(value=e.args[0])
 
         email_entity = None
         user_entity = None
@@ -62,7 +62,7 @@ class Create(ControllerBase):
                 self.query(query.sql.user.get_by)(
                     email_id=email_entity.id
                 ).one()
-                raise UserFriendlyException(
+                raise UserFriendlyError(
                     message='Email is already registered'
                 )
             except NoResultFound:

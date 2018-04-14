@@ -1,6 +1,6 @@
 from modules.models import sql
 from modules.models import query
-from modules.exceptions import MissingValueException, InvalidLoginData
+from modules.exceptions import MissingValueError, InvalidLoginDataError
 from sqlalchemy.orm.exc import NoResultFound
 from modules.controllers.base import ControllerBase
 
@@ -36,7 +36,7 @@ class Login(ControllerBase):
         elif self.__is_google_login__(data):
             return self.google_login(data['google'])
         else:
-            raise InvalidLoginData()
+            raise InvalidLoginDataError()
 
     def google_login(self, data):
         try:
@@ -65,8 +65,8 @@ class Login(ControllerBase):
         except NoResultFound:
             return self.root.Auth().Create().create_with_google_data(data)
         except KeyError as e:
-            raise MissingValueException(value=e.args[0])
-        raise InvalidLoginData()
+            raise MissingValueError(value=e.args[0])
+        raise InvalidLoginDataError()
 
     def facebook_login(self, data):
         try:
@@ -91,24 +91,24 @@ class Login(ControllerBase):
             return self.root.Auth().Create()\
                 .create_with_facebook_data(data)
         except KeyError as e:
-            raise MissingValueException(value=e.args[0])
-        raise InvalidLoginData()
+            raise MissingValueError(value=e.args[0])
+        raise InvalidLoginDataError()
 
     def native_login(self, data):
         try:
             email = data['email'].strip().lower()
             password = data['password']
         except KeyError as e:
-            raise MissingValueException(value=e.args[0])
+            raise MissingValueError(value=e.args[0])
 
         try:
             user_entity = \
                 self.query(query.sql.user.get_by)(email=email).one()
         except NoResultFound:
-            raise InvalidLoginData()
+            raise InvalidLoginDataError()
 
         if not user_entity.password_check(password):
-            raise InvalidLoginData()
+            raise InvalidLoginDataError()
 
         return user_entity
 

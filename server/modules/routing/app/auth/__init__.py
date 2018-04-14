@@ -8,7 +8,7 @@ from modules.controllers.user import User
 from modules.controllers.google import Google
 from modules.controllers.facebook import Facebook
 from modules.controllers.session import Session
-from modules.exceptions import UserFriendlyException
+from modules.exceptions import UserFriendlyError
 
 
 blueprint = Blueprint("app.auth", __name__)
@@ -21,7 +21,7 @@ def register(app):
 
 @blueprint.route("/login", methods=['POST', 'GET'])
 @render_app_on_get
-@utils.response.user_friendly_exceptions("json")
+@utils.response.user_friendly_errors("json")
 @utils.request.json
 @utils.request.sql_session
 @utils.request.timezone
@@ -36,7 +36,7 @@ def login(json=None, sql_session=None, timezone=None):
 
 @blueprint.route("/logout", methods=['POST', 'GET'])
 @render_app_on_get
-@utils.response.user_friendly_exceptions("json")
+@utils.response.user_friendly_errors("json")
 def logout():
     Session().Edit().clear_user_session_data()\
         .set_permanent(permanent=False)
@@ -45,7 +45,7 @@ def logout():
 
 @blueprint.route("/sign-up", methods=['POST', 'GET'])
 @render_app_on_get
-@utils.response.user_friendly_exceptions("json")
+@utils.response.user_friendly_errors("json")
 @utils.request.json
 @utils.request.sql_session
 def sign_up(json={}, sql_session=None):
@@ -57,7 +57,7 @@ def sign_up(json={}, sql_session=None):
 
 
 @blueprint.route("/authorize/<provider>", methods=['GET'])
-@utils.response.user_friendly_exceptions("template")
+@utils.response.user_friendly_errors("template")
 @utils.request.sql_session
 def authorize(provider=None, sql_session=None):
 
@@ -97,7 +97,7 @@ def authorize(provider=None, sql_session=None):
 
 
 @blueprint.route("/sign-up/check/<entity>", methods=['POST'])
-@utils.response.user_friendly_exceptions("json")
+@utils.response.user_friendly_errors("json")
 @utils.request.json
 @utils.request.sql_session
 def check(entity=None, json={}, sql_session=None):
@@ -106,10 +106,12 @@ def check(entity=None, json={}, sql_session=None):
     elif entity == 'phone':
         Controller = Email
     else:
-        raise UserFriendlyException("Can't check:{0}!".format(entity))
+        raise UserFriendlyError("Can't check:{0}!".format(entity))
     try:
         value = json[entity]
     except KeyError as e:
-        raise UserFriendlyException("Can't find '{0}' in json!".format(entity))
+        raise UserFriendlyError(
+            "Can't find '{0}' in payload!".format(entity)
+        )
     free = not Controller(sql_session=sql_session).Get().is_used_by_user(value)
     return jsonify(dict(free=free))

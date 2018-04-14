@@ -1,5 +1,5 @@
 from modules.models import sql
-from modules.exceptions import MissingValueException, NotFoundException
+from modules.exceptions import MissingValueError, NotFoundError
 from sqlalchemy.orm.exc import NoResultFound
 from modules.controllers.base import ControllerBase
 
@@ -19,7 +19,7 @@ class Profile(ControllerBase):
                     .filter(sql.User.id == user_id)\
                     .one()
             except KeyError as e:
-                raise MissingValueException(value=e.args[0])
+                raise MissingValueError(value=e.args[0])
             except NoResultFound:
-                raise NotFoundException(value='user')
+                raise NotFoundError(value='user')
             return user_entity.json(timezone=self.timezone)

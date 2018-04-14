@@ -1,6 +1,6 @@
 from flask import jsonify, render_template
 from functools import wraps
-from modules.exceptions import UserFriendlyException, InternalServerException
+from modules.exceptions import UserFriendlyError, InternalServerError
 
 
 def json(func):
@@ -14,8 +14,8 @@ def json(func):
     return json_response_wrapper
 
 
-def user_friendly_exceptions(response_type="", template="error.html"):
-    '''Request wrapper which intercepts exceptions, forms dict containing
+def user_friendly_errors(response_type="", template="error.html"):
+    '''Request wrapper which intercepts errors, forms dict containing
     error data and blocks internal server exception response
     by returning json or template filled with exceptions data'''
     response_type = response_type.lower()
@@ -28,15 +28,15 @@ def user_friendly_exceptions(response_type="", template="error.html"):
     else:
         raise ValueError("Unknown response_type:{0}".format(response_type))
 
-    def user_friendly_exceptions_decorator(func):
+    def user_friendly_errors_decorator(func):
         @wraps(func)
         def user_friendly_wrapper(*args, **kwars):
             try:
                 return func(*args, **kwars)
-            except UserFriendlyException as e:
+            except UserFriendlyError as e:
                 return response(vars(e))
             except Exception as e:
-                return response(vars(InternalServerException()))
+                return response(vars(InternalServerError()))
         return user_friendly_wrapper
 
-    return user_friendly_exceptions_decorator
+    return user_friendly_errors_decorator

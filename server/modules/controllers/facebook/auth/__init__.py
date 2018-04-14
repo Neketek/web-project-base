@@ -1,9 +1,6 @@
 from modules.controllers.base import ControllerBase
 from modules.config import facebook
-
-from modules.exceptions import UserFriendlyException, InternalServerException
 from datetime import datetime
-import requests
 import json
 
 
@@ -41,29 +38,18 @@ class Auth(ControllerBase):
         code=None,
         redirect_uri=None
     ):
-        response = requests.get(
-            "https://graph.facebook.com/v2.12/oauth/access_token",
+        response = self.root.get(
+            "/oauth/access_token",
             dict(
                 redirect_uri=redirect_uri,
                 client_id=facebook.APP_ID,
                 client_secret=facebook.APP_SECRET_KEY,
                 code=code
             )
-        ).json()
+        )
 
-        try:
-            response['access_token']
-        except KeyError as e:
-            try:
-                print(response)
-                raise UserFriendlyException(
-                    message=response['error']['message']
-                )
-            except KeyError:
-                raise InternalServerException()
-
-        access_token_response = requests.get(
-            "https://graph.facebook.com/v2.12/oauth/access_token",
+        access_token_response = self.root.get(
+            "/oauth/access_token",
             dict(
                 redirect_uri=redirect_uri,
                 client_id=facebook.APP_ID,
@@ -71,24 +57,23 @@ class Auth(ControllerBase):
                 grant_type="fb_exchange_token",
                 fb_exchange_token=response['access_token']
             )
-        ).json()
+        )
 
-
-        token_debug_response = requests.get(
-            "https://graph.facebook.com/v2.12/debug_token",
+        token_debug_response = self.root.get(
+            "/debug_token",
             dict(
                 input_token=response['access_token'],
                 access_token=facebook.APP_ACCESS_TOKEN
             )
-        ).json()
+        )
 
         if token_debug_response['data']['app_id'] != facebook.APP_ID:
             raise ValueError("Token does not belong to current app")
         if not token_debug_response['data']['is_valid']:
             raise ValueError("Token is invalid")
 
-        profile_response = requests.get(
-            "https://graph.facebook.com/v2.12/me",
+        profile_response = self.root.get(
+            "/me",
             dict(
                 fields=",".join([
                     "first_name",
@@ -97,7 +82,7 @@ class Auth(ControllerBase):
                 ]),
                 access_token=access_token_response['access_token']
             )
-        ).json()
+        )
 
         access_token_expires_at = \
             datetime.fromtimestamp(token_debug_response["data"]['expires_at'])
