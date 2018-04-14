@@ -88,3 +88,11 @@ class FacebookError(UserFriendlyError):
         message="Facebook API Error"
     ):
         self.message = message
+
+
+class GoogleError(UserFriendlyError):
+    def __init__(
+        self,
+        message="Google API Error"
+    ):
+        self.message = message

@@ -1,6 +1,7 @@
 from modules.controllers.base import ControllerBase
 from modules.config import google
-from oauth2client.client import OAuth2WebServerFlow
+from oauth2client.client import OAuth2WebServerFlow, FlowExchangeError
+from modules.exceptions import GoogleError
 
 
 class Auth(ControllerBase):
@@ -27,9 +28,14 @@ class Auth(ControllerBase):
             redirect_uri=redirect_uri,
             scope=scope
         )
-        credentials = flow.step2_exchange(code)
+        try:
+            credentials = flow.step2_exchange(code)
+        except ValueError as e:
+            raise GoogleError("Invalid authorization request")
+        except FlowExchangeError as e:
+            raise GoogleError("Authorization code is invalid")
         if credentials.invalid:
-            return dict()
+            raise GoogleError("Invalid Google credentials")
         access_token = credentials.access_token
         refresh_token = credentials.refresh_token
         expiration_date_time = credentials.token_expiry
@@ -37,6 +43,7 @@ class Auth(ControllerBase):
         email_verified = id_token.get('email_verified', False)
         email = id_token.get('email')
         email = email if email_verified else None
+
         return dict(
             accessToken=access_token,
             accessTokenExpiresAt=expiration_date_time,
