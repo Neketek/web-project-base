@@ -1,10 +1,10 @@
-import ContainerBase from '../base';
+import Container from './container';
 import { push } from 'react-router-redux';
 import { Route, Switch } from 'react-router';
 import React from 'react';
 
 
-class ContainerRoutingBase extends ContainerBase{
+class RouterContainer extends Container{
 
   constructor(props){
     super(props);
@@ -18,22 +18,22 @@ class ContainerRoutingBase extends ContainerBase{
 
   Route=this.bindRouterComponent(Route);
 
-  RouteSwitch=this.bindRouterComponent(Switch);
+  Switch=this.bindRouterComponent(Switch);
 
 }
 
-ContainerRoutingBase.updateMapStateToProps((state,ownProps)=>{
+RouterContainer.updateMapStateToProps((state,ownProps)=>{
   const {router:{location}} = state;
   return {
     location
   }
 });
 
-ContainerRoutingBase.updateMapDispatchToProps((dispatch,ownProps)=>{
+RouterContainer.updateMapDispatchToProps((dispatch,ownProps)=>{
   return {
     redirect:path=>dispatch(push(path))
   }
 });
 
 
-export default ContainerRoutingBase;
+export default RouterContainer;

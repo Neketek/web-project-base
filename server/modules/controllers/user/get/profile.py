@@ -6,7 +6,7 @@ from modules.controllers.base import ControllerBase
 
 class Profile(ControllerBase):
 
-    def get_profile(
+    def get(
         self,
         json=None,
         user_entity=None

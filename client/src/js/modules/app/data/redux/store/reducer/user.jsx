@@ -1,6 +1,7 @@
 import {
-  SET_USER_VARIABLE
-} from './type';
+  SET_USER_VARIABLE,
+  SET_USER
+} from 'modules/app/data/redux/action/type/user';
 
 import _ from 'lodash';
 
@@ -10,6 +11,8 @@ export default (state={},action)=>{
       state = _.clone(state);
       state[action.name]=action.value;
       break;
+    case SET_USER:
+      return action.data;
   }
   return state;
 }

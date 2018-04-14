@@ -11,7 +11,7 @@ export const createStoreCreator = ({reducers,history,middleware})=>{
   return (development=false)=>{
 
     if(middleware===undefined){
-      console.log("DEFAULT MIDDLEWARE");
+      // console.log("DEFAULT MIDDLEWARE");
       let middlewareList = [ReduxThunk];
       if(history){
         middlewareList.push(routerMiddleware(history));

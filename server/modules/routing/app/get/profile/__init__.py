@@ -19,6 +19,6 @@ def register(app):
 @login.required
 def user(user_context=None, timezone=None, json=None):
     json = dict(id=user_context.id)
-    json_resp = User(user_context, timezone).Get()\
-        .get_profile(json=json)
+    json_resp = User(user_context, timezone).Get().Profile()\
+        .get(json=json)
     return jsonify(json_resp)

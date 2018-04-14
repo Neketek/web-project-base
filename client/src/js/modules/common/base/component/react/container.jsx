@@ -1,15 +1,15 @@
 import Component from '../react/component';
-import React from 'react';
 import {connect,Provider} from 'react-redux';
+import React from 'react';
 
-class ContainerBase extends Component{
+
+class Container extends Component{
 
   renderContainer=(Class,props)=>{
     return <Class store={this.props.store} {...props}></Class>
   }
 
   render(){
-    console.log("RENDER:"+this.props.name);
     const props = {
       render:{
         container:this.renderContainer
@@ -53,14 +53,11 @@ class ContainerBase extends Component{
 
 
   static connect(){
-
     const MappedContainer = connect(
       this.mapStateToProps,
       this.mapDispatchToProps
     )(this);
-
     class ConnectedContainer extends Component{
-
       render(){
         return (
           <Provider store = {this.props.store}>
@@ -68,13 +65,11 @@ class ContainerBase extends Component{
           </Provider>
         );
       }
-
     }
-
     return ConnectedContainer;
-
   }
+
 }
 
 
-export default ContainerBase;
+export default Container;
