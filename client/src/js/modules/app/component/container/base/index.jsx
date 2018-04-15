@@ -1,6 +1,9 @@
 import React from 'react';
 import RouterContainer from 'modules/common/base/component/react/router-container';
 import PropTypes from 'prop-types';
+import {
+  setContainerError
+} from 'modules/app/data/redux/action/container';
 
 const APP_AUTH_URL = "/auth/login";
 
@@ -23,12 +26,14 @@ class AppBaseContainer extends RouterContainer{
       error:{
         title="Error",
         message="Error occured"
-      }
+      },
+      disableErrorScreen
     } = this.props;
     return (
       <div>
         <h1>{title}</h1>
         <h3>{message}</h3>
+        <button onClick={disableErrorScreen}>Close</button>
       </div>
     );
   }
@@ -61,11 +66,23 @@ class AppBaseContainer extends RouterContainer{
 
 
 AppBaseContainer.updateMapStateToProps((state,ownProps)=>{
-  console.log({ownProps});
-  const {app:{user}} = state;
+  const {app:{user,container={}}} = state;
+  const {[ownProps.name]:current={}} = container;
+  const {loading=false,error=false} = current;
   return {
-    user
+    user,
+    loading,
+    error
   };
+});
+
+
+AppBaseContainer.updateMapDispatchToProps((dispatch,ownProps)=>{
+  return {
+    disableErrorScreen(){
+      dispatch(setContainerError(ownProps.name,false));
+    }
+  }
 });
 
 AppBaseContainer.updateDefaultProps({
@@ -75,14 +92,10 @@ AppBaseContainer.updateDefaultProps({
   error:false
 });
 
-const serviceScreenDataShape = PropTypes.shape({
-  title:PropTypes.string.isRequired,
-  text:PropTypes.string.isRequired
-});
 
 const serviceScreenPropType = PropTypes.oneOfType([
   PropTypes.bool,
-  serviceScreenDataShape
+  PropTypes.object
 ]);
 
 AppBaseContainer.updatePropTypes({

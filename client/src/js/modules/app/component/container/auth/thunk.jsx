@@ -12,22 +12,21 @@ import {
 
 export const login=(name,data)=>(dispatch,getState)=>{
   const {email,password,rememberMe} = data;
+  console.log({email,password,rememberMe});
   const title = "Loggin in";
   const message = "Wait a moment...";
-  setContainerLoading(name,{title,message});
+  dispatch(setContainerLoading(name,{title,message}));
   loginRequest({email,password,rememberMe}).then(
     json=>{
       if(json.error){
-        const {title,message} = json.error;
-        setContainerError(name,{title,message});
-        return;
+        const {title,message} = json;
+        dispatch(setContainerError(name,{title,message}));
       }
-      setContainerLoading(name,false);
     },
     error=>{
       console.log(error);
     }
-  )
+  ).finally(()=>dispatch(setContainerLoading(name,false)));
 };
 
 

@@ -35,12 +35,13 @@ class AuthForm extends Form{
     form=({render:{field,error,form,input}})=>{
       let selected = null;
       const {AuthTabs, onTabChange} = this;
+      const {onLogin,onSignUp} = this.props;
 
       const name = this.value("tab");
       if(name==LOGIN_NAME){
-        selected = form(LoginForm,{name});
+        selected = form(LoginForm,{name,onSubmit:onLogin});
       }else if(name==SIGN_UP_NAME){
-        selected = form(SignUpForm,{name});
+        selected = form(SignUpForm,{name,onSubmit:onSignUp});
       }
       const tabs = input(
         AuthTabs,

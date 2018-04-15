@@ -38,14 +38,15 @@ class AuthContainer extends Base{
 
 
   AuthForm=({tab})=>{
+    const {onLogin,onSignUp}=this.props;
     return (
       <AuthenticationForm
         values={{tab}}
         name="auth"
         onTabChange={this.onTabChange}
         onChange={event=>console.log(event)}
-        onLogin={event=>console.log(event)}
-        onSignUp={event=>console.log(event)}
+        onLogin={event=>onLogin(event.values)}
+        onSignUp={event=>onSignUp(event.values)}
       />
     );
   }
@@ -56,8 +57,16 @@ AuthContainer.updateDefaultProps({
   authRequired:false
 });
 
-AuthContainer.mapDispatchToProps({
-
+AuthContainer.updateMapDispatchToProps((dispatch,ownProps)=>{
+  const {name} = ownProps;
+  return {
+    onLogin(data){
+      dispatch(login(name,data));
+    },
+    onSignUp(data){
+      console.log(data);
+    }
+  }
 });
 
 export default AuthContainer.connect();
