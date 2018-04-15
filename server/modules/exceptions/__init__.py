@@ -9,23 +9,23 @@ class JsonError(Exception):
     @property
     def __dict__(self):
         try:
-            name = self.name
+            title = self.name
         except AttributeError:
-            name = self.__name__from_class_name__()
+            title = self.__title__from_class_name__()
         return {
             'error': True,
-            'name': name,
+            'title': title,
             'message': self.message,
             'group': self.__class__.GROUP,
             'id': self.__class__.ID
         }
 
-    def __name__from_class_name__(self):
+    def __title__from_class_name__(self):
         class_name = self.__class__.__name__
         regex = '([a-z])([A-Z])'
-        name = re.sub(regex, r'\1 \2', class_name)
-        name = ' '.join([token for token in name.split()])
-        return name
+        title = re.sub(regex, r'\1 \2', class_name)
+        title = ' '.join([token for token in title.split()])
+        return title
 
 
 class UserFriendlyError(JsonError):

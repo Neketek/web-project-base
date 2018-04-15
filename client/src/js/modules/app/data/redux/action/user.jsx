@@ -1,7 +1,7 @@
 import {
   SET_USER_VARIABLE,
   SET_USER
-} from './type';
+} from './type/user';
 
 import actionCreator from 'modules/common/base/data/redux/reducer/action-creator';
 

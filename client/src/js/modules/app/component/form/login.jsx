@@ -75,14 +75,14 @@ class LoginForm extends Form{
               </Grid>
               <Grid item xs={4}>
                 <Grid container justify='center'>
-                  <a href="/app/authorize/facebook" name='facebook' >
+                  <a href="/app/auth/login/facebook" name='facebook' >
                     Facebook login
                   </a>
                 </Grid>
               </Grid>
               <Grid item xs={4}>
                 <Grid container justify='center'>
-                  <a href="/app/authorize/google" name='google' >
+                  <a href="/app/auth/login/google" name='google' >
                     Google login
                   </a>
                 </Grid>

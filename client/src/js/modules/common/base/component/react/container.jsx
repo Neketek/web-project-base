@@ -34,6 +34,7 @@ class Container extends Component{
   static updateMapDispatchToProps(newMapDispatchToProps){
     const oldDispatchToProps = this.mapDispatchToProps;
     this.mapDispatchToProps = (dispatch,ownProps)=>{
+      ownProps = Object.assign({},this.defaultProps,ownProps);
       return Object.assign(
         oldDispatchToProps(dispatch,ownProps),
         newMapDispatchToProps(dispatch,ownProps)
@@ -44,6 +45,7 @@ class Container extends Component{
   static updateMapStateToProps(newMapStateToProps){
     const oldStateToProps = this.mapStateToProps;
     this.mapStateToProps = (state,ownProps)=>{
+      ownProps = Object.assign({},this.defaultProps,ownProps);
       return Object.assign(
         oldStateToProps(state,ownProps),
         newMapStateToProps(state,ownProps)

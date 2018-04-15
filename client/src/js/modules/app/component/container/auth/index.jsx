@@ -1,9 +1,11 @@
 import Base from "../base";
 import React from "react";
-import AuthentificationForm from 'modules/app/component/form/auth';
+import AuthenticationForm from 'modules/app/component/form/auth';
 import {Tabs} from 'modules/common/component/input';
 import Grid from 'material-ui/Grid';
-
+import {
+  login
+} from './thunk';
 const LOGIN_TAB_VALUE = "login";
 const SIGN_UP_TAB_VALUE = "sign-up";
 const LOGIN_URL = "/auth/login";
@@ -37,7 +39,7 @@ class AuthContainer extends Base{
 
   AuthForm=({tab})=>{
     return (
-      <AuthentificationForm
+      <AuthenticationForm
         values={{tab}}
         name="auth"
         onTabChange={this.onTabChange}
@@ -52,6 +54,10 @@ class AuthContainer extends Base{
 
 AuthContainer.updateDefaultProps({
   authRequired:false
+});
+
+AuthContainer.mapDispatchToProps({
+
 });
 
 export default AuthContainer.connect();

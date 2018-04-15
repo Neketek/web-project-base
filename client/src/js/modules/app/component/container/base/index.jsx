@@ -61,7 +61,11 @@ class AppBaseContainer extends RouterContainer{
 
 
 AppBaseContainer.updateMapStateToProps((state,ownProps)=>{
-  return {user:state.app.user};
+  console.log({ownProps});
+  const {app:{user}} = state;
+  return {
+    user
+  };
 });
 
 AppBaseContainer.updateDefaultProps({

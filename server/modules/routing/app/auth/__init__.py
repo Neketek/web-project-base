@@ -62,7 +62,7 @@ def sign_up(json={}, sql_session=None):
     return jsonify(dict(signUp=True))
 
 
-@blueprint.route("/authorize/<provider>", methods=['GET'])
+@blueprint.route("/login/<provider>", methods=['GET'])
 @utils.response.user_friendly_errors("template")
 @utils.request.sql_session
 def authorize(provider=None, sql_session=None):
