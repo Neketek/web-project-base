@@ -12,11 +12,17 @@ from modules.exceptions import UserFriendlyError
 
 
 blueprint = Blueprint("app.auth", __name__)
-url_prefix = "/app"
+url_prefix = "/app/auth"
 
 
 def register(app):
     app.register_blueprint(blueprint, url_prefix=url_prefix)
+
+
+@blueprint.route("/", methods=['GET'])
+@render_app_on_get
+def auth():
+    return None
 
 
 @blueprint.route("/login", methods=['POST', 'GET'])

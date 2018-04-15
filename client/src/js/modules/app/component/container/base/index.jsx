@@ -1,7 +1,8 @@
 import React from 'react';
 import RouterContainer from 'modules/common/base/component/react/router-container';
+import PropTypes from 'prop-types';
 
-const APP_AUTH_URL = "/auth/";
+const APP_AUTH_URL = "/auth/login";
 
 class AppBaseContainer extends RouterContainer{
 
@@ -68,6 +69,23 @@ AppBaseContainer.updateDefaultProps({
   authRequired:true,
   loading:false,
   error:false
+});
+
+const serviceScreenDataShape = PropTypes.shape({
+  title:PropTypes.string.isRequired,
+  text:PropTypes.string.isRequired
+});
+
+const serviceScreenPropType = PropTypes.oneOfType([
+  PropTypes.bool,
+  serviceScreenDataShape
+]);
+
+AppBaseContainer.updatePropTypes({
+  name:PropTypes.string.isRequired,
+  authRequired:PropTypes.bool.isRequired,
+  loading:serviceScreenPropType,
+  error:serviceScreenPropType
 });
 
 
