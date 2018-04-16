@@ -15,7 +15,7 @@ class AppBaseContainer extends RouterContainer{
   }
 
   tryToRedirectToAuth(){
-    const {authRequired,user} = this.props;
+    const {authRequired, user} = this.props;
     if(authRequired&&!user.id){
       this.redirect(APP_AUTH_URL);
     }
@@ -66,7 +66,7 @@ class AppBaseContainer extends RouterContainer{
 
 
 AppBaseContainer.updateMapStateToProps((state,ownProps)=>{
-  const {app:{user,container={}}} = state;
+  const {app:{user={},container={}}} = state;
   const {[ownProps.name]:current={}} = container;
   const {loading=false,error=false} = current;
   return {

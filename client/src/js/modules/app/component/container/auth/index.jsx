@@ -8,34 +8,31 @@ import {
 } from './thunk';
 const LOGIN_TAB_VALUE = "login";
 const SIGN_UP_TAB_VALUE = "sign-up";
-const LOGIN_URL = "/auth/login";
-const SIGN_UP_URL = "/auth/sign-up";
-
 
 class AuthContainer extends Base{
 
   container({render:container}){
-    const {AuthForm} = this;
-    const {location:{pathname}} = this.props;
-    let tab = null;
-    if(pathname == LOGIN_URL){
-      tab=LOGIN_TAB_VALUE
-    }
-    else if(pathname == SIGN_UP_URL){
-      tab=SIGN_UP_TAB_VALUE
-    }
-    return <AuthForm tab={tab}/>
+    const {Auth,Switch,Route,Redirect} = this;
+    const {match:{url}} = this.props;
+    return (
+      <Switch>
+        <Route exact path={`${url}/`} render={()=><Redirect to={`${url}/${LOGIN_TAB_VALUE}`}/>}/>
+        <Route path={`${url}/:tab`} render={props=>Auth(props)}/>
+      </Switch>
+    );
   }
 
 
   onTabChange=({value})=>{
-    if(value==LOGIN_TAB_VALUE){
-      this.redirect(LOGIN_URL);
-    }else if(value==SIGN_UP_TAB_VALUE){
-      this.redirect(SIGN_UP_URL);
-    }
+    const {match:{url}} = this.props;
+    this.redirect(`${url}/${value}`);
   }
 
+
+  Auth=({match})=>{
+    const {AuthForm} = this;
+    return <AuthForm tab={match.params.tab}/>
+  }
 
   AuthForm=({tab})=>{
     const {onLogin,onSignUp}=this.props;

@@ -1,6 +1,6 @@
 import Container from './container';
 import { push } from 'react-router-redux';
-import { Route, Switch } from 'react-router';
+import { Route, Switch, Redirect } from 'react-router';
 import React from 'react';
 
 
@@ -19,6 +19,8 @@ class RouterContainer extends Container{
   Route=this.bindRouterComponent(Route);
 
   Switch=this.bindRouterComponent(Switch);
+
+  Redirect=Redirect;
 
 }
 

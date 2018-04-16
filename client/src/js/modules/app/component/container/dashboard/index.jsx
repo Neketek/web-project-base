@@ -7,4 +7,4 @@ class DashboardContainer extends Base{
   }
 }
 
-export default DashboardContainer;
+export default DashboardContainer.connect();

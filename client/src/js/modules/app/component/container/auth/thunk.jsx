@@ -12,7 +12,6 @@ import {
 
 export const login=(name,data)=>(dispatch,getState)=>{
   const {email,password,rememberMe} = data;
-  console.log({email,password,rememberMe});
   const title = "Loggin in";
   const message = "Wait a moment...";
   dispatch(setContainerLoading(name,{title,message}));
