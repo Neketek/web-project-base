@@ -121,3 +121,13 @@ def check(entity=None, json={}, sql_session=None):
         )
     free = not Controller(sql_session=sql_session).Get().is_used_by_user(value)
     return jsonify(dict(free=free))
+
+
+@blueprint.route("/reset-password", methods=['GET'])
+@blueprint.route("/reset-password/<operation>", methods=['POST'])
+@render_app_on_get
+@utils.response.user_friendly_errors("json")
+@utils.request.json
+@utils.request.sql_session
+def reset_password(sql_session=None, json={}, operation=None):
+    return jsonify({})

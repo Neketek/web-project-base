@@ -17,6 +17,7 @@ class AuthContainer extends Base{
     return (
       <Switch>
         <Route exact path={`${url}/`} render={()=><Redirect to={`${url}/${LOGIN_TAB_VALUE}`}/>}/>
+        <Route exact path={`${url}/reset-password`} render={()=><h1>RESET PASSWORD</h1>}/>
         <Route path={`${url}/:tab`} render={props=>Auth(props)}/>
       </Switch>
     );
