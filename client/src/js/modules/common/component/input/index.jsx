@@ -9,3 +9,4 @@ export { default as Tabs } from './tabs';
 export {default as Check } from './check';
 export { default as Radio } from './radio';
 export { default as Switch } from './switch';
+export { default as FileUpload } from './file';

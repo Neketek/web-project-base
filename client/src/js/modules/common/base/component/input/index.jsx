@@ -9,3 +9,4 @@ export { default as DateTime } from './datetime';
 export { default as Time } from './time';
 export { default as Button } from './button';
 export { default as SwitchBase } from './switch';
+export { default as FileBase } from './file';
