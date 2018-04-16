@@ -1,6 +1,6 @@
 import React from 'react';
 import {Form,Rule} from 'modules/common/base/component/form';
-import {Text,Date,DateTime,Time,Select,Button,InputError,Check,Radio,Switch,FileUpload} from 'modules/common/component/input';
+import {Text,Date,DateTime,Time,Select,Button,InputError,Check,Radio,Switch} from 'modules/common/component/input';
 import Grid from 'material-ui/Grid';
 import {
   FormLabel,
@@ -66,7 +66,6 @@ class LoginForm extends Form{
     const radio = input(Radio, radioProps);
     const switchElement = input(Switch, switchProps);
 
-    const uploadButton = field(FileUpload, {name: "upload"});
 
     return (
         <Grid container justify='center' spacing={16} alignItems='center'>
@@ -80,9 +79,6 @@ class LoginForm extends Form{
               </Grid>
               <Grid item xs={12}>
                 {rememberMe}
-              </Grid>
-              <Grid item xs={12}>
-                {uploadButton}
               </Grid>
               <Grid item xs={4}>
                 <Grid container justify='center'>
