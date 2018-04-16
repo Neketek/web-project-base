@@ -1,6 +1,7 @@
 import Base from "../base";
 import React from "react";
 import AuthenticationForm from 'modules/app/component/form/auth';
+import PasswordResetForm from 'modules/app/component/form/password-reset';
 import {Tabs} from 'modules/common/component/input';
 import Grid from 'material-ui/Grid';
 import {
@@ -17,7 +18,7 @@ class AuthContainer extends Base{
     return (
       <Switch>
         <Route exact path={`${url}/`} render={()=><Redirect to={`${url}/${LOGIN_TAB_VALUE}`}/>}/>
-        <Route exact path={`${url}/reset-password`} render={()=><h1>RESET PASSWORD</h1>}/>
+        <Route exact path={`${url}/reset-password`} render={()=><PasswordResetForm/>}/>
         <Route path={`${url}/:tab`} render={props=>Auth(props)}/>
       </Switch>
     );
