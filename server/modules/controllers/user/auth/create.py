@@ -1,7 +1,7 @@
 from modules.models import sql
 from modules.models import query
 from sqlalchemy.orm.exc import NoResultFound
-from modules.exceptions import MissingValueException, UserFriendlyException
+from modules.exceptions import MissingValueError, UserFriendlyError
 from modules.controllers.base import ControllerBase
 
 
@@ -20,7 +20,16 @@ class Create(ControllerBase):
         return self.create(data, email_verified=True, facebook=facebook)
 
     def create_with_google_data(self, data):
-        pass
+        google = dict(
+            accessToken=data['accessToken'],
+            accessTokenExpiresAt=data['accessTokenExpiresAt']
+        )
+        data = dict(
+            name=data['name'],
+            password=sql.User.generate_random_password(),
+            email=data['email']
+        )
+        return self.create(data, email_verified=True, google=google)
 
     def create(
         self,
@@ -39,9 +48,9 @@ class Create(ControllerBase):
                 first_name = name['first'].strip()
                 last_name = name['last'].strip()
             except KeyError as e:
-                raise MissingValueException(value="{0} name".format(e.args[0]))
+                raise MissingValueError(value="{0} name".format(e.args[0]))
         except KeyError as e:
-            raise MissingValueException(value=e.args[0])
+            raise MissingValueError(value=e.args[0])
 
         email_entity = None
         user_entity = None
@@ -53,7 +62,7 @@ class Create(ControllerBase):
                 self.query(query.sql.user.get_by)(
                     email_id=email_entity.id
                 ).one()
-                raise UserFriendlyException(
+                raise UserFriendlyError(
                     message='Email is already registered'
                 )
             except NoResultFound:
@@ -65,6 +74,7 @@ class Create(ControllerBase):
             # TODO add method to save google and facebook oauth tokens
             user_entity = sql.User()
             auth_facebook = None
+            auth_google = None
             try:
                 auth_facebook_kwargs = dict(
                     access_token=facebook['accessToken'],
@@ -75,7 +85,19 @@ class Create(ControllerBase):
                 )
             except KeyError:
                 pass
+            try:
+                auth_google_kwargs = dict(
+                    access_token=google['accessToken'],
+                    expiration_date_time=google['accessTokenExpiresAt'],
+                    refresh_token=google['refreshToken']
+                )
+                auth_google = sql.UserAuthGoogle(
+                    **auth_google_kwargs
+                )
+            except KeyError:
+                pass
             user_entity.auth_facebook = auth_facebook
+            user_entity.auth_google = auth_google
             user_entity.first_name = first_name
             user_entity.last_name = last_name
             user_entity.email = email_entity

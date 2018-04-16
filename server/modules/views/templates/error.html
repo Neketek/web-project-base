@@ -1,0 +1,23 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/app.css',cache_id=cache_id)}}" />
+  <title>arachnid42</title>
+
+</head>
+
+<body>
+  <h1>
+    {{name}}
+  </h1>
+  <h3>
+    {{message}}
+  </h3>
+  <a href="{{url_for('app.app')}}">Back to app</a>
+</body>
+
+</html>

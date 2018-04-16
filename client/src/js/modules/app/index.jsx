@@ -10,25 +10,10 @@ import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-ro
 import { Provider } from 'react-redux';
 import MainContainer from './component/container';
 import Cookies from './data/network/cookies';
-import { Facebook } from 'modules/common/base/data/api';
-// store.dispatch(push("/home"));
-// console.log(store);
-
-const muiTheme = createMuiTheme({
-    // palette: createPalette({
-    //   // primary: black,
-    //   // accent: blue,
-    //   // error: red,
-    //   type: 'light'
-    // })
-});
-
-
+const muiTheme = createMuiTheme({});
 
 
 class App extends React.Component{
-
-
 
   constructor(props){
     super(props);
@@ -39,41 +24,10 @@ class App extends React.Component{
     this.store=storeSource.store;
     this.history=storeSource.history;
     Cookies.updateTimezoneCookie();
-    this.state = {loading:true}
-    window.setOnAPIInitializedCallback(()=>{
-      this.state.loading = false;
-      this.forceUpdate();
-    });
-    // Facebook.getLoginStatus().then(
-    //   data=>{
-    //     if(data.status=='connected'){
-    //       Facebook.logout().then(
-    //         data=>{
-    //           console.log("LOG OUT");
-    //           console.log(data);
-    //         },
-    //         error=>{
-    //           console.log(error);
-    //         }
-    //       );
-    //     }
-    //   },
-    //   error=>{
-    //     console.log(error);
-    //   }
-    // );
-
   }
 
   render(){
-    console.log("RENDER");
-    console.log({state:this.state});
     const {history,store} = this;
-    if(this.state.loading){
-      return (
-        <div>Loading SDK</div>
-      )
-    }
     return (
       <MuiThemeProvider theme={muiTheme}>
         <ConnectedRouter history={history} store={store}>

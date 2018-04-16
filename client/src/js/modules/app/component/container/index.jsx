@@ -1,26 +1,34 @@
-import AppContainerBase from 'modules/app/component/container/base';
-import PublicContainer from './public';
-import PrivateContainer from './private';
-import Grid from 'material-ui/Grid';
 import React from 'react';
+import Base from './base';
+import Auth from './auth';
+import Dashboard from './dashboard';
 
-class MainContainer extends AppContainerBase{
-  constructor(props){
-    super(props);
+
+class IndexContainer extends Base{
+
+  Dashboard=(props)=>{
+    return this.renderContainer(Dashboard,{...props,name:"dashboard"});
+  }
+
+  Auth=(props)=>{
+    return this.renderContainer(Auth,{...props,name:"auth"});
   }
 
   container({render:{container}}){
+    const {Switch,Route,Redirect} = this;
     return (
-      <Grid container justify="center">
-        <Grid item xs={12}>
-          {container(PrivateContainer)}
-          {container(PublicContainer)}
-        </Grid>
-      </Grid>
+      <Switch>
+        <Route exact path="/" render={()=><Redirect to="/auth"/>}></Route>
+        <Route path="/dashboard" render={props=>this.Dashboard(props)}/>
+        <Route path="/auth" component={props=>this.Auth(props)}/>
+      </Switch>
     )
   }
-
 }
 
+IndexContainer.updateDefaultProps({
+  name:"index",
+  authRequired:false
+});
 
-export default MainContainer.connect();
+export default IndexContainer.connect();

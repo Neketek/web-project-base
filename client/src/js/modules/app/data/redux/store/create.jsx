@@ -1,4 +1,4 @@
-import app from "../reducer";
+import app from "./reducer";
 import createStoreCreator from 'modules/common/base/data/redux/store/create-creator';
 import createHistory from 'history/createBrowserHistory'
 
