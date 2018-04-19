@@ -1,40 +1,42 @@
 import Base from "../base";
 import React from "react";
+import ProfileContainer from "../profile";
+import { Link } from "react-router-dom";
 
 class DashboardContainer extends Base{
 
-  container({render:{container}}){
-    const {
-      user:{
-        id,
-        name,
-        email,
-        datetime,
-        timezone
+  Profile=(props)=>{
+    return this.renderContainer(ProfileContainer,{...props,name:"profile"});
+  }
+
+  routes=()=>{
+    const {Profile} = this;
+    const {match:{url}} = this.props;
+    return [
+      {
+        path:`${url}/get/profile`,
+        component:Profile
       }
-    } = this.props;
+    ]
+  }
+
+  Links=()=>{
+    const {match:{url}} = this.props;
+    return (
+      <ul>
+        <li>
+          <Link to={`${url}/get/profile`}>Profiles</Link>
+        </li>
+      </ul>
+    );
+  }
+
+  container({render:{container}}){
+    const {Routing,Links} = this;
     return (
       <div>
-        <div>
-          id:{id}
-        </div>
-        <div>
-          {name.first} {name.last}
-        </div>
-        <div>
-          {email}
-        </div>
-        <div>
-          <div>
-            timezone:{timezone}
-          </div>
-          <div>
-            modification time:{datetime.modification}
-          </div>
-          <div>
-            creation time:{datetime.creation}
-          </div>
-        </div>
+        <Links/>
+        <Routing routes={this.routes()}/>
       </div>
     )
   }

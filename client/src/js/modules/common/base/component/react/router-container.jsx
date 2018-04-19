@@ -22,6 +22,16 @@ class RouterContainer extends Container{
 
   Redirect=Redirect;
 
+  Routing=({routes})=>{
+    const {Route,Switch}=this;
+    const routingComponents = routes.map(props=><Route key={props.path} {...props}/>);
+    return (
+      <Switch>
+        {routingComponents}
+      </Switch>
+    );
+  }
+
 }
 
 RouterContainer.updateMapStateToProps((state,ownProps)=>{
