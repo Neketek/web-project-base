@@ -7,7 +7,7 @@ import Dashboard from './dashboard';
 class IndexContainer extends Base{
 
   Dashboard=(props)=>{
-    return this.renderContainer(Dashboard,{...props,name:"dashboard"});
+    return this.renderContainer(Dashboard,{...props,name:"dashboard",authRequired:false});
   }
 
   Auth=(props)=>{
@@ -18,7 +18,6 @@ class IndexContainer extends Base{
     const {Switch,Route,Redirect} = this;
     return (
       <Switch>
-        <Route exact path="/" render={()=><Redirect to="/auth"/>}></Route>
         <Route path="/dashboard" render={props=>this.Dashboard(props)}/>
         <Route path="/auth" component={props=>this.Auth(props)}/>
       </Switch>
@@ -28,7 +27,7 @@ class IndexContainer extends Base{
 
 IndexContainer.updateDefaultProps({
   name:"index",
-  authRequired:false
+  auth:"none"
 });
 
 export default IndexContainer.connect();

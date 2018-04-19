@@ -2,21 +2,40 @@ import React from 'react';
 import RouterContainer from 'modules/common/base/component/react/router-container';
 import PropTypes from 'prop-types';
 import {
+  setContainerLoading,
   setContainerError
 } from 'modules/app/data/redux/action/container';
+import {user} from "modules/app/data/network/ajax/get";
+import {setUser} from 'modules/app/data/redux/action/user';
 
 const APP_AUTH_URL = "/auth/login";
+
+const APP_AUTH_TYPE_REDIRECT = "redirect";
+const APP_AUTH_TYPE_FETCH = "fetch";
+const APP_AUTH_TYPE_NONE = "none";
 
 class AppBaseContainer extends RouterContainer{
 
   constructor(props){
     super(props);
-    this.tryToRedirectToAuth();
+    const {auth} = props;
+    if(auth==APP_AUTH_TYPE_REDIRECT){
+      this.redirectAuth();
+    }else if(auth==APP_AUTH_TYPE_FETCH){
+      this.fetchAuth();
+    }
   }
 
-  tryToRedirectToAuth(){
-    const {authRequired, user} = this.props;
-    if(authRequired&&!user.id){
+  fetchAuth(){
+    const {user,fetchUser} = this.props;
+    if(!user.id){
+      fetchUser();
+    }
+  }
+
+  redirectAuth(){
+    const {user} = this.props;
+    if(!user.id){
       this.redirect(APP_AUTH_URL);
     }
   }
@@ -77,17 +96,39 @@ AppBaseContainer.updateMapStateToProps((state,ownProps)=>{
 });
 
 
-AppBaseContainer.updateMapDispatchToProps((dispatch,ownProps)=>{
+AppBaseContainer.updateMapDispatchToProps((dispatch,ownProps,previous)=>{
+  const {name} = ownProps;
+  const {redirect} = previous;
   return {
+
     disableErrorScreen(){
       dispatch(setContainerError(ownProps.name,false));
+    },
+
+    fetchUser(){
+      const loadingScreenData = {
+        title:"Loading",
+        message:"Fetching your profile"
+      }
+      dispatch(setContainerLoading(name,loadingScreenData))
+      user.profile().then(
+        data=>{
+          if(data.error){
+            redirect(APP_AUTH_URL);
+            return;
+          }
+          dispatch(setUser(data));
+        },
+        error=>redirect(APP_AUTH_URL)
+      ).finally(()=>dispatch(setContainerLoading(name,false)));
     }
+
   }
 });
 
 AppBaseContainer.updateDefaultProps({
   name:null,
-  authRequired:true,
+  auth:"redirect",
   loading:false,
   error:false
 });
@@ -100,7 +141,11 @@ const serviceScreenPropType = PropTypes.oneOfType([
 
 AppBaseContainer.updatePropTypes({
   name:PropTypes.string.isRequired,
-  authRequired:PropTypes.bool.isRequired,
+  auth:PropTypes.oneOf([
+    APP_AUTH_TYPE_NONE,
+    APP_AUTH_TYPE_FETCH,
+    APP_AUTH_TYPE_REDIRECT
+  ]).isRequired,
   loading:serviceScreenPropType,
   error:serviceScreenPropType
 });

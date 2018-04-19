@@ -92,8 +92,7 @@ def authorize(provider=None, sql_session=None):
         Session().Edit().set_user_session_data(user_entity)
         sql_session.commit()
         sql_session.refresh(user_entity)
-        # TODO: replace with redirect to dashboard
-        return jsonify(user_entity.json())
+        return redirect(url_for("app.dashboard"))
     elif not request.args:
         return redirect(
             provider_auth_controller.get_authorization_url(

@@ -50,7 +50,11 @@ def render_app_on_get(func):
 
 
 @blueprint.route("/", methods=['GET'])
+def index():
+    return redirect(url_for("app.dashboard"))
+
+
 @blueprint.route("/dashboard", methods=['GET'])
 @login.required
-def app(user_context=None):
+def dashboard(user_context=None):
     return render_app()

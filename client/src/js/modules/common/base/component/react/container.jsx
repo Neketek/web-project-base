@@ -35,9 +35,10 @@ class Container extends Component{
     const oldDispatchToProps = this.mapDispatchToProps;
     this.mapDispatchToProps = (dispatch,ownProps)=>{
       ownProps = Object.assign({},this.defaultProps,ownProps);
+      const previous = oldDispatchToProps(dispatch,ownProps);
       return Object.assign(
-        oldDispatchToProps(dispatch,ownProps),
-        newMapDispatchToProps(dispatch,ownProps)
+        previous,
+        newMapDispatchToProps(dispatch,ownProps,previous)
       )
     };
   }
@@ -46,9 +47,10 @@ class Container extends Component{
     const oldStateToProps = this.mapStateToProps;
     this.mapStateToProps = (state,ownProps)=>{
       ownProps = Object.assign({},this.defaultProps,ownProps);
+      const previous = oldStateToProps(state,ownProps);
       return Object.assign(
-        oldStateToProps(state,ownProps),
-        newMapStateToProps(state,ownProps)
+        previous,
+        newMapStateToProps(state,ownProps,previous)
       )
     };
   }

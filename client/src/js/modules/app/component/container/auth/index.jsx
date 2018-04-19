@@ -53,7 +53,7 @@ class AuthContainer extends Base{
 }
 
 AuthContainer.updateDefaultProps({
-  authRequired:false
+  auth:"none"
 });
 
 AuthContainer.updateMapDispatchToProps((dispatch,ownProps)=>{

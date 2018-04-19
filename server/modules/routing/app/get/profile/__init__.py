@@ -12,13 +12,13 @@ def register(app):
     app.register_blueprint(blueprint, url_prefix=url_prefix)
 
 
-@blueprint.route("/user", methods=['POST', 'GET'])
+@blueprint.route("/user", methods=['POST'])
 @utils.response.user_friendly_errors("json")
 @utils.request.json
 @utils.request.timezone
 @login.required
 def user(user_context=None, timezone=None, json=None):
-    json = dict(id=user_context.id)
+    json = dict(id=user_context.id) if json is None else json
     json_resp = User(user_context, timezone).Get().Profile()\
         .get(json=json)
     return jsonify(json_resp)
