@@ -11,11 +11,11 @@ import {
 
 
 export const login=(name,data)=>(dispatch,getState)=>{
-  const {email,password,rememberMe} = data;
+  const {email,password,rememberMe,captcha} = data;
   const title = "Loggin in";
   const message = "Wait a moment...";
   dispatch(setContainerLoading(name,{title,message}));
-  loginRequest({email,password,rememberMe}).then(
+  loginRequest({email,password,rememberMe,captcha}).then(
     json=>{
       if(json.error){
         const {title,message} = json;

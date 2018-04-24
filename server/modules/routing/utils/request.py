@@ -1,7 +1,10 @@
 from functools import wraps
 from modules.models.sql.session import Session, ScopedSession, SQL_DB_ENGINE
+from modules.exceptions import CaptchaError
+import requests
+from modules.config import google
 from flask import request
-import json
+import json as jsonlib
 
 
 def timezone(func):
@@ -36,26 +39,56 @@ def sql_session(func):
     return sql_session_wrapper
 
 
-def json(func):
-    '''
-    request decorator which provides json data as named argument
-    '''
-    @wraps(func)
-    def json_data_wrapper(*args, **kwargs):
-        json = request.get_json(silent=True)
-        return func(json=json, *args, **kwargs)
-    return json_data_wrapper
+def json(
+    source="body",
+    captcha=False,
+    form_key="json",
+    captcha_key="captcha"
+):
 
+    if source == "body":
+        def get_json(): return request.get_json(silent=True)
+    elif source == "form":
+        def get_json(): return jsonlib.loads(request.form.get(form_key, "{}"))
+    else:
+        raise ValueError("Unknown json source! [{0}]".format(source))
 
-def json_in_form(func):
-    '''
-    request decorator which exctracts
-    json data from the form and provides it as named argument
-    '''
-    def json_in_form_wrapper(*args, **kwargs):
-        data = json.loads(request.form['json'])
-        return func(json=data, *args, **kwargs)
-    return json_in_form_wrapper
+    if captcha:
+        def verify_captcha(json_data):
+            try:
+                captcha_response = json_data[captcha_key]
+            except KeyError:
+                raise CaptchaError(message="User response was not found")
+            response = requests.post(
+                "https://www.google.com/recaptcha/api/siteverify",
+                dict(
+                    secret=google.RECAPTCHA_SERCRET,
+                    response=captcha_response
+                )
+            ).json()
+            if not response['success']:
+                raise CaptchaError(message="Captcha verification failed")
+            # print(
+            #     "HOSTNAME:{0} {1}"
+            #     .format(
+            #         response['hostname'],
+            #         request.host
+            #     )
+            # )
+            # if response['hostname'] != request.host:
+            #     raise CaptchaError(message="Invalid captcha hostname")
+    else:
+        def verify_captcha(): pass
+
+    def json_data_decorator(func):
+        @wraps(func)
+        def json_data_wrapper(*args, **kwargs):
+            json_data = get_json()
+            verify_captcha(json_data)
+            return func(json=json_data, *args, **kwargs)
+        return json_data_wrapper
+
+    return json_data_decorator
 
 
 def files(func):

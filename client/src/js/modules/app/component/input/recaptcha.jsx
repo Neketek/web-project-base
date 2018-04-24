@@ -28,7 +28,7 @@ class Recaptcha extends Component{
       {
         id,
         callback,
-        "sitekey":"6LfXN1QUAAAAAMlT7UF5yoZZhHs1_Q7qfsvQNbUV",
+        "sitekey":"6LdyvEQUAAAAABdv30g7FJeYj9C3dunrDTUQUx3s",
         "size":"invisible"
       }
     );

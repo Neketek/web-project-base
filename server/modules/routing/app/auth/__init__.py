@@ -28,7 +28,7 @@ def auth():
 @blueprint.route("/login", methods=['POST', 'GET'])
 @render_app_on_get
 @utils.response.user_friendly_errors("json")
-@utils.request.json
+@utils.request.json("body", captcha=True)
 @utils.request.sql_session
 @utils.request.timezone
 def login(json=None, sql_session=None, timezone=None):
@@ -52,7 +52,7 @@ def logout():
 @blueprint.route("/sign-up", methods=['POST', 'GET'])
 @render_app_on_get
 @utils.response.user_friendly_errors("json")
-@utils.request.json
+@utils.request.json("body", captcha=True)
 @utils.request.sql_session
 def sign_up(json={}, sql_session=None):
     user_entity = User(sql_session=sql_session).Auth().Create().create(json)
@@ -103,7 +103,7 @@ def authorize(provider=None, sql_session=None):
 
 @blueprint.route("/sign-up/check/<entity>", methods=['POST'])
 @utils.response.user_friendly_errors("json")
-@utils.request.json
+@utils.request.json("body")
 @utils.request.sql_session
 def check(entity=None, json={}, sql_session=None):
     if entity == 'email':
@@ -126,7 +126,7 @@ def check(entity=None, json={}, sql_session=None):
 @blueprint.route("/reset-password/<operation>", methods=['POST'])
 @render_app_on_get
 @utils.response.user_friendly_errors("json")
-@utils.request.json
+@utils.request.json("body")
 @utils.request.sql_session
 def reset_password(sql_session=None, json={}, operation=None):
     return jsonify({})

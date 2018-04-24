@@ -14,7 +14,7 @@ def register(app):
 
 @blueprint.route("/user", methods=['POST'])
 @utils.response.user_friendly_errors("json")
-@utils.request.json
+@utils.request.json("body")
 @utils.request.timezone
 @login.required
 def user(user_context=None, timezone=None, json=None):

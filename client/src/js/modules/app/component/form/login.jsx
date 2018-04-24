@@ -18,7 +18,7 @@ class LoginForm extends Form{
 
   recaptchaCallback=resp=>{
     const {props:{onSubmit},SubmitEvent} = this;
-    this.value('recaptcha',resp);
+    this.value('captcha',resp);
     onSubmit(SubmitEvent());
   }
 

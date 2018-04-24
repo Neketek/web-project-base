@@ -96,3 +96,11 @@ class GoogleError(UserFriendlyError):
         message="Google API Error"
     ):
         self.message = message
+
+
+class CaptchaError(UserFriendlyError):
+    def __init__(
+        self,
+        message="Captcha Validation Error"
+    ):
+        self.message = message
