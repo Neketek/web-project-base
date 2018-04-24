@@ -3,6 +3,7 @@ import {Form,Rule} from 'modules/common/base/component/form';
 import {Text,Date,DateTime,Time,Select,Button,InputError} from 'modules/common/component/input';
 import NameForm from './name';
 import Grid from 'material-ui/Grid';
+import Recaptcha from 'modules/app/component/input/recaptcha';
 
 import {
   FormLabel,
@@ -13,6 +14,14 @@ import {
 } from 'material-ui/Form';
 
 class SignUpForm extends Form{
+
+  onSubmitAction=()=>Recaptcha.execute();
+
+  recaptchaCallback=resp=>{
+    const {props:{onSubmit},SubmitEvent} = this;
+    this.value('recaptcha',resp);
+    onSubmit(SubmitEvent());
+  }
 
   onChange=(event)=>{
     const emailChanged = event.name=="email"?true:false;
@@ -99,6 +108,7 @@ class SignUpForm extends Form{
               </Button>
             </Grid>
           </Grid>
+          <Recaptcha callback={this.recaptchaCallback}/>
         </Grid>
     );
   }

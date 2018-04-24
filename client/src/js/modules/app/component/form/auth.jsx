@@ -8,7 +8,9 @@ import SignUpForm from './sign-up';
 
 const LOGIN_NAME = "login";
 const SIGN_UP_NAME = "sign-up";
-
+const DISPLAY_NONE = {
+  display:"none"
+}
 
 
 class AuthForm extends Form{

@@ -1,19 +1,17 @@
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="{{url_for('static',filename='css/app.css',cache_id=cache_id)}}" />
-    <title>arachnid42</title>
-
+  <title>arachnid42</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static',filename='css/app.css',cache_id=cache_id)}}" />
+  <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body>
-
-    <div id="root"></div>
-    <script async src="{{url_for('static',filename='js/app.min.js',cache_id=cache_id)}}"></script>
+  <div id="root"></div>
+  <script async src="{{url_for('static',filename='js/app.min.js',cache_id=cache_id)}}"></script>
 </body>
 
 </html>

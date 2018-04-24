@@ -55,13 +55,18 @@ class FormBase extends Component{
     this.propagateEvent(event);
   }
 
+  SubmitEvent=()=>Event(this.props.name,this.state);
+
+  onSubmitAction=()=>{
+    this.props.onSubmit(this.SubmitEvent());
+  }
+
   onSubmit=()=>{
     if(!this.status('valid')){
       this.dirtyFocusOnErrors();
       this.propagateEvent(null);
     }else{
-      const {props:{name},state} = this;
-      this.props.onSubmit(Event(name,state));
+      this.onSubmitAction();
     }
   }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import {Form,Rule} from 'modules/common/base/component/form';
 import {Text,Date,DateTime,Time,Select,Button,InputError,Check} from 'modules/common/component/input';
 import Grid from 'material-ui/Grid';
+import Recaptcha from 'modules/app/component/input/recaptcha';
 import {
   FormLabel,
   FormControl,
@@ -10,7 +11,16 @@ import {
   FormHelperText,
 } from 'material-ui/Form';
 
+
 class LoginForm extends Form{
+
+  onSubmitAction=()=>Recaptcha.execute();
+
+  recaptchaCallback=resp=>{
+    const {props:{onSubmit},SubmitEvent} = this;
+    this.value('recaptcha',resp);
+    onSubmit(SubmitEvent());
+  }
 
   form=({render:{field,error,form,input}})=>{
 
@@ -38,8 +48,6 @@ class LoginForm extends Form{
       name:"rememberMe",
       label:this.label("rememberMe")
     }
-
-    // console.log(loginProps);
 
     const login = field(Text,loginProps);
     const loginError = error(InputError,{name:'email'});
@@ -87,6 +95,7 @@ class LoginForm extends Form{
                   </a>
                 </Grid>
               </Grid>
+              <Recaptcha callback={this.recaptchaCallback}/>
         </Grid>
     );
   }
