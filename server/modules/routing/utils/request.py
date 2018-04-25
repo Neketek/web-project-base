@@ -39,6 +39,26 @@ def sql_session(func):
     return sql_session_wrapper
 
 
+def recaptcha_verificator(captcha_response):
+    response = requests.post(
+        "https://www.google.com/recaptcha/api/siteverify",
+        dict(
+            secret=google.RECAPTCHA_SERCRET,
+            response=captcha_response
+        )
+    ).json()
+    if not response['success']:
+        raise CaptchaError(message="Captcha verification failed")
+
+
+def recaptcha_json_verificator(json, captcha_key):
+    try:
+        captcha_response = json[captcha_key]
+    except KeyError:
+        raise CaptchaError(message="User captcha response was not found")
+    recaptcha_verificator(captcha_response)
+
+
 def json(
     source="body",
     captcha=False,
@@ -54,31 +74,9 @@ def json(
         raise ValueError("Unknown json source! [{0}]".format(source))
 
     if captcha:
-        def verify_captcha(json_data):
-            try:
-                captcha_response = json_data[captcha_key]
-            except KeyError:
-                raise CaptchaError(message="User response was not found")
-            response = requests.post(
-                "https://www.google.com/recaptcha/api/siteverify",
-                dict(
-                    secret=google.RECAPTCHA_SERCRET,
-                    response=captcha_response
-                )
-            ).json()
-            if not response['success']:
-                raise CaptchaError(message="Captcha verification failed")
-            # print(
-            #     "HOSTNAME:{0} {1}"
-            #     .format(
-            #         response['hostname'],
-            #         request.host
-            #     )
-            # )
-            # if response['hostname'] != request.host:
-            #     raise CaptchaError(message="Invalid captcha hostname")
+        def verify_captcha(data): recaptcha_json_verificator(data, captcha_key)
     else:
-        def verify_captcha(): pass
+        def verify_captcha(data): pass
 
     def json_data_decorator(func):
         @wraps(func)
