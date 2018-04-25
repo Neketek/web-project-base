@@ -25,8 +25,7 @@ def custom_check(
                 raise CSRFError()
             if not verify_token(secret, csrf_cookie):
                 raise CSRFError()
-            response = func(*args, **kwargs)
-            return response
+            return func(*args, **kwargs)
         return csrf_wrapper
     return csrf_decorator
 
