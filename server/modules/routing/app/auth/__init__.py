@@ -37,7 +37,8 @@ def login(json=None, sql_session=None, timezone=None):
     user_entity.sql_session.commit()
     Session().Edit().set_user_session_data(user_entity)\
         .set_permanent_from_json(json)
-    return jsonify(dict(login=True))
+    response = jsonify(dict(login=True))
+    return utils.request.csrf.set_cookie(response)
 
 
 @blueprint.route("/logout", methods=['POST', 'GET'])
@@ -92,7 +93,8 @@ def authorize(provider=None, sql_session=None):
         Session().Edit().set_user_session_data(user_entity)
         sql_session.commit()
         sql_session.refresh(user_entity)
-        return redirect(url_for("app.dashboard"))
+        response = redirect(url_for("app.dashboard"))
+        return utils.request.csrf.set_cookie(response)
     elif not request.args:
         return redirect(
             provider_auth_controller.get_authorization_url(

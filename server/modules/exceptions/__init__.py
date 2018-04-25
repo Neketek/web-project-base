@@ -104,3 +104,12 @@ class CaptchaError(UserFriendlyError):
         message="Captcha Validation Error"
     ):
         self.message = message
+
+
+class CSRFError(UserFriendlyError):
+    def __init__(
+        self,
+        message="CSRF token error"
+    ):
+        self.message = message
+        self.name = "CSRF Error"

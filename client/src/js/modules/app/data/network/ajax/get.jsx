@@ -7,6 +7,7 @@ const DefaultRequest=()=>{
     .jsonResponse()
     .noCache()
     .cookies()
+    .csrf({cookie:"CSRF-TOKEN",header:"CSRF-TOKEN"})
 };
 
 export const user = {

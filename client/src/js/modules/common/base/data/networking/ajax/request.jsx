@@ -1,3 +1,5 @@
+import CookiesUtils from 'js-cookie';
+
 function requestError(error){
   return {requestError:true,error};
 }
@@ -62,6 +64,11 @@ class AjaxRequest{
 
   jsonResponse(){
     this.props.headers['Accept'] = 'application/json';
+    return this;
+  }
+
+  csrf({cookie,header}){
+    this.props.headers[header]=CookiesUtils.get(cookie);
     return this;
   }
 

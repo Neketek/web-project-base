@@ -21,3 +21,4 @@ class Development(Config):
 
 
 TEMPLATE_FOLDER = "modules/views/templates"
+CSRF_TOKEN_SECRET_KEY = "fvaeIc6cKj3Tu0zmnsU8"

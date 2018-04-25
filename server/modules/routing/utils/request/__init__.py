@@ -1,10 +1,11 @@
 from functools import wraps
-from modules.models.sql.session import Session, ScopedSession, SQL_DB_ENGINE
+from modules.models.sql.session import ScopedSession
 from modules.exceptions import CaptchaError
 import requests
 from modules.config import google
 from flask import request
 import json as jsonlib
+from . import csrf
 
 
 def timezone(func):

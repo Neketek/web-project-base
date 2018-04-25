@@ -17,6 +17,7 @@ def register(app):
 @utils.request.json("body")
 @utils.request.timezone
 @login.required
+@utils.request.csrf.check
 def user(user_context=None, timezone=None, json=None):
     json = dict(id=user_context.id) if json is None else json
     json_resp = User(user_context, timezone).Get().Profile()\
